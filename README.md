@@ -8,7 +8,7 @@ __To work on a feature, use:__
 
 __To merge your branch to your local master and push to remote repo, you:__
 * `git checkout master`
-* `git pull origin master` (or just git pull) (make sure you're in master)
+* `git pull origin master` (or just git pull) (make sure you're in master to sync with GitHub before merging)
 * `git merge branch-name`
   * `git branch --merged` (to check what branch has been merged)
 * `git push origin master` (or just git push to push changes to remote repo)
