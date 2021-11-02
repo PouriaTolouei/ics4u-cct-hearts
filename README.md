@@ -1,6 +1,6 @@
 # ics4u-cct-hearts
-ICS4U CCT Game: Hearts
-Developed by: Haruki and Pouria
+ICS4U CCT Game: Hearts  
+Developed by: Haruki and Pouria  
 Date: 2021 November 25th
 
 __To work on a feature, do:__ 
