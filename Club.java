@@ -1,6 +1,6 @@
 public class Club extends Card {
     
-    private static final int CLUB_POINT = 0;
+    private final int CLUB_POINT = 0;
 
     public Club (int rank) {
         super(rank);

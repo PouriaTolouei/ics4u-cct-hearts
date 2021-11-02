@@ -1,6 +1,6 @@
 public class Spade extends Card {
-    private static final int SPADE_POINT = 0;
-    private static final int SPADE_Q_POINT = 13;
+    private final int SPADE_POINT = 0;
+    private final int SPADE_Q_POINT = 13;
 
     public Spade (int rank) {
         super(rank);
