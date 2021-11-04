@@ -3,6 +3,7 @@ ICS4U CCT Game: Hearts
 Developed by: Haruki and Pouria  
 Date: 2021 November 25th
 
+## Git Cheatsheet
 __To work on a feature, do:__ 
 * `git pull origin master` or `git pull` to sync your local master with remote master
 * `git branch branch-name` to create a new local branch
@@ -30,3 +31,13 @@ __To delete a branch locally or remotely, do:__
 * `git branch -d branch-name` (to delete local branch) (be careful)
 * `git branch -a` (just check what branches there are locally and remotely)
   * `git push origin --delete branch-name` (to delete remote branch) (no need, unless you pushed a branch to remote repo)
+
+## Game of Hearts
+### Terminology
+Term | Meaning
+---------- | ----------
+Hand | The time it takes to play all the cards that each player holds.
+Trick | One round of play where each each player plays one card and make up a trick.
+Game | Each game begins by dealing cards to each player and ends whenever someone reaches 100 or customized points. 
+'Heart is broken' | A heart is broken when someone discards a Heart when another suit is led because s/he does not have cards of the suits led. Once Heart is broken, players can lead with a Heart or Spade of Queen (playing Spade of Queen does not break Heart). However, if the player to lead only has Hearts and the Heart has not been broken, then the lead is passed clockwise.
+'Shot the moon' | It is when a player takes all 13 Hearts and a Spade of Queen in one hand. That player scores 0 and every other players scores 26 points.
