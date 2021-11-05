@@ -3,9 +3,10 @@ public class Displayer {
     public Displayer() {
     }
 
-    // REMOVE THIS COMMENT: SUGGESTION: I think we should add a simple Display method
-    //                      where it explains the rules and notations. 
-    //                      (It's better to put as much Display into this method)
+    /* Explains the rules and terminologies of the game Hearts. */
+    public void ExplainRule() {
+
+    }
 
     /* Displays the hand (the cards they have) of a specified player.
      * @param player    - A Player whose hand will be displayed. */
