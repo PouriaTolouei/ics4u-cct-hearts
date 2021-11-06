@@ -30,6 +30,9 @@ public abstract class Card {
         this.rank = rank;
     }
 
+    // By Haruki
+    /* Obtains the rank of the Card, ranging from 2 to 14, where 14 represents Ace.
+     * @return  - The rank of the card.*/
     public int GetRank() {
         return this.rank;
     }
