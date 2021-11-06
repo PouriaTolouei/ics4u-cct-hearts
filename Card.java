@@ -25,7 +25,8 @@ public abstract class Card {
     public static final int HEART       = 2;
     public static final int SPADE       = 3;
     
-    // Constructor for the Card object
+    // By Pouria
+    // Constructor for the Card object (Assigns the rank of the card)
     public Card(int rank) {
         this.rank = rank;
     }
