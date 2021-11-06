@@ -8,6 +8,10 @@ public class HeartEngine {
     private boolean isHeartBroken;
     private boolean isShootingMoon;
     private Player currPlayer;
+    private int losingPoint;
+
+    // Global variable representing the default losing point
+    public static final int DEFAULT_LOSING_POINT = 50;
 
     // Global variables representing error codes
     public static final int SUCCESS             =  1;
@@ -18,8 +22,9 @@ public class HeartEngine {
     /* The constructor for the class HeartEngine, which takes care of the backend processes 
      * of the game of Hearts.
      * @param numPlayers    - The number of players that play the game.
-     * @param playerNames   - An array of players' names */
-    public HeartEngine(int numPlayers, String[] playerNames) {
+     * @param playerNames   - An array of players' names 
+     * @param losingPoint   - The game ends after a player achieves this point */
+    public HeartEngine(int numPlayers, String[] playerNames, int losingPoint) {
 
     }
 
@@ -110,6 +115,12 @@ public class HeartEngine {
     /* Returns an array of Card objects that has been discarded by Players, which make up a trick.
      * @return  - An array of Card objects that make up a trick. */
     public Card[] GetCardsThrown() {
+        return null;
+    }
+
+    /* Returns an array that contains player ids of the winner(s).
+     * @return  - An array of player ids of the winner(s) */
+    public int[] CheckWinner() {
         return null;
     }
 
