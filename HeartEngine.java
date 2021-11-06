@@ -41,23 +41,6 @@ public class HeartEngine {
     }
 
 
-    /* Shuffles the standard deck of card in a random order. */
-    public void Shuffle() {
-
-    }
-
-
-    /* Deals Cards from the standard deck of card to all players.
-     * The Cards are dealt differently depending on the number of players.
-     * When there are:
-     *      - 3 players: 2 of Diamond is removed, and each player is dealt 17 cards
-     *      - 4 players: Each player is dealt 13 cards.
-     *      - 5 players: 2 of Diamond and 2 of Club are removed, and each player is dealth 10 cards. */
-    public void DealHand() {
-
-    }
-
-
     /* The Game of Hearts require players to pass 3 cards from their initial hand to other players every hand (time takes to play all cards).
      * The cards from one player is passed to another player following a specific rule
      * based on the number of players and the number of hands (Passing rotation).
@@ -92,6 +75,47 @@ public class HeartEngine {
     }
 
 
+    /* The trick will be given to a player who played a card with highest rank, 
+     * and returns the player id who collected the trick.
+     * @return  - The player id of a Player who collected the trick.
+     *            This player leads the next hand. */
+    public int CollectTrick() {
+        return 0;
+    }
+
+
+    /* Converts a card expressed in String to a Card object.
+     * @param card  - String representation of a card. 
+     *                The suit is represented by CL (clubs), DM (diamonds), HE (hearts), and SP (spades).
+     *                The rank is represented by numbers from 1 to 13 (Ace to King)
+     *                (e.g. CL-1 => Ace of Club, SP-12 => Queen of Spade)
+     * @return      - A Card object that corresponds to the specified String representation. 
+     *                Returns null if there is no such Card. */
+    public Card ConvertToCard(String card) {
+        return null;
+    }
+
+
+    // By Haruki
+    /* Shuffles the standard deck of card in a random order. */
+    public void Shuffle() {
+
+    }
+
+
+    // By Haruki
+    /* Deals Cards from the standard deck of card to all players.
+     * The Cards are dealt differently depending on the number of players.
+     * When there are:
+     *      - 3 players: 2 of Diamond is removed, and each player is dealt 17 cards
+     *      - 4 players: Each player is dealt 13 cards.
+     *      - 5 players: 2 of Diamond and 2 of Club are removed, and each player is dealth 10 cards. */
+    public void DealHand() {
+
+    }
+    
+    
+    // By Haruki
     /* Returns the current player of the current trick.
      * @return  - A Player object who is currently playing a card to make up a trick */
     public Player GetCurrPlayer() {
@@ -99,6 +123,7 @@ public class HeartEngine {
     }
 
 
+    // By Haruki
     /* Replaces current player with a new player.
      * @param newCurrPlayer - A new Player object who will be playing a card to make up a trick */
     public void SetCurrPlayer(Player newCurrPlayer) {
@@ -106,38 +131,25 @@ public class HeartEngine {
     }
 
 
+    // By Haruki
     /* Switches the current player. */
     public void SwitchPlayer() {
 
     }
 
 
+    // By Haruki
     /* Returns an array of Card objects that has been discarded by Players, which make up a trick.
      * @return  - An array of Card objects that make up a trick. */
     public Card[] GetCardsThrown() {
         return null;
     }
 
+
+    // By Haruki
     /* Returns an array that contains player ids of the winner(s).
      * @return  - An array of player ids of the winner(s) */
     public int[] CheckWinner() {
-        return null;
-    }
-
-
-    /* The trick will be given to a player who played a card with highest rank, 
-     * and returns the player id who collected the trick.
-     * @return  - The player id of a Player who collected the trick */
-    public int CollectTrick() {
-        return 0;
-    }
-
-
-    /* Converts a card expressed in String to a Card object.
-     * @param card  - String representation of a card.
-     * @return      - A Card object that corresponds to the specified String representation. 
-     *                Returns null if there is no such Card. */
-    public Card ConvertToCard(String card) {
         return null;
     }
 
