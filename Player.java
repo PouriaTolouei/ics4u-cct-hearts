@@ -10,10 +10,15 @@ public class Player {
     // Constructor 
     // By Pouria
     /* The constructor of the Player class, which represents the person who plays the game.
+     * This instantiates all the instance variables except for playerCards and playerTricks arrays 
+     * Since they vary depending on the gameplay and number of players in the game (so they get instantiated in HeartEngine).
      * @param playerName    - The name of the player.
      * @param playerId      - A unique id of the player. */
     public Player(String playerName, int playerId) {
-
+        this.playerName = playerName; // Name paramter is assigned.
+        this.playerId = playerId; // ID Paramter is assigned.
+        this.playerPoints = 0; // Default value is assigned.
+        this.cardThrown = null; // Default value is assigned.
     }
 
 
@@ -22,7 +27,19 @@ public class Player {
     /* Removes a specified card from the player's hand.
      * @param card  - The card to be removed from the player's hand */
     private void removePlayerCard(Card card) {
-        
+        Card[] temp = new Card[playerCards.length - 1]; // Creates a temporay array with one less card.
+        int counter = 0; // Keeps track of the position in the temporary array.
+
+        // Loops through the player's hand (Card array).
+        for (int i = 0; i < playerCards.length; i++){
+            // Checks both the rank and suit to make sure that it doesn't match with the card that needs to be removed.
+            if (playerCards[i].GetRank() != card.GetRank() && playerCards[i].GetSuit() != card.GetSuit()){
+                temp[counter] = playerCards[i]; // Copies the card from the player's hand to the temporary array as long as it's not the card that needs to be removed.
+                counter++; // Increments the position in the temporary array when a value has been sucesfully copied to the temporary array.
+            }
+            // Otherwise if it's the card that needs to be removed, it's simply skipped and not added to the temporary array.
+        }
+        playerCards = temp; // The reference of the temporary array is assigned back to player's hand, so now it doesn't have the removed card.
     }
 
 
@@ -32,7 +49,7 @@ public class Player {
     /* Obtains the name of the player.
      * @return  - the name of the player. */
     public String GetPlayerName() {
-        return null;
+        return this.playerName; // returns the player's name (given at the beiginning of the game).
     }
 
 
@@ -40,7 +57,7 @@ public class Player {
     /* Obtains the id of the player.
      * @return  - the id of the player. */
     public int GetPlayerId() {
-        return 0;
+        return this.playerId; // return the player's unique id (ranges from 0 to 4 for the 5 potential players).
     }
 
 
@@ -48,7 +65,7 @@ public class Player {
     /* Obtains the player's hand as an array of Card objects.
      * @return  - The player's hand as a 1D array of Card objects. */
     public Card[] GetPlayerCards() {
-        return null;
+        return this.playerCards; // Returns the 1D array of Card objects that represent the player's hand.
     }
 
 
@@ -56,7 +73,7 @@ public class Player {
     /* Updates the player's hand to a specified array of Card objects.
      * @param cards - 1D array of Card objects, which will be set to the player's hand */
     public void SetPlayerCards(Card[] cards) {
-
+        this.playerCards = cards; // Passes the refernce of a new array to represent the player's hand.
     }
 
 
@@ -65,6 +82,14 @@ public class Player {
      * @param suit  - An integer representation of the suit 
      * @return      - Returns true if the player has the card of a specified suit, false otherwise */
     public boolean HasSuit(int suit) {
+        // Loops through the player's hand (Card array).
+        for (int i = 0; i < playerCards.length; i++){
+            // Checks to see if any card has the specified suit and return true and end the loop if so.
+            if(playerCards[i].GetSuit() == suit){
+                return true;
+            }
+        }
+        // Otherwise no card was found with the specified suit.
         return false;
     }
 
@@ -73,7 +98,7 @@ public class Player {
     /* Updates the Card that the player throws each trick.
      * @param card  - A player's Card that is to be thrown during trick */
     public void SetCardThrown(Card card) {
-        
+        this.cardThrown = card; // Passes the reference of a new card object that the player wants to throw/play.
     }
 
 
