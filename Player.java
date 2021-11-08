@@ -152,10 +152,31 @@ public class Player {
 
     // By Haruki
     /* Adds several Card objects into a specified array of Card objects.
-     * @param newCards  - The array of Card objects that are to be added to a specified array
-     * @param array     - The array of Card objects where newCards will be added to. */
-    public void AddCardsToArray(Card[] newCards, Card[] array) {
-        
+     * @param destArray - The destination array of Card objects where newCards will be added to.
+     * @param newCards  - The array of Card objects that are to be added to a specified array.
+     * @return          - An array of Card objects that include the original elements as well as
+     *                    new elements */
+    public Card[] AddCardsToArray(Card[] destArray, Card[] newCards) {
+        // If the array of new Card objects is null or empty, it will simply return the 
+        if (newCards == null || newCards.length == 0) {
+            return destArray;
+        }
+
+        // If the newCards is not null or empty, create a new array with the length 
+        // that is larger than the destination array's length by the length of newCards
+        Card[] updatedArray = new Card[destArray.length + newCards.length];
+
+        // Copy all of the elements in the destination array to the updatedArray
+        for (int i = 0; i < destArray.length; i++) {
+            updatedArray[i] = destArray[i];
+        }
+
+        // Add all of the elements in the newCards at the end of the updatedArray
+        for (int i = 0; i < newCards.length; i++) {
+            updatedArray[destArray.length + i] = newCards[i];
+        }
+
+        return updatedArray; // Return the array with newly added elements
     }
 
 }
