@@ -27,19 +27,19 @@ public class Player {
     /* Removes a specified card from the player's hand.
      * @param card  - The card to be removed from the player's hand */
     private void removePlayerCard(Card card) {
-        Card[] temp = new Card[playerCards.length - 1]; // Creates a temporay array with one less card.
+        Card[] temp = new Card[this.playerCards.length - 1]; // Creates a temporay array with one less card.
         int counter = 0; // Keeps track of the position in the temporary array.
 
         // Loops through the player's hand (Card array).
-        for (int i = 0; i < playerCards.length; i++){
+        for (int i = 0; i < this.playerCards.length; i++){
             // Checks both the rank and suit to make sure that it doesn't match with the card that needs to be removed.
-            if (playerCards[i].GetRank() != card.GetRank() && playerCards[i].GetSuit() != card.GetSuit()){
+            if (this.playerCards[i].GetRank() != card.GetRank() && this.playerCards[i].GetSuit() != card.GetSuit()){
                 temp[counter] = playerCards[i]; // Copies the card from the player's hand to the temporary array as long as it's not the card that needs to be removed.
                 counter++; // Increments the position in the temporary array when a value has been sucesfully copied to the temporary array.
             }
             // Otherwise if it's the card that needs to be removed, it's simply skipped and not added to the temporary array.
         }
-        playerCards = temp; // The reference of the temporary array is assigned back to player's hand, so now it doesn't have the removed card.
+        this.playerCards = temp; // The reference of the temporary array is assigned back to player's hand, so now it doesn't have the removed card.
     }
 
 
@@ -83,9 +83,9 @@ public class Player {
      * @return      - Returns true if the player has the card of a specified suit, false otherwise */
     public boolean HasSuit(int suit) {
         // Loops through the player's hand (Card array).
-        for (int i = 0; i < playerCards.length; i++){
+        for (int i = 0; i < this.playerCards.length; i++){
             // Checks to see if any card has the specified suit and return true and end the loop if so.
-            if(playerCards[i].GetSuit() == suit){
+            if(this.playerCards[i].GetSuit() == suit){
                 return true;
             }
         }
