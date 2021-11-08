@@ -49,25 +49,25 @@ The game ends when one player hits the predetermined score or higher (The defaul
 The game can be played by 3 to 5 players.
 
 #### Set Up
-A standard deck of card is shuffled and dealt to players.
-In a 4-player game, each player is dealt 13 cards.
-In a 3-player game, each player is dealt 17 cards from a deck of card without 2 of Diamond. 
-In a 5-player game, each player is dealth 10 cards from a deck of card without 2 of Diamond and 2 of Club. 
+A standard deck of card is shuffled and dealt to players.  
+In a 4-player game, each player is dealt 13 cards.  
+In a 3-player game, each player is dealt 17 cards from a deck of card without 2 of Diamond.   
+In a 5-player game, each player is dealth 10 cards from a deck of card without 2 of Diamond and 2 of Club.   
 
 #### Passing Rotation
-After looking at your hand, each player picks three cards from their hand, and passes them to another player.
-In a 4-player game, pass the cards to the person on the left on the 1st hand, right on the 2nd hand, across the player on 3rd hand, and no passing on 4th hand. This cycle continues.
+After looking at your hand, each player picks three cards from their hand, and passes them to another player.  
+In a 4-player game, pass the cards to the person on the left on the 1st hand, right on the 2nd hand, across the player on 3rd hand, and no passing on 4th hand. This cycle continues.  
 In a 3-player or 5-player game, pass the cards to the person on the left on 1st hand, then right on 2nd hand, and this cycle continues. 
 
 #### Game Procedure
 1. The player who has the 2 of Club after the deal makes the opening lead. If 2 of Club has been removed, it is the 3 of Club that makes the opening lead instead.
 2. The play proceeds in the ascending order (by player ID) from the led player. 
 3. Each player MUST follow suit if possible. If a player's hand does not contain the suit led, the card of any other suit may be played.
-  1. However, if a player has no Clubs when the first trick is led, a Heart or the Queen of Spade may not be played.
+    1. However, if a player has no Clubs when the first trick is led, a Heart or the Queen of Spade may not be played.
 4. The highest card of the suit led wins the trick, and the winner of that trick takes all the cards from that trick. 
 5. The winner of the last trick leads the next trick.
-  1. A player may not lead a Heart or Queen of Spade until "Heart has been broken"
-  2. If the player to lead only has Hearts and Heart has not been broken, then they pass the lead to the next person.
+    1. A player may not lead a Heart or Queen of Spade until "Heart has been broken"
+    2. If the player to lead only has Hearts and Heart has not been broken, then they pass the lead to the next person.
 6. The play continues until all the tricks have been taken, then points are scored for each player based on the cards from each of the tricks they have won.
 7. If no player exceeds the maximum amount of points, then the cards are shuffled and dealt again.
 8. The player with lowest score wins the game once someone exceeds the maximum amount of points.
