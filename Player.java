@@ -134,7 +134,7 @@ public class Player {
         for (int i = 0; i < this.playerCards.length; i++){
             // Makes sure that the player has the Card object that they want to throw (checks for both matching suit and rank).
             if (this.playerCards[i].GetRank() == card.GetRank() && this.playerCards[i].GetSuit() == card.GetSuit()){ 
-                this.cardThrown = card; // Stores the new Card object that the player wants to throw/play.
+                this.cardThrown = card; // Sets the new Card object that the player wants to throw/play.
                 removePlayerCard(card); // Removes the Card object that is about to be thrown from player's cards.
                 return HeartEngine.SUCCESS; // Card thrown has been succesfully set.
             }
