@@ -47,7 +47,19 @@ public class Player {
     /* Sorts a 1D array of Card objects by their rank in asceding order meaning from 2 (lowest) to Ace (highest).
      * @param cards  - The 1D array of Card objects to be sorted by rank. */
     private void sortByRank(Card[] cards){
-
+        // Loops through the Card object array. 
+        for (int i = 1; i < cards.length; i++){
+            Card currElement = cards[i]; // Stores the current Card object.
+            int j = i - 1; // Sets the position for starting to look for a larger rank (one before the current Card object).
+            
+            // Loops through all the Card obejcts before the current Card object.
+            while (j >= 0 && cards[j].GetRank() > currElement.GetRank()){
+                // If a Card object has a larger rank than the current Card object, it's moved one position forward
+                cards[j + 1] = cards[j]; 
+                j--;
+            }
+            cards[j + 1] = currElement; // When there are no more Card objects with a higher rank before it, the current Card object is set at that position.
+        }
     }
 
     // By Haruki

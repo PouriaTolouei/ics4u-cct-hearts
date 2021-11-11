@@ -16,9 +16,45 @@ public class Displayer {
     
     // By Pouria
     /* Displays the 1D array of Card objects that is passed to it (a suit of player's hand or the cards thrown).
-    * @param cards         - The 1D array of Card objects that will be displayed. */
+    * @oaram cards         - The 1D array of Card objects that will be displayed. */
     private void displayCards(Card[]cards){
-
+        for (int i = 0; i < cards.length; i++){
+            // Checks for the suit of each Card object to display the proper suit.
+            switch (cards[i].GetSuit()){
+                case Card.CLUB:
+                    System.out.print("C-");
+                    break;
+                case Card.DIAMOND:
+                    System.out.print("D-");
+                    break;
+                case Card.HEART:
+                    System.out.print("H-");
+                    break;
+                case Card.SPADE:
+                    System.out.print("S-");
+                    break;
+            }
+            // Checks for the rank of each Card object to display the proper rank.
+            switch (cards[i].GetRank()){
+                // Non-numbered ranks get converted into their names before getting displayed.
+                case Card.CARD_JACK:
+                    System.out.print("J");
+                    break;
+                case Card.CARD_QUEEN:
+                    System.out.print("Q");
+                    break;
+                case Card.CARD_KING:
+                    System.out.print("K");
+                    break;
+                case Card.CARD_ACE:
+                    System.out.print("A");
+                    break;
+                // Numbered ranks are directly displayed.
+                default:
+                    System.out.print(cards[i].GetRank());
+            }
+        }
+        System.out.print("\n"); // Goes to the next line so that future displaying are seperate.
     }
 
     // By Haruki
@@ -160,14 +196,34 @@ public class Displayer {
     /* Displays the thrown cards that make up a trick in the order it was thrown.
      * @param cardsThrown - An array of Card objects which are thrown by Player each round. */
     public void DisplayCardThrown(Card[] cardsThrown) {
-
+        displayCards(cardsThrown);
     }
 
 
     // By Pouria
-    /* Displays the points of all players in a formatted way.
+    /* Displays the latest points of all players in a formatted way.
      * @param allPlayers - An array of all Player objects, whose points will be displayed. */
     public void DisplayPointsTable(Player[] allPlayers) {
-
+        // Displays the top border (based on the number of players).
+        for (int i = 0; i < allPlayers.length; i++){
+            System.out.print("===========");
+        }
+        System.out.print("\n");
+        System.out.print("|"); // Displays the left border.
+        // Displays the title row (players' IDs)(based on the number of players).
+        for (int i = 0; i < allPlayers.length; i++){
+            System.out.printf(" Player %1d | ", allPlayers[i].GetPlayerId());
+        }
+        System.out.print("\n");
+        System.out.print("|"); //Displays the left border.
+         // Displays the row for players' latest points (based on the number of players).
+        for (int i = 0; i < allPlayers.length; i++){
+            System.out.printf(" %8d | ", allPlayers[i].GetPlayerPoints());
+        }
+        System.out.print("\n");
+        // Displays the bottom border (based on the number of players).
+        for (int i = 0; i < allPlayers.length; i++){
+            System.out.print("===========");
+        }
     }
 }
