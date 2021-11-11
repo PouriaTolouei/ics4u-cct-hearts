@@ -30,8 +30,36 @@ public class Displayer {
      *                2nd row represents Card.HEART
      *                3rd row represents Card.SPADE     */
     private Card[][] separateBySuit(Card[] cards) {
+        // The 2D Card array that will be returned
+        Card[][] card2d = new Card[4][13];
 
-        return null;
+        // Represent the current index of each row/suit of card2d
+        // The position of the integer in counter correspond with the suit ID
+        // e.g. counter[0] represent current index for the 0th row of card2d, which 
+        //      only contains Card.CLUB, which is represented as 0 numerically. 
+        int[] counter = new int[4];
+
+        // Represents the suit and the index of the 2d array, respectively
+        int suit;
+        int index;
+
+        // Parses through each Card in cards
+        for (int i = 0; i < cards.length; i++) {
+            if (cards[i] != null) {
+                suit = cards[i].GetSuit();
+                index = counter[i];
+                // As long as the current Card object is not null
+                // Add that Card object to card2d according to their suit and current index
+                card2d[suit][index] = cards[i];
+                counter[suit]++;
+            } else {
+                // For efficiency purpose, when there is a null object
+                // this will break out of the for-loop, as null object indicates there
+                // are no more Card objects after that
+                break;
+            }
+        }
+        return card2d; // Returns the 2d Array 
     }
 
     // === Public Methods ===
