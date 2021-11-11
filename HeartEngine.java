@@ -30,8 +30,12 @@ public class HeartEngine {
 
     }
 
+    // == Private Methods ===
+    
 
-    // Public methods
+
+    // === Public Methods ===
+
     /* Calculates and updates the points earned by each Player according to their tricks.
      * @return  - The point earned by a Player based on their trick. */
     // REMOVE THIS COMMENT: Shouldn't this either be void because it only 

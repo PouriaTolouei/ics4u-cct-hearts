@@ -22,7 +22,7 @@ public class Player {
     }
 
 
-     // === Private Helper Methods ===
+    // === Private Helper Methods ===
     
     // By Pouria
     /* Removes a specified card from the player's hand.
@@ -166,6 +166,7 @@ public class Player {
         this.playerTricks = cards;
     }
 
+    
     // By Haruki & Pouria
     /* Sorts player's cards (their hand) by suit as well as the ranks. */
     public void SortPlayerCards() {
@@ -181,7 +182,7 @@ public class Player {
         // e.g. i = 0 (Card.CLUB), i = 1 (Card. Diamond) etc 
         for (int i = 0; i < 4; i++) {
             card2d[i] = sortBySuit(i);
-            card2d[i] = sortByRank(card2d[i]);
+            sortByRank(card2d[i]);
         }
         
         // Represent the current index of the playerCards
