@@ -16,9 +16,22 @@ public class Displayer {
     
     // By Pouria
     /* Displays the 1D array of Card objects that is passed to it (a suit of player's hand or the cards thrown).
-    * @oaram cards         - The 1D array of Card objects that will be displayed. */
-    public void displayCards(Card[]cards){
+    * @param cards         - The 1D array of Card objects that will be displayed. */
+    private void displayCards(Card[]cards){
 
+    }
+
+    // By Haruki
+    /* Separates an array of Card objects by suit, and return a 2D array where each row corresponds to each suit.
+     * @param cards - An array of Card objects to be separated by suit
+     * @return      - A 2d array of Card objects where each row only contain Cards of each suit.
+     *                0th row represents Card.CLUB
+     *                1st row represents Card.DIAMOND
+     *                2nd row represents Card.HEART
+     *                3rd row represents Card.SPADE     */
+    private Card[][] separateBySuit(Card[] cards) {
+
+        return null;
     }
 
     // === Public Methods ===
@@ -97,9 +110,9 @@ public class Displayer {
 
 
     // By Haruki
-    /* Displays the hand (the cards they have) of a specified player.
+    /* Displays the hand (their playerCards) of a specified player.
      * @param player    - A Player whose hand will be displayed. */
-    public void DisplayHand(Player player) {
+    public void DisplayPlayerCards(Player player) {
 
     }
 
