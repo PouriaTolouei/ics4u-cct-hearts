@@ -31,7 +31,7 @@ public class HeartEngine {
     }
 
     // == Private Methods ===
-    
+
 
 
     // === Public Methods ===
@@ -92,9 +92,9 @@ public class HeartEngine {
 
     /* Converts a card expressed in String to a Card object.
      * @param card  - String representation of a card. 
-     *                The suit is represented by CL (clubs), DM (diamonds), HE (hearts), and SP (spades).
+     *                The suit is represented by C (clubs), D (diamonds), H (hearts), and S (spades).
      *                The rank is represented by numbers from 1 to 13 (Ace to King)
-     *                (e.g. CL-1 => Ace of Club, SP-12 => Queen of Spade)
+     *                (e.g. C-A => Ace of Club, H-2 => 2 of Heart, S-Q => Queen of Spade)
      * @return      - A Card object that corresponds to the specified String representation. 
      *                Returns null if there is no such Card. */
     public Card ConvertToCard(String card) {
