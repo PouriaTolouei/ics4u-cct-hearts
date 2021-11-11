@@ -50,6 +50,16 @@ public class Player {
 
     }
 
+    // By Haruki
+    /* It parses through the player's cards, and return an array of Card objects 
+     * that only contain the suit specified.
+     * @param suit  - The suit of interest
+     * @return      - An array of Card objects that only contain the cards of specified suit */
+    private Card[] sortBySuit(int suit) {
+        return null;
+    }
+
+
     // === Public Methods ===
 
     // By Pouria
@@ -156,34 +166,43 @@ public class Player {
         this.playerTricks = cards;
     }
 
-
-    // By Haruki
-    /* Adds several Card objects into a specified array of Card objects.
-     * @param destArray - The destination array of Card objects where newCards will be added to.
-     * @param newCards  - The array of Card objects that are to be added to a specified array.
-     * @return          - An array of Card objects that include the original elements as well as
-     *                    new elements */
-    public Card[] AddCardsToArray(Card[] destArray, Card[] newCards) {
-        // If the array of new Card objects is null or empty, it will simply return the 
-        if (newCards == null || newCards.length == 0) {
-            return destArray;
+    // By Haruki & Pouria
+    /* Sorts player's cards (their hand) by suit as well as the ranks. */
+    public void SortPlayerCards() {
+        // A temporary 2D array of Card objects.
+        // Each row represents each suit, and 13 columns represent the maximum
+        // number of cards each suit can have.
+        Card[][] card2d = new Card[4][13];
+        
+        // Obtains cards of each suit from the player's cards
+        // and assigns it to each row of the card2d.
+        // Each suit is then sorted by the card's rank in an ascending order.
+        // The variable i works both as an index as well as integer representation of suits
+        // e.g. i = 0 (Card.CLUB), i = 1 (Card. Diamond) etc 
+        for (int i = 0; i < 4; i++) {
+            card2d[i] = sortBySuit(i);
+            card2d[i] = sortByRank(card2d[i]);
         }
-
-        // If the newCards is not null or empty, create a new array with the length 
-        // that is larger than the destination array's length by the length of newCards
-        Card[] updatedArray = new Card[destArray.length + newCards.length];
-
-        // Copy all of the elements in the destination array to the updatedArray
-        for (int i = 0; i < destArray.length; i++) {
-            updatedArray[i] = destArray[i];
+        
+        // Represent the current index of the playerCards
+        int count = 0;
+        
+        // Parses through each cell of the card2d and merges each Card into playerCards
+        for (int i = 0; i < card2d.length; i++) {
+            for (int j = 0; j < card2d[i].length; j++) {
+                // Ensures the Card object is not null
+                if (card2d[i][j] != null) {
+                    // Adds each Card object in card2d into playerCards
+                    this.playerCards[count] = card2d[i][j];
+                    count++; // Updates the current index of the playerCards
+                } else {
+                    // Breaks out of the inner loop when there is a null Object for efficiency purpose.
+                    // As this signifies that there are no more Card objects after that index
+                    // for the current row/suit
+                    break;
+                }
+            }
         }
-
-        // Add all of the elements in the newCards at the end of the updatedArray
-        for (int i = 0; i < newCards.length; i++) {
-            updatedArray[destArray.length + i] = newCards[i];
-        }
-
-        return updatedArray; // Return the array with newly added elements
     }
 
 }

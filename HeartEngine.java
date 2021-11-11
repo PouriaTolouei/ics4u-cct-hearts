@@ -9,6 +9,7 @@ public class HeartEngine {
     private boolean isShootingMoon;
     private Player currPlayer;
     private int losingPoint;
+    private int leadSuit;
 
     // Global variable representing the default losing point
     public static final int DEFAULT_LOSING_POINT = 50;
@@ -17,6 +18,7 @@ public class HeartEngine {
     public static final int SUCCESS             =  1;
     public static final int INVALID_CARD        = -1;
     public static final int HEART_NOT_BROKEN    = -2;
+    public static final int SHOT_THE_MOON       = -3;
 
     // Constructor
     /* The constructor for the class HeartEngine, which takes care of the backend processes 
@@ -95,6 +97,21 @@ public class HeartEngine {
         return null;
     }
 
+    // By Pouria
+    /* 
+     * */
+    public int GetLeadSuit() {
+        return 0;
+    }
+
+    
+    // By Haruki
+    /* Updates the leading suit of the current trick to the specified one.
+     * @param suitId    - The numerical id of a suit, which is declared in Card class. */
+    public void SetLeadSuit(int suitId) {
+        this.leadSuit = suitId;
+    }
+
 
     // By Haruki
     /* Shuffles the standard deck of card in a random order. */
@@ -151,6 +168,36 @@ public class HeartEngine {
      * @return  - An array of player ids of the winner(s) */
     public int[] CheckWinner() {
         return null;
+    }
+
+
+    // By Haruki
+    /* Adds several Card objects into a specified array of Card objects.
+     * @param destArray - The destination array of Card objects where newCards will be added to.
+     * @param newCards  - The array of Card objects that are to be added to a specified array.
+     * @return          - An array of Card objects that include the original elements as well as
+     *                    new elements */
+    public Card[] AddCardsToArray(Card[] destArray, Card[] newCards) {
+        // If the array of new Card objects is null or empty, it will simply return the 
+        if (newCards == null || newCards.length == 0) {
+            return destArray;
+        }
+
+        // If the newCards is not null or empty, create a new array with the length 
+        // that is larger than the destination array's length by the length of newCards
+        Card[] updatedArray = new Card[destArray.length + newCards.length];
+
+        // Copy all of the elements in the destination array to the updatedArray
+        for (int i = 0; i < destArray.length; i++) {
+            updatedArray[i] = destArray[i];
+        }
+
+        // Add all of the elements in the newCards at the end of the updatedArray
+        for (int i = 0; i < newCards.length; i++) {
+            updatedArray[destArray.length + i] = newCards[i];
+        }
+
+        return updatedArray; // Return the array with newly added elements
     }
 
 }

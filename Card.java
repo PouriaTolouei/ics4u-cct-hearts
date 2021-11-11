@@ -3,21 +3,11 @@ public abstract class Card {
     private int rank;
 
     // === GLOBAL VARIABLES ===
+    // Constants representing the rank
     public static final int CARD_ACE    = 14;
-
-    // These are probably unnecessary
     public static final int CARD_KING   = 13;
     public static final int CARD_QUEEN  = 12;
     public static final int CARD_JACK   = 11;
-    public static final int CARD_TEN    = 10;
-    public static final int CARD_NINE   = 9;
-    public static final int CARD_EIGHT  = 8;
-    public static final int CARD_SEVEN  = 7;
-    public static final int CARD_SIX    = 6;
-    public static final int CARD_FIVE   = 5;
-    public static final int CARD_FOUR   = 4;
-    public static final int CARD_THREE  = 3;
-    public static final int CARD_TWO    = 2;
 
     // Constants that represent each suit
     public static final int CLUB        = 0;
