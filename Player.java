@@ -109,7 +109,8 @@ public class Player {
     // By Pouria
     /* Indicates whether the player has a Card of a specified suit.
      * @param suit  - An integer representation of the suit 
-     * @return      - Returns true if the player has the card of a specified suit, false otherwise */
+     * @return      - Returns true if the player has a card of the specified suit.
+     *              - Returns false if the player doesn't have a card of the specified suit.  */
     public boolean HasSuit(int suit) {
         // Loops through the player's hand (Card array).
         for (int i = 0; i < this.playerCards.length; i++){
@@ -124,10 +125,22 @@ public class Player {
 
 
     // By Pouria
-    /* Updates the Card that the player throws each trick.
-     * @param card  - A player's Card that is to be thrown during trick */
-    public void SetCardThrown(Card card) {
-        this.cardThrown = card; // Passes the reference of a new card object that the player wants to throw/play.
+    /* Updates the Card that the player throws each trick and removes that from the player's cards(hand).
+     * @param card  - A player's Card that is to be thrown during trick. 
+     * @ return     - Returns 1 if thrown card was set succesfully.
+     *              - Returns -1 if the player doesn't have that card. */
+    public int SetCardThrown(Card card) {
+        // Loops through the player's hand (Card array).
+        for (int i = 0; i < this.playerCards.length; i++){
+            // Makes sure that the player has the Card object that they want to throw (checks for both matching suit and rank).
+            if (this.playerCards[i].GetRank() == card.GetRank() && this.playerCards[i].GetSuit() == card.GetSuit()){ 
+                this.cardThrown = card; // Stores the new Card object that the player wants to throw/play.
+                removePlayerCard(card); // Removes the Card object that is about to be thrown from player's cards.
+                return HeartEngine.SUCCESS; // Card thrown has been succesfully set.
+            }
+        }
+        // Otherwise the card was not found, so error value is returned.
+        return HeartEngine.INVALID_CARD;
     }
 
 
