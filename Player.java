@@ -45,7 +45,7 @@ public class Player {
 
     // By Pouria
     /* Sorts a 1D array of Card objects by their rank in asceding order meaning from 2 (lowest) to Ace (highest).
-     * @param cards  - The 1D array of card objects to be sorted by rank. */
+     * @param cards  - The 1D array of Card objects to be sorted by rank. */
     private void sortByRank(Card[] cards){
 
     }
