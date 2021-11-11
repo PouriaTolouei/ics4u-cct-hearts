@@ -138,10 +138,21 @@ public class Displayer {
 
 
     // By Haruki
-    /* Displays the hand (their playerCards) of a specified player.
+    /* Displays the hand (their playerCards) of a specified player 
+     * in an ascending order within each suit.
      * @param player    - A Player whose hand will be displayed. */
     public void DisplayPlayerCards(Player player) {
+        // Sorts the player's cards by their suit and rank
+        player.SortPlayerCards();
 
+        // Obtains playerCards and organize them by their suit into 2D array
+        Card[][] groupedCards = separateBySuit(player.GetPlayerCards());
+
+        // Each row of groupedCards contains cards of a certain suit,
+        // and each suit are printed row by row, in the order of Clubs, Diamonds, Hearts, and Spades.
+        for (int i = 0; i < groupedCards.length; i++) {
+            displayCards(groupedCards[i]);
+        }
     }
 
 
