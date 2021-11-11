@@ -120,7 +120,21 @@ public class HeartEngine {
     // By Haruki
     /* Shuffles the standard deck of card in a random order. */
     public void Shuffle() {
+        // Variables for random index as well as temporary Card object for swapping purpose
+        int randIndex;
+        Card temp;
 
+        // A Card at each index in standardDeck will be swapped with
+        // a Card at random index 
+        for (int i = 0; i < this.standardDeck.length; i++) {
+            // Generates a random index
+            randIndex = (int) (Math.random() * this.standardDeck.length);
+
+            // Swaps the Card object at randIndex with Card object at current i
+            temp = this.standardDeck[randIndex];
+            this.standardDeck[randIndex] = this.standardDeck[i];
+            this.standardDeck[i] = temp;
+        }
     }
 
 
