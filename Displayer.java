@@ -12,6 +12,17 @@ public class Displayer {
     public Displayer() {
     }
 
+    // === Private Helper Methods ===
+    
+    // By Pouria
+    /* Displays the 1D array of Card objects that is passed to it (a suit of player's hand or the cards thrown).
+    * @oaram cards         - The 1D array of Card objects that will be displayed. */
+    public void displayCards(Card[]cards){
+
+    }
+
+    // === Public Methods ===
+    
     // By Haruki
     /* Explains the section of the rule of the game of Hearts that is specified by the section id. 
      * @param sectionId    - The id assigned to each section of game rule. */

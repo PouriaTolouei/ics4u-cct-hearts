@@ -22,7 +22,8 @@ public class Player {
     }
 
 
-    // Private helper method
+     // === Private Helper Methods ===
+    
     // By Pouria
     /* Removes a specified card from the player's hand.
      * @param card  - The card to be removed from the player's hand */
@@ -42,6 +43,12 @@ public class Player {
         this.playerCards = temp; // The reference of the temporary array is assigned back to player's hand, so now it doesn't have the removed card.
     }
 
+    // By Pouria
+    /* Sorts a 1D array of Card objects by their rank in asceding order meaning from 2 (lowest) to Ace (highest).
+     * @param cards  - The 1D array of card objects to be sorted by rank. */
+    private void sortByRank(Card[] cards){
+
+    }
 
     // === Public Methods ===
 
