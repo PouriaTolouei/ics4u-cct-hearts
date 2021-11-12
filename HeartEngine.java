@@ -31,6 +31,7 @@ public class HeartEngine {
     }
 
     // == Private Methods ===
+
     // By Haruki
     /* Deals appropriate number of Cards (refer to DealPlayerCards() Java Doc) to all Players, 
      * while ensuring specific Cards are removed (also refer to DealPlayerCards() Java Doc).
@@ -102,7 +103,7 @@ public class HeartEngine {
         // Iterates through each Card object inside cardsCheckedAgainst and check if 
         // any of them have the same suit and rank as the cardChecked
         for (int i = 0; i < cardsCheckedAgainst.length; i++) {
-            if (cardChecked.GetSuit() == cardsCheckedAgainst[i].GetSuit() && cardChecked.GetRank() == cardsCheckedAgainst[i].GetRank()) {
+            if (cardChecked.equals(cardsCheckedAgainst[i])) {
                 // If there is an identical Card as cardChecked inside cardsCheckedAgainst array
                 // return true to signify there was a match
                 return true;
@@ -260,7 +261,7 @@ public class HeartEngine {
     /* Returns the current player of the current trick.
      * @return  - A Player object who is currently playing a card to make up a trick */
     public Player GetCurrPlayer() {
-        return null;
+        return this.currPlayer;
     }
 
 
@@ -268,14 +269,16 @@ public class HeartEngine {
     /* Replaces current player with a new player.
      * @param newCurrPlayer - A new Player object who will be playing a card to make up a trick */
     public void SetCurrPlayer(Player newCurrPlayer) {
-        
+        this.currPlayer = newCurrPlayer; // Updates the currPlayer with a new one
     }
 
 
     // By Haruki
     /* Switches the current player. */
     public void SwitchPlayer() {
-
+        // Switches the current Player to the Player with next playerId
+        // Player ID of current player in 4-player game: 0 -> 1 -> 2 -> 3 -> 0, and the cycle continues
+        this.SetCurrPlayer(this.allPlayers[(this.GetCurrPlayer().GetPlayerId() + 1) % this.numPlayers]);
     }
 
 
@@ -283,15 +286,61 @@ public class HeartEngine {
     /* Returns an array of Card objects that has been discarded by Players, which make up a trick.
      * @return  - An array of Card objects that make up a trick. */
     public Card[] GetCardsThrown() {
-        return null;
+        return this.cardsThrown;
     }
 
 
     // By Haruki
-    /* Returns an array that contains player ids of the winner(s).
-     * @return  - An array of player ids of the winner(s) */
+    /* Returns an array that contains player id(s) of the winner(s).
+     * There can be multiple winners, such as when multiple players 
+     * have the same and lowest points together when the game ends.
+     * @return  - An array of player id(s) of the winner(s).
+     *            An empty array is returned to signify no one has won yet
+     *            There is no winner when:
+     *            - No one has exceeded the losingPoint, and thus the game still continues. */
     public int[] CheckWinner() {
-        return null;
+        // Keeps track of the greatest and lowest points among the Players
+        int maxPoint = this.allPlayers[0].GetPlayerPoints();
+        int minPoint = this.allPlayers[0].GetPlayerPoints();
+        int numPlayersWithMinPoint = 1; // Keeps track of the number of Players with same minimum point
+
+        // Iterates through every Player (except 0th Player) 
+        for (int playerId = 1; playerId < this.allPlayers.length; playerId++) {
+            if (this.allPlayers[playerId].GetPlayerPoints() > maxPoint) {
+                // If current maxPoint is smaller than the Player's point of the current iteration,
+                // then update the maxPoint
+                maxPoint = this.allPlayers[playerId].GetPlayerPoints();
+            } else if (this.allPlayers[playerId].GetPlayerPoints() < minPoint) {
+                // If current minPoint is larger than the Player's point of the current iteration,
+                // then update the minPoint
+                minPoint = this.allPlayers[playerId].GetPlayerPoints();
+                // Also reset the numPlayersWithMinPoint to indicate there's currently only one player
+                // with the same minimum point
+                numPlayersWithMinPoint = 1;
+            } else if (this.allPlayers[playerId].GetPlayerPoints() == minPoint) {
+                // If the minPoint and the Player's point of the current iteration are the same,
+                // increment the numPlayersWithMinPoint to indicate that there are multiple 
+                // people with the same minimum point.
+                numPlayersWithMinPoint++;
+            }
+        }
+
+        // An array of integer storing playerIds of potential winners
+        int[] winnerIds = new int[numPlayersWithMinPoint];
+        int pos = 0; // Current position of winnerIds
+
+        if (maxPoint >= this.losingPoint) {
+            for (int playerId = 0; playerId < this.allPlayers.length; playerId++) {
+                if (this.allPlayers[playerId].GetPlayerPoints() == minPoint) {
+                    winnerIds[pos] = playerId;
+                }
+            }
+            // Returns an array consisting of ids of winners
+            return winnerIds;
+        } else {
+            // Returns an empty array to signify no one has won yet
+            return new int[0];
+        }
     }
 
 
