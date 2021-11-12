@@ -58,19 +58,20 @@ public class HeartEngine {
         for (int i = 0; i < 4; i++){
             // Loops through the 13 cards
             for (int j = 0; j < 13; j++){
-                // Checks the current suit and calls the appropriate constructor and passes the rank (j+2 since the ranks start from 2).
+                // Checks the current suit, calls the appropriate constructor, and passes the 13 ranks one by one (j+2 since the ranks start from 2).
+                // Each card object is passed to the standard deck Card array.
                 switch (i){
                     case Card.CLUB:
-                        new Club(j+2);
+                        standardDeck[j] = new Club(j+2);
                         break;
                     case Card.DIAMOND:
-                        new Diamond(j+2);
+                        standardDeck[j] = new Diamond(j+2);
                         break;
                     case Card.HEART:
-                        new Heart(j+2);
+                        standardDeck[j] = new Heart(j+2);
                         break;
                     case Card.SPADE:
-                        new Spade(j+2);
+                        standardDeck[j] = new Spade(j+2);
                         break;
                 }
             }
