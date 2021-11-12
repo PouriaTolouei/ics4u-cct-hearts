@@ -28,6 +28,17 @@ public abstract class Card {
         return this.rank;
     }
 
+    // By Haruki & Pouria
+    /* Indicates whether this Card has the same suit and rank as the card that is compared against.
+     * @param card  - The Card to be checked against */
+    public boolean equals(Card card) {
+        // Returns true if their rank and suit are the same, false otherwise. 
+        if (this.GetRank() == card.GetRank() && this.GetSuit() == card.GetSuit()) {
+            return true;
+        }
+        return false;
+    }
+
     public abstract int GetPoint();
 
     public abstract int GetSuit();
