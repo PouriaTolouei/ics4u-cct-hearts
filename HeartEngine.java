@@ -4,7 +4,7 @@ public class HeartEngine {
     private Card[] cardsThrown;
     private Player[] allPlayers;
     private int numPlayers;
-    private int numRoundHand;
+    private int numHandRound;
     private boolean isHeartBroken;
     private Player currPlayer;
     private int losingPoint;
@@ -35,7 +35,7 @@ public class HeartEngine {
         this.cardsThrown = new Card[numPlayers]; // Cards thrown each round is one per player.
         this.allPlayers = new Player[this.numPlayers]; // As many array blocks as the number of players.
         this.numPlayers = numPlayers; // number of players parameter is assigned.
-        this.numRoundHand = 1; // Rounds start from 1.
+        this.numHandRound = 1; // Rounds start from 1.
         this.isHeartBroken = false; // Defult value is assigned.
         this.currPlayer = allPlayers[0]; // Starts with player 0 (the first player).
         this.losingPoint = losingPoint; // losing point paramter is assigned.
