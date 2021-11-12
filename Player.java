@@ -65,10 +65,33 @@ public class Player {
     // By Haruki
     /* It parses through the player's cards, and return an array of Card objects 
      * that only contain the suit specified.
-     * @param suit  - The suit of interest
-     * @return      - An array of Card objects that only contain the cards of specified suit */
+     * @param suit  - The suit of interest represented by an integer. (Refer to Card class's global variables)
+     * @return      - An array of Card objects that only contain the Cards of specified suit */
     private Card[] sortBySuit(int suit) {
-        return null;
+        // Instantiate "untrimmed" array of Card object that can store up to 13 Cards
+        // which is the maximum number of Cards in each suit.
+        Card[] cardsOfSuitUntrimmed = new Card[13];
+
+        // currIndex plays a role in placing a matching Card from playerCards to the correct pos of cardsOfSuitUntrimmed
+        // currIndex also represents the number of Cards of specified suit
+        int currIndex = 0;
+
+        // Iterates through every Card of the playerCards, and add a Card with matching suit to cardsOfSuitUntrimmed
+        for (int i = 0; i < this.playerCards.length; i++) {
+            if (this.playerCards[i].GetSuit() == suit) {
+                cardsOfSuitUntrimmed[currIndex] = this.playerCards[i];
+                currIndex++; // Increments so that the next matching Card will be added to the correct position
+            }
+        }
+
+        // Instantiate the "trimmed" (free of null) array of Card object
+        Card[] cardsOfSuitTrimmed = new Card[currIndex];
+        // Copies all Cards from the "untrimmed" array to "trimmed" array
+        for (int j = 0; j < cardsOfSuitUntrimmed.length; j++) {
+            cardsOfSuitTrimmed[j] = cardsOfSuitUntrimmed[j];
+        }
+        // Returns the trimmed version of the array that only consists of Card objects of specified suit
+        return cardsOfSuitTrimmed;
     }
 
 
