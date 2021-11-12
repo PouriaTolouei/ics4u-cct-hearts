@@ -10,14 +10,16 @@ public class Player {
     // Constructor 
     // By Pouria
     /* The constructor of the Player class, which represents the person who plays the game.
-     * This instantiates all the instance variables except for playerCards and playerTricks arrays 
-     * Since they vary depending on the gameplay and number of players in the game (so they get instantiated in HeartEngine).
+     * This instantiates all the instance variables, but for playerCards and playerTricks arrays they're set to be empty arrays, 
+     * Since they vary depending on the gameplay and number of players in the game (so they get instantiated in HeartEngine methods).
      * @param playerName    - The name of the player.
      * @param playerId      - A unique id of the player. */
     public Player(String playerName, int playerId) {
+        this.playerCards = new Card[0]; // Empty array.
+        this.playerTricks = new Card[0]; // Empty array.
+        this.playerPoints = 0; // Default value is assigned.
         this.playerName = playerName; // Name paramter is assigned.
         this.playerId = playerId; // ID Paramter is assigned.
-        this.playerPoints = 0; // Default value is assigned.
         this.cardThrown = null; // Default value is assigned.
     }
 

@@ -4,9 +4,8 @@ public class HeartEngine {
     private Card[] cardsThrown;
     private Player[] allPlayers;
     private int numPlayers;
-    private int numRounds;
+    private int numRoundHand;
     private boolean isHeartBroken;
-    private boolean isShootingMoon;
     private Player currPlayer;
     private int losingPoint;
     private int leadSuit;
@@ -14,23 +13,70 @@ public class HeartEngine {
     // Global variable representing the default losing point
     public static final int DEFAULT_LOSING_POINT = 50;
 
+    // Global variable representing the point assigned to other players in the event of "shot the moon"
+    public static final int SHOT_THE_MOON_POINT = 26;
+
     // Global variables representing error codes
+    public static final int SHOT_THE_MOON       =  2;
     public static final int SUCCESS             =  1;
     public static final int INVALID_CARD        = -1;
     public static final int HEART_NOT_BROKEN    = -2;
-    public static final int SHOT_THE_MOON       = -3;
 
     // Constructor
+    // By Pouria
     /* The constructor for the class HeartEngine, which takes care of the backend processes 
+     * This instantiates all the instance variables and creates the standard deck of cards.
      * of the game of Hearts.
      * @param numPlayers    - The number of players that play the game.
      * @param playerNames   - An array of players' names 
      * @param losingPoint   - The game ends after a player achieves this point */
     public HeartEngine(int numPlayers, String[] playerNames, int losingPoint) {
+        this.standardDeck = new Card[52]; // 52 array blocks for the stadard deck of cards.
+        this.cardsThrown = new Card[numPlayers]; // Cards thrown each round is one per player.
+        this.allPlayers = new Player[this.numPlayers]; // As many array blocks as the number of players.
+        this.numPlayers = numPlayers; // number of players parameter is assigned.
+        this.numRoundHand = 1; // Rounds start from 1.
+        this.isHeartBroken = false; // Defult value is assigned.
+        this.currPlayer = allPlayers[0]; // Starts with player 0 (the first player).
+        this.losingPoint = losingPoint; // losing point paramter is assigned.
+        this.leadSuit = Card.CLUB; // Defult value is assigned.
+        
+        // Loops through all the players
+        for (int i = 0; i < this.numPlayers; i++){
+            allPlayers[i] = new Player(playerNames[i], i); // Assigns a name to each from the player names array parameter.
+        }
 
+        createStandardDeck(); // Creates a standard deck of card   
     }
 
     // == Private Methods ===
+    
+    // By Pouria
+    /* Creates a standard deck of cards (52 cards with 13 cards from each of the 4 suits)*/
+    private void createStandardDeck() {
+        // Loops through the 4 suits
+        for (int i = 0; i < 4; i++){
+            // Loops through the 13 cards
+            for (int j = 0; j < 13; j++){
+                // Checks the current suit and calls the appropriate constructor and passes the rank (j+2 since the ranks start from 2).
+                switch (i){
+                    case Card.CLUB:
+                        new Club(j+2);
+                        break;
+                    case Card.DIAMOND:
+                        new Diamond(j+2);
+                        break;
+                    case Card.HEART:
+                        new Heart(j+2);
+                        break;
+                    case Card.SPADE:
+                        new Spade(j+2);
+                        break;
+                }
+            }
+        }
+    }
+    
     // By Haruki
     /* Deals appropriate number of Cards (refer to DealPlayerCards() Java Doc) to all Players, 
      * while ensuring specific Cards are removed (also refer to DealPlayerCards() Java Doc).
@@ -114,17 +160,49 @@ public class HeartEngine {
 
     // === Public Methods ===
 
-    /* Calculates and updates the points earned by each Player according to their tricks.
-     * @return  - The point earned by a Player based on their trick. */
-    // REMOVE THIS COMMENT: Shouldn't this either be void because it only 
-    //                      manipulates the Players' points and return nothing,
-    //                      OR accept a parameter like (Player currPlayer) and return 
-    //                      a point earned by that player.
+    // By Pouria
+    /* Calculates and updates the points earned by each Player according to their tricks by the end of each hand.
+     * @return  - Returns 1 if normal calculations are applied. 
+     *          - Returns 2 if 'shot the moon' calculations are applied (when a player reaches 26 points). */
+
     public int CalcPoint() {
-        return 0;
+        int points = 0; // Keeps track of the point being added to each player by the end of each hand.
+        int index = 0; // Keeps track of a special index in the event of "shot the moon".
+
+        // Loops through all the players
+        for (int i = 0; i < allPlayers.length; i++){
+            Card[] playerTricks = allPlayers[i].GetPlayerTricks(); // Stores the player's trick in a new array for easier accessing
+            
+            // Loops through the current player's tricks
+            for (int j = 0; j < playerTricks.length; j++){
+                points += playerTricks[i].GetPoint(); // Adds the point of each card in the tricks
+            }
+
+            // If the point of that player adds up to 26 for that round, they have "shot the moon",
+            // Meaning that player has managed to collect all the heart cards and the queen of spade.
+            // So that player gets 0 points (no change) and all the other players get 26 points.
+            if (points == SHOT_THE_MOON_POINT){
+
+                // Loops through all the other players except the current player ()
+                for (int j = i + 1; j < allPlayers.length - 1 + i; j++){
+                    // When i exceeds array length, index uses remainder to reset it to 0 and count from there again.
+                    // This is done until the index of the player who initiated 'shot the moon' is reached after one loop (length - 1 + i)/
+                    index = j % allPlayers.length; 
+                    // The points of the player who 'shot the moon' doesn't change and all other players get 26 points.
+                    allPlayers[index].SetPlayerPoints(allPlayers[index].GetPlayerPoints() + SHOT_THE_MOON_POINT); 
+                }
+                return SHOT_THE_MOON; // Shot the moon value is returned (To be used to display a special message)
+            }
+            
+            // Otherwise, it's normal point calculation, meaning points of the cards in each player's tricks is added to each player's points
+            else{
+                allPlayers[i].SetPlayerPoints(allPlayers[index].GetPlayerPoints() + points);
+            }
+        }
+        return SUCCESS; // Returns success value, indicating normal calculation.
     }
 
-
+    // By Pouria
     /* The Game of Hearts require players to pass 3 cards from their initial hand to other players every hand (time takes to play all cards).
      * The cards from one player is passed to another player following a specific rule
      * based on the number of players and the number of hands (Passing rotation).
@@ -132,33 +210,34 @@ public class HeartEngine {
      *      - 3 players: Pass the cards to the person on the left on #1 hand, then right on #2 hand, and this continues.
      *      - 4 players: Pass the cards to the person on the left on #1 hand, right on #2 hand, 
      *                   across the player on #3 hand, and no passing on #4 hand. This continues.
-     *      - 5 players: Pass the cards to the person on the left on #1 hand, then right on #2 hand, and this continues. */
-    public void PassHand() {
+     *      - 5 players: Pass the cards to the person on the left on #1 hand, then right on #2 hand, and this continues. 
+     * @param passCards  - A 2D array of Cards which includes the three cards that are to be passed from each player. */
+    public void PassCards(Card[][] passCards) {
 
     }
 
-
+    // By Pouria
     /* Indicates whether the Heart has been broken.
      * @return  - true when the Heart has been broken, false otherwise. */
     public boolean GetIsHeartBroken() {
         return false;
     }
 
-
+    // By Pouria
     /* Adjusts the boolean value of the isHeartBroken variable, which represents if the Heart has been broken yet.
      * @param isHeartBroken - The boolean status of whether the heart has been broken yet in the game */
     public void SetIsHeartBroken(boolean isHeartBroken) {
         
     }
 
-
+    // By Pouria
     /* Returns an array consisting of all Player objects.
      * @return  - An array of all Player objects. */
     public Player[] GetAllPlayers() {
         return null;
     }
 
-
+    // By Pouria
     /* The trick will be given to a player who played a card with highest rank, 
      * and returns the player id who collected the trick.
      * @return  - The player id of a Player who collected the trick.
@@ -167,7 +246,7 @@ public class HeartEngine {
         return 0;
     }
 
-
+    // By Pouria
     /* Converts a card expressed in String to a Card object.
      * @param card  - String representation of a card. 
      *                The suit is represented by C (clubs), D (diamonds), H (hearts), and S (spades).
