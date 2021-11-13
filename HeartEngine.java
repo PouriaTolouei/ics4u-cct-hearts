@@ -59,19 +59,19 @@ public class HeartEngine {
             // Loops through the 13 cards
             for (int j = 0; j < 13; j++){
                 // Checks the current suit, calls the appropriate constructor, and passes the 13 ranks one by one (j+2 since the ranks start from 2).
-                // Each card object is passed to the standard deck Card array.
+                // Each card object is passed to a block in the standard deck Card array (j+(13*i), so that after each suit, it moves on to the next 13 cards).
                 switch (i){
                     case Card.CLUB:
-                        standardDeck[j] = new Club(j+2);
+                        standardDeck[j+(13*i)] = new Club(j+2);
                         break;
                     case Card.DIAMOND:
-                        standardDeck[j] = new Diamond(j+2);
+                        standardDeck[j+(13*i)] = new Diamond(j+2);
                         break;
                     case Card.HEART:
-                        standardDeck[j] = new Heart(j+2);
+                        standardDeck[j+(13*i)] = new Heart(j+2);
                         break;
                     case Card.SPADE:
-                        standardDeck[j] = new Spade(j+2);
+                        standardDeck[j+(13*i)] = new Spade(j+2);
                         break;
                 }
             }
@@ -184,9 +184,9 @@ public class HeartEngine {
             if (points == SHOT_THE_MOON_POINT){
 
                 // Loops through all the other players except the current player ()
-                for (int j = i + 1; j < allPlayers.length - 1 + i; j++){
+                for (int j = i + 1; j < allPlayers.length + i; j++){
                     // When i exceeds array length, index uses remainder to reset it to 0 and count from there again.
-                    // This is done until the index of the player who initiated 'shot the moon' is reached after one loop (length - 1 + i)/
+                    // This is done until the index of the player who initiated 'shot the moon' is reached after one loop (length + i)/
                     index = j % allPlayers.length; 
                     // The points of the player who 'shot the moon' doesn't change and all other players get 26 points.
                     allPlayers[index].SetPlayerPoints(allPlayers[index].GetPlayerPoints() + SHOT_THE_MOON_POINT); 
@@ -205,7 +205,7 @@ public class HeartEngine {
     // By Pouria
     /* The Game of Hearts require players to pass 3 cards from their initial hand to other players every hand (time takes to play all cards).
      * The cards from one player is passed to another player following a specific rule
-     * based on the number of players and the number of hands (Passing rotation).
+     * based on the number of players and the number of hand round(Passing rotation).
      * For example, when there are:
      *      - 3 players: Pass the cards to the person on the left on #1 hand, then right on #2 hand, and this continues.
      *      - 4 players: Pass the cards to the person on the left on #1 hand, right on #2 hand, 
