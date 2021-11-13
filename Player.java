@@ -27,25 +27,6 @@ public class Player {
     // === Private Helper Methods ===
     
     // By Pouria
-    /* Removes a specified card from the player's hand.
-     * @param card  - The card to be removed from the player's hand */
-    private void removePlayerCard(Card card) {
-        Card[] temp = new Card[this.playerCards.length - 1]; // Creates a temporay array with one less card.
-        int counter = 0; // Keeps track of the position in the temporary array.
-
-        // Loops through the player's hand (Card array).
-        for (int i = 0; i < this.playerCards.length; i++){
-            // Checks both the rank and suit to make sure that it doesn't match with the card that needs to be removed.
-            if (this.playerCards[i].equals(card)){
-                temp[counter] = playerCards[i]; // Copies the card from the player's hand to the temporary array as long as it's not the card that needs to be removed.
-                counter++; // Increments the position in the temporary array when a value has been sucesfully copied to the temporary array.
-            }
-            // Otherwise if it's the card that needs to be removed, it's simply skipped and not added to the temporary array.
-        }
-        this.playerCards = temp; // The reference of the temporary array is assigned back to player's hand, so now it doesn't have the removed card.
-    }
-
-    // By Pouria
     /* Sorts a 1D array of Card objects by their rank in asceding order meaning from 2 (lowest) to Ace (highest).
      * @param cards  - The 1D array of Card objects to be sorted by rank. */
     private void sortByRank(Card[] cards){
@@ -130,6 +111,24 @@ public class Player {
         this.playerCards = cards; // Passes the refernce of a new array to represent the player's hand.
     }
 
+    // By Pouria
+    /* Removes a specified card from the player's hand.
+     * @param card  - The card to be removed from the player's hand */
+    public void RemovePlayerCard(Card card) {
+        Card[] temp = new Card[this.playerCards.length - 1]; // Creates a temporay array with one less card.
+        int counter = 0; // Keeps track of the position in the temporary array.
+
+        // Loops through the player's hand (Card array).
+        for (int i = 0; i < this.playerCards.length; i++){
+            // Checks both the rank and suit to make sure that it doesn't match with the card that needs to be removed.
+            if (this.playerCards[i].equals(card)){
+                temp[counter] = playerCards[i]; // Copies the card from the player's hand to the temporary array as long as it's not the card that needs to be removed.
+                counter++; // Increments the position in the temporary array when a value has been sucesfully copied to the temporary array.
+            }
+            // Otherwise if it's the card that needs to be removed, it's simply skipped and not added to the temporary array.
+        }
+        this.playerCards = temp; // The reference of the temporary array is assigned back to player's hand, so now it doesn't have the removed card.
+    }
 
     // By Pouria
     /* Indicates whether the player has a Card of a specified suit.
@@ -139,7 +138,7 @@ public class Player {
     public boolean HasSuit(int suit) {
         // Loops through the player's hand (Card array).
         for (int i = 0; i < this.playerCards.length; i++){
-            // Checks to see if any card has the specified suit and return true and end the loop if so.
+            // Checks to see if any card has the specified suit and returns true and ends the loop if so.
             if(this.playerCards[i].GetSuit() == suit){
                 return true;
             }
@@ -148,6 +147,22 @@ public class Player {
         return false;
     }
 
+    // By Pouria
+    /* Indicates whether the player has a specified Card in their hand.
+     * @param card  - The specified Card object. 
+     * @return      - Returns true if the player has the specified card.
+     *              - Returns false if the player doesn't have the specified card or the card is null. */
+    public boolean HasCard(Card card) {
+        // Loops through the player's hand (Card array).
+        for (int i = 0; i < this.playerCards.length; i++){
+            // Checks to see if any card matches the specified card and it's not null, then returns true and ends the loop if so.
+            if(card != null && this.playerCards[i].equals(card)){
+                return true;
+            }
+        }
+        // Otherwise the specified card was not found or it was null.
+        return false;
+    }
 
     // By Pouria
     /* Updates the Card that the player throws each trick and removes that from the player's cards(hand).
@@ -155,17 +170,16 @@ public class Player {
      * @ return     - Returns 1 if thrown card was set succesfully.
      *              - Returns -1 if the player doesn't have that card. */
     public int SetCardThrown(Card card) {
-        // Loops through the player's hand (Card array).
-        for (int i = 0; i < this.playerCards.length; i++){
-            // Makes sure that the player has the Card object that they want to throw (checks for both matching suit and rank).
-            if (this.playerCards[i].equals(card)){ 
-                this.cardThrown = card; // Sets the new Card object that the player wants to throw/play.
-                removePlayerCard(card); // Removes the Card object that is about to be thrown from player's cards.
-                return HeartEngine.SUCCESS; // Card thrown has been succesfully set.
-            }
+        // Makes sure that the player has the Card object that they want to throw.
+        if (HasCard(card)){ 
+            this.cardThrown = card; // Sets the new Card object that the player wants to throw/play.
+            RemovePlayerCard(card); // Removes the Card object that is about to be thrown from player's cards.
+            return HeartEngine.SUCCESS; // Card thrown has been succesfully set.
         }
         // Otherwise the card was not found, so error value is returned.
-        return HeartEngine.INVALID_CARD;
+        else{
+            return HeartEngine.INVALID_CARD;
+        }
     }
 
 
