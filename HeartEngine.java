@@ -78,6 +78,51 @@ public class HeartEngine {
         }
     }
     
+    // By Pouria
+    /* Passes the 3 cards among players in the given direction.
+     * For example:
+     * - cardsPasser(1, 0, passCards) would pass the 3 cards from each player to the person on the left.
+     * - cardsPasser(0, 1 passCards) would pass the 3 cards from each player to the person on the right.
+     * - cardsPasser(2, 0 passCards) or (0, 2 passCards) would pass the 3 cards from each player to the person across (for even number of players).
+     * @param leftPass   - How many positions to the left should the 3 cards be passed.
+     * @param rightPass  - How many positions to the right should the 3 cards be passed.
+     * @param passCard   - A 2D array of Cards which includes all the sets of three cards that are to be passed from each player. */
+    private void cardsPasser(int leftPass, int rightPass, Card[][] passCards){
+        // Loops through all the players.
+        for (int i = 0; i < numPlayers; i++){
+            Card[] playerCards = allPlayers[i].GetPlayerCards(); // Passes the Card array of the current player into a new array for easier access.
+            
+            // For this method, either leftPass or RightPass will be 0 (only of them has a value at a time): 
+            // For passing to the left, the reciever is moved up by some positions, so that the 3 cards get passed up by some positions (clockwise)
+            // For passing to the right, the sender is moved up by some positions, so  that the 3 cards get passed down by some positions (counter-clockwise).
+            // ** Remainder is used for the index so that position of [array length] would return back to player 0.
+            allPlayers[(i + leftPass) % numPlayers].SetPlayerCards(AddCardsToArray(playerCards, passCards[(i + rightPass) % numPlayers]));
+
+            // To complete the passing, it loops through the 3 cards to remove them from the Card array of the sender
+            for (int j = 0; j < passCards[i].length; j++){
+                allPlayers[i + rightPass].RemovePlayerCard(passCards[i][j]);
+            }
+        }
+    }
+    
+    // By Pouria
+    /* Finds the first player in the order of the array who threw a lead suit card.
+     * @return   - Returns the ID of that player who has the first lead suit card.*/
+    private int findFirstThrewLeadSuit(){
+        int firstIndex = 0; // Dummy value (Stores the id of the first player who has a lead suit card)
+        
+        // Loops through all of the players
+        for (int i = 0; i < numPlayers; i++){
+            Card cardThrown = allPlayers[i].GetCardThrown(); // Stores the current player's thrown card into a new variable for easier access.
+            // Finds the first player who threw a card with a lead suit
+            // And stores the id of that player 
+            if (cardThrown.GetSuit() == leadSuit){
+                firstIndex = i;
+            }
+        }
+        return firstIndex; // Return the id of that player.
+    }
+
     // By Haruki
     /* Deals appropriate number of Cards (refer to DealPlayerCards() Java Doc) to all Players, 
      * while ensuring specific Cards are removed (also refer to DealPlayerCards() Java Doc).
@@ -170,7 +215,7 @@ public class HeartEngine {
         int index = 0; // Keeps track of a special index in the event of "shot the moon".
 
         // Loops through all the players
-        for (int i = 0; i < allPlayers.length; i++){
+        for (int i = 0; i < numPlayers; i++){
             Card[] playerTricks = allPlayers[i].GetPlayerTricks(); // Stores the player's trick in a new array for easier accessing
             
             // Loops through the current player's tricks
@@ -184,10 +229,10 @@ public class HeartEngine {
             if (points == SHOT_THE_MOON_POINT){
 
                 // Loops through all the other players except the current player ()
-                for (int j = i + 1; j < allPlayers.length + i; j++){
+                for (int j = i + 1; j < numPlayers + i; j++){
                     // When i exceeds array length, index uses remainder to reset it to 0 and count from there again.
-                    // This is done until the index of the player who initiated 'shot the moon' is reached after one loop (length + i)/
-                    index = j % allPlayers.length; 
+                    // This is done until the index of the player who initiated 'shot the moon' is reached after one loop (numPlayers + i)/
+                    index = j % numPlayers; 
                     // The points of the player who 'shot the moon' doesn't change and all other players get 26 points.
                     allPlayers[index].SetPlayerPoints(allPlayers[index].GetPlayerPoints() + SHOT_THE_MOON_POINT); 
                 }
@@ -211,39 +256,95 @@ public class HeartEngine {
      *      - 4 players: Pass the cards to the person on the left on #1 hand, right on #2 hand, 
      *                   across the player on #3 hand, and no passing on #4 hand. This continues.
      *      - 5 players: Pass the cards to the person on the left on #1 hand, then right on #2 hand, and this continues. 
-     * @param passCards  - A 2D array of Cards which includes the three cards that are to be passed from each player. */
+     * @param passCards  - A 2D array of Cards which includes all the sets of three cards that are to be passed from each player. 
+     *                   - For example passCards[0] would be an array of the three cards that player 0 is passing. */
     public void PassCards(Card[][] passCards) {
-
+        // Checks to see how many players are in the game
+        switch (numPlayers){
+            // For 3 players and 5 players, the passing rule is essentially the same
+            case 3:
+            case 5:
+                // Checks whether it's the #1 hand scenario (0) or #2 hand scenario (1) 
+                // And uses remainder to simplify to these two scenarios when it goes beyond #2.
+                switch ((numHandRound - 1) % 2){
+                    case 0:
+                        cardsPasser(1, 0, passCards); // Each player passes their 3 cards to the person on the left.
+                        break;
+                    case 1:
+                        cardsPasser(0, 1, passCards); // Each player passes their 3 cards to the person on the right.
+                        break; 
+                }
+                break;
+            case 4:
+                 // Checks whether it's the #1 hand scenario (0), #2 hand scenario (1), #3 hand scenario (2), or #4 hand scenario (nothing happens)
+                 // And uses remainder to simplify to these four scenarios when it goes beyond #4.
+                switch ((numHandRound - 1) % 4){
+                    case 0:
+                        cardsPasser(1, 0, passCards); // Each player passes their 3 cards to the person on the left.
+                        break;
+                    case 1:
+                        cardsPasser(0, 1, passCards); // Each player passes their 3 cards to the person on the right.
+                        break;
+                    case 2:
+                        cardsPasser(0, 2, passCards); // Each player passes their 3 cards to the person across.
+                        break;
+                }
+                break;
+        }
     }
 
     // By Pouria
     /* Indicates whether the Heart has been broken.
      * @return  - true when the Heart has been broken, false otherwise. */
     public boolean GetIsHeartBroken() {
-        return false;
+        return this.isHeartBroken; // Returns the latest boolean status of whether heart is broken or not.
     }
 
     // By Pouria
     /* Adjusts the boolean value of the isHeartBroken variable, which represents if the Heart has been broken yet.
      * @param isHeartBroken - The boolean status of whether the heart has been broken yet in the game */
     public void SetIsHeartBroken(boolean isHeartBroken) {
-        
+        this.isHeartBroken = isHeartBroken; // Updates the boolean status of whether heart is broken or not.
     }
 
     // By Pouria
     /* Returns an array consisting of all Player objects.
      * @return  - An array of all Player objects. */
     public Player[] GetAllPlayers() {
-        return null;
+        return this.allPlayers; // Returns the array of all player objects.
     }
 
     // By Pouria
-    /* The trick will be given to a player who played a card with highest rank, 
+    /* The trick will be given to a player who played a lead suit card with the highest rank, 
      * and returns the player id who collected the trick.
      * @return  - The player id of a Player who collected the trick.
      *            This player leads the next hand. */
     public int CollectTrick() {
-        return 0;
+        // Starts the comparison by setting the current highest rank and index, 
+        // Based on the first player in the array who threw a lead suit card.
+        int currMaxIndex = findFirstThrewLeadSuit();; // It keeps track of the id of the player who threw the highest lead suit rank.
+        Card cardThrown = allPlayers[currMaxIndex].GetCardThrown(); // Stores the player's thrown card into a new variable for easier access.
+        int currMaxRank = cardThrown.GetRank(); // It keeps track of the highest lead suit rank thrown.
+
+        // Loops through the players but only starting after the first player in the array who threw a lead suit card
+        // Since the other players before who did not throw a lead suit card can never collect the trick.
+        for (int i = currMaxIndex + 1; i < numPlayers; i++){
+            
+            // Checks to see if the current player threw a lead suit because without it, even the highest rank wouldn't collect the trick.
+            if (cardThrown.GetSuit() == leadSuit){
+                // Checks to see if the current player's lead suit card has a higher rank than the current highest rank.
+                // If so, it becomes the current highest rank and that player would be the one closest to collecting the trick.
+                if (cardThrown.GetRank() > currMaxRank){
+                    currMaxRank = cardThrown.GetRank();
+                    currMaxIndex = i;
+                }
+            }
+        }
+
+        // The player who had the highest ranking lead suit card collects the trick.
+        allPlayers[currMaxIndex].SetPlayerTricks(AddCardsToArray(allPlayers[currMaxIndex].GetPlayerTricks(), cardsThrown));
+
+        return currMaxIndex; // The id of the player who had the highest ranking lead suit card will be returned.
     }
 
     // By Pouria
@@ -255,24 +356,85 @@ public class HeartEngine {
      * @return      - A Card object that corresponds to the specified String representation. 
      *                Returns null if there is no such Card. */
     public Card ConvertToCard(String card) {
-        return null;
+        int rank; // Stores the rank later on for instantiating 
+        
+        String[] cardComponents = card.split("-"); // Splits the String card by "-" to get the suit and the rank
+        
+        // Rank checking 
+
+        // Checks whether it's a valid rank letter (J, Q, K, and A) and assigns the correct integer value.
+        if(cardComponents[1].equals("J")){
+            rank = Card.CARD_JACK;
+        }
+        else if (cardComponents[1].equals("Q")){
+            rank = Card.CARD_QUEEN;
+        }
+        else if (cardComponents[1].equals("K")){
+            rank = Card.CARD_KING;
+        }
+        else if (cardComponents[1].equals("A")){
+            rank = Card.CARD_ACE;
+        }
+        // Checks whether it's a rank number between 2 and 10 (inclusive) and then converts it to be stored as integer.
+        else if (Integer.parseInt(cardComponents[1]) >= 2 && Integer.parseInt(cardComponents[1]) <= 10){
+            rank = Integer.parseInt(cardComponents[1]);
+        }
+        // Otherwise it is not a valid rank, so null is returned as it cannot be used to create a valid Card object.
+        else{
+            return null;
+        }
+
+        // Suit checking
+
+        // Checks whether it's a valid Suit letter (C, D, H, and S) and calls the appropriate constructor to pass in the rank parameter.
+        if(cardComponents[0].equals("C")){
+            return new Club(rank);
+        }
+        else if (cardComponents[0].equals("D")){
+            return new Diamond(rank);
+        }
+        else if (cardComponents[0].equals("H")){
+            return new Heart(rank);
+        }
+        else if (cardComponents[0].equals("S")){
+            return new Spade(rank);
+        }
+        // Otherwise it is not a valid suit, so null is returned as it cannot be used to create a valid Card object.
+        else{
+            return null;
+        }
     }
 
     // By Pouria
-    /* 
-     * */
+    /* Obtains the lead suit for the current trick.
+     * @return  - Returns 0 if it is Club
+     *          - Returns 1 if it is Diamond
+     *          - Returns 2 if it is Heart   
+     *          - Returns 3 if it is Spade */
     public int GetLeadSuit() {
-        return 0;
+        return this.leadSuit; // Returns the integer representation of the lead suit.
     }
 
-    
+    // By Pouria 
+    /* Obtains the current hand round number.
+     * @return - Returns the hand round number. */
+    public int GetNumHandRound() {
+        return this.numHandRound; // Return the integer which represents the hand round number.
+    }
+
     // By Haruki
     /* Updates the leading suit of the current trick to the specified one.
-     * @param suitId    - The numerical id of a suit, which is declared in Card class. */
+     * @param suitId       - The numerical id of a suit, which is declared in Card class. */
     public void SetLeadSuit(int suitId) {
         this.leadSuit = suitId;
     }
 
+    // By Haruki
+    /* Updates the hand round number to the specified one (when players play all the cards in their hands).
+     * @oaram numHandRound  -  The integer that represents the hand round number. */
+    public void SetNumHandRound(int numHandRound) {
+
+    }
 
     // By Haruki
     /* Shuffles the standard deck of card in a random order. */
