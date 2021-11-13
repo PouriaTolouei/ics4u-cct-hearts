@@ -112,8 +112,7 @@ public class HeartEngine {
 
             // LOOP #2
             // Parses through every Card inside standardDeck and check each of them against the illegalCards. 
-            /* This loop will break out when i is beyond the range of standardDeck.length
-             * or when playerCardsIndex is beyond the range of handSize.
+            /* This loop will break out when i is beyond the range of standardDeck.length or when playerCardsIndex is beyond the range of handSize.
              * This ensures each Player receives an appropriate number of Cards */
             for (int i = startIndex; i < this.standardDeck.length && playerCardsIndex < handSize; i++) {
                 // If the Card at the i-th position in standardDeck is not illegal, add that Card to newPlayerCards
@@ -386,15 +385,12 @@ public class HeartEngine {
         // Iterates through every Player (except 0th Player) 
         for (int playerId = 1; playerId < this.allPlayers.length; playerId++) {
             if (this.allPlayers[playerId].GetPlayerPoints() > maxPoint) {
-                // If current maxPoint is smaller than the Player's point of the current iteration,
-                // then update the maxPoint
+                // If current maxPoint is smaller than the Player's point of the current iteration, then update the maxPoint
                 maxPoint = this.allPlayers[playerId].GetPlayerPoints();
             } else if (this.allPlayers[playerId].GetPlayerPoints() < minPoint) {
-                // If current minPoint is larger than the Player's point of the current iteration,
-                // then update the minPoint
+                // If current minPoint is larger than the Player's point of the current iteration, then update the minPoint
                 minPoint = this.allPlayers[playerId].GetPlayerPoints();
-                // Also reset the numPlayersWithMinPoint to indicate there's currently only one player
-                // with the same minimum point
+                // Also reset the numPlayersWithMinPoint to indicate there's currently only one player with the same minimum point
                 numPlayersWithMinPoint = 1;
             } else if (this.allPlayers[playerId].GetPlayerPoints() == minPoint) {
                 // If the minPoint and the Player's point of the current iteration are the same,
@@ -408,10 +404,14 @@ public class HeartEngine {
         int[] winnerIds = new int[numPlayersWithMinPoint];
         int pos = 0; // Current position of winnerIds
 
+        // If the max point is greater than or equal to the losingPoint 
+        // that indicates the game has ended and there needs to be winner(s)
         if (maxPoint >= this.losingPoint) {
+            // Parses through each Player's points and store their playerIds into an array if they have the lowest score
             for (int playerId = 0; playerId < this.allPlayers.length; playerId++) {
                 if (this.allPlayers[playerId].GetPlayerPoints() == minPoint) {
                     winnerIds[pos] = playerId;
+                    pos++; // Increments the current position of winnerIds array
                 }
             }
             // Returns an array consisting of ids of winners
