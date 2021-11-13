@@ -6,6 +6,7 @@ public class Displayer {
     public static final int SECTION_PASSING         = 3; 
     public static final int SECTION_GAME_PROCEDURE  = 4;
     public static final int SECTION_POINT           = 5;
+    public static final int NUM_SECTIONS            = 6;
     public static final int SECTION_INVALID         = -100; // id when user inputs invalid option
 
     // Empty constructor
@@ -106,59 +107,60 @@ public class Displayer {
     public void ExplainRule(int sectionId) {
         switch(sectionId) {
             case SECTION_OBJECTIVE: // The general overview and objective of the game
-                System.out.println("===== OBJECTIVE =====");
-                System.out.println("The objective of the game is to get as little points as possible, as the player with the lowest score wins the game.");
-                System.out.println("The game ends when one player hits the predetermined score or higher (The default score is 50).");
-                System.out.println("The game can be played by 3 to 5 players.");
+                System.out.println("====== OBJECTIVE ======");
+                System.out.println("- The objective of the game is to get AS LITTLE POINTS AS POSSIBLE, as the player with the LOWEST SCORE WINS the game.");
+                System.out.println("- The GAME ENDS WHEN ONE PLAYER EXCEEDS 50 POINTS (Default) or customized points");
+                System.out.println("- The game can be played by 3 TO 5 PLAYERS.");
                 break;
 
             case SECTION_SETUP: // The explanation of how cards are dealt to players to set up the game
-                System.out.println("===== SET UP =====");
-                System.out.println("A standard deck of card is shuffled and dealt to players.");
-                System.out.println("In a 4-player game, each player is dealt 13 cards.");
-                System.out.println("In a 3-player game, each player is dealt 17 cards from a deck of card without 2 of Diamond.");
-                System.out.println("In a 5-player game, each player is dealth 10 cards from a deck of card without 2 of Diamond and 2 of Club.");
+                System.out.println("====== SET UP ======");
+                System.out.println("- A standard deck of card is shuffled and dealt to players.");
+                System.out.println("- In a 4-PLAYER game, each player is DEALT 13 CARDS.");
+                System.out.println("- In a 3-PLAYER game, each player is DEALT 17 CARDS from a deck of card without 2 of Diamond.");
+                System.out.println("- In a 5-PLAYER game, each player is DEALT 10 CARDS from a deck of card without 2 of Diamond and 2 of Club.");
                 break;
 
             case SECTION_TERMS: // The explanation of the terminologies used in the game
-                System.out.println("===== TERMINOLOGY =====");
-                System.out.printf("%15s | %s\n", "Hand", "The time it takes to play all the cards that each player holds. Hand also refers to the cards the player holds. ");
-                System.out.printf("%15s | %s\n", "Trick", "One round of play where each each player plays one card and make up a trick.");
-                System.out.printf("%15s | %s\n", "Game", "Each game begins by dealing cards to each player and ends whenever someone reaches 100 or customized points.");
-                System.out.printf("%15s | %s\n", "\"Heart is broken\"", "A heart is broken when someone discards a Heart when another suit is led because s/he does not have cards of the suits led.");
-                System.out.printf("%15s | %s\n", "\"Shot the moon\"", "It is when a player takes all 13 Hearts and a Spade of Queen in one hand.");
+                System.out.println("====== TERMINOLOGY ======");
+                System.out.printf("%20s | %s\n", "Hand", "The time it takes to play all the cards that each player holds. Hand also refers to the cards the player holds. ");
+                System.out.printf("%20s | %s\n", "Trick", "One round of play where each each player plays one card and make up a trick.");
+                System.out.printf("%20s | %s\n", "Game", "Each game begins by dealing cards to each player and ends whenever someone reaches 100 or customized points.");
+                System.out.printf("%20s | %s\n", "\"Heart is broken\"", "A heart is broken when someone discards a Heart when another suit is led because s/he does not have cards of the suits led.");
+                System.out.printf("%20s | %s\n", "\"Shot the moon\"", "It is when a player takes all 13 Hearts and a Spade of Queen in one hand.");
                 break;
 
             case SECTION_PASSING: // The explanation of the passing rotation, which occurs every hand
-                System.out.println("===== PASSING ROTATION =====");
-                System.out.println("After looking at your hand, each player picks three cards from their hand, and passes them to another player.");
-                System.out.println("In a 4-player game, pass the cards to the person on the left on the 1st hand, right on the 2nd hand, across the player on 3rd hand, and no passing on 4th hand. This cycle continues.");
-                System.out.println("In a 3-player or 5-player game, pass the cards to the person on the left on 1st hand, then right on 2nd hand, and this cycle continues.");
+                System.out.println("====== PASSING ROTATION ======");
+                System.out.println("- After looking at your hand, EACH PLAYER PICKS THREE CARDS from their hand, and PASSES THEM to another player.");
+                System.out.println("- In a 4-player game, pass the cards to the person on the left on the 1st hand, right on the 2nd hand, across the player on 3rd hand, and no passing on 4th hand. This cycle continues.");
+                System.out.println("- In a 3-player or 5-player game, pass the cards to the person on the left on 1st hand, then right on 2nd hand, and this cycle continues.");
                 break;
 
             case SECTION_GAME_PROCEDURE: // This section explains how the game proceeds
-                System.out.println("===== GAME PROCEDURE =====");
-                System.out.println("1. The player who has the 2 of Club after the deal makes the opening lead.");
+                System.out.println("====== GAME PROCEDURE ======");
+                System.out.println("1. The player who has the 2 OF CLUB after the deal makes the OPENING LEAD.");
                 System.out.println("   If 2 of Club has been removed, it is the 3 of Club that makes the opening lead instead.");
-                System.out.println("2. The play proceeds in the ascending order (by player ID) from the led player.");
-                System.out.println("3. Each player MUST follow suit if possible. If a player's hand does not contain the suit led,");
+                System.out.println("2. The play proceeds in the ASCENDING ORDER (by player ID) from the led player.");
+                System.out.println("3. Each player MUST FOLLOW SUIT if possible. If a player's hand does not contain the suit led,");
                 System.out.println("   the card of any other suit may be played.");
                 System.out.println("   i. However, if a player has no Clubs when the first trick is led,");
                 System.out.println("      a Heart or the Queen of Spade may not be played.");
-                System.out.println("4. The highest card of the suit led wins the trick, and the winner of");
+                System.out.println("4. The HIGHEST CARD OF THE SUIT LED WINS THE TRICK, and the winner of");
                 System.out.println("   that trick takes all the cards from that trick.");
-                System.out.println("5. The winner of the last trick leads the next trick.");
-                System.out.println("   i. A player may not lead a Heart or Queen of Spade until \"Heart has been broken\"");
+                System.out.println("5. The WINNER OF THE LAST TRICK LEADS THE NEXT TRICK");
+                System.out.println("   i. A player MAY NOT LEAD A HEART OR QUEEN OF SPADE until \"HEART HAS BEEN BROKEN\"");
                 System.out.println("   ii.If the player to lead only has Hearts and Heart has not been broken, then they pass the lead to the next person.");
-                System.out.println("6. The play continues until all the tricks have been taken, then points");
+                System.out.println("6. The play CONTINUES UNTILL ALL THE TRICKS HAVE BEEN TAKEN, then points");
                 System.out.println("   are scored for each player based on the cards from each of the tricks they have won.");
-                System.out.println("7. If no player exceeds the maximum amount of points, then the cards are shuffled and dealt again.");
-                System.out.println("8. The player with lowest score wins the game once someone exceeds the maximum amount of points.");
+                System.out.println("7. If no player exceeds the maximum amount of points, then the CARDS ARE SHUFFLED AND DEALT AGAIN.");
+                System.out.println("8. The player with LOWEST SCORE WINS THE GAME once someone exceeds the maximum amount of points.");
                 break;
 
             case SECTION_POINT: // This section explains the point system of the game.
-                System.out.println("===== POINT SYSTEM =====");
+                System.out.println("====== POINT SYSTEM ======");
                 System.out.printf("%20s | %10s\n", "Suit", "Point");
+                System.out.println("---------------------------------");
                 System.out.printf("%20s | %10s\n", "Heart", "1 point");
                 System.out.printf("%20s | %10s\n", "Queen of Spade", "13 points");
                 System.out.printf("%20s | %10s\n", "Spade", "0 point");
