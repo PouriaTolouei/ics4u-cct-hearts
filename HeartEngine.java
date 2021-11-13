@@ -33,7 +33,7 @@ public class HeartEngine {
     public HeartEngine(int numPlayers, String[] playerNames, int losingPoint) {
         this.standardDeck = new Card[52]; // 52 array blocks for the stadard deck of cards.
         this.cardsThrown = new Card[numPlayers]; // Cards thrown each round is one per player.
-        this.allPlayers = new Player[this.numPlayers]; // As many array blocks as the number of players.
+        this.allPlayers = new Player[numPlayers]; // As many array blocks as the number of players.
         this.numPlayers = numPlayers; // number of players parameter is assigned.
         this.numHandRound = 1; // Rounds start from 1.
         this.isHeartBroken = false; // Defult value is assigned.
