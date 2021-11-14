@@ -6,7 +6,8 @@ public class Displayer {
     public static final int SECTION_PASSING         = 3; 
     public static final int SECTION_GAME_PROCEDURE  = 4;
     public static final int SECTION_POINT           = 5;
-    public static final int NUM_SECTIONS            = 6;
+    public static final int SECTION_NOTATION        = 6;
+    public static final int NUM_SECTIONS            = 7;
     public static final int SECTION_INVALID         = -100; // id when user inputs invalid option
 
     // Empty constructor
@@ -167,11 +168,30 @@ public class Displayer {
                 System.out.printf("%20s | %10s\n", "Club", "0 point");
                 System.out.printf("%20s | %10s\n", "Diamond", "0 point");
                 break;
+            
+            case SECTION_NOTATION: // This section explains the notation used in the game.
+                System.out.println("====== NOTATIONS ======");
+                System.out.println("Suits: C (Club), D (Diamond), H (Heart), and S(Spade)");
+                System.out.println("Ranks: A (Ace), 2, 3, ..., 10, J (Jack), Q (Queen), K (King)");
+                System.out.println("   Ex: C-2 (2 of Club), H-A (Ace of Heart), S-Q (Queen of Spade)");
+                break;
 
             default: // ERROR HANDLING, when invalid option is chosen, warning is displayed
                 System.out.println("WARNING: INVALID SECTION ID");
 
         }
+    }
+
+
+    // By Haruki
+    /* Displays current number of hand rounds and trick rounds in a formatted way.
+     * @param numHandRound  - The number of hand rounds.
+     * @param numTrickRound - The number of trick rounds. */
+    public void DisplayRounds(int numHandRound, int numTrickRound) {
+        // Prints out the numHandRound and numTrickRound in a formatted way
+        System.out.println("======================");
+        System.out.printf("HAND: %2d | TRICK: %2d\n", numHandRound, numTrickRound);
+        System.out.println("======================");
     }
 
 
