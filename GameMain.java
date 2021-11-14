@@ -8,14 +8,17 @@ public class GameMain {
         HeartEngine engine; // Used for back-end processes and logic
 
         // Variables used throughout the program
-        int option;
-        int numPlayers;
-        String[] playerNames;
-        String individualName;
-        int losingPoint = 0;
-        Player currPlayer;
-        String cardStr;   
-        Card card;
+        int option; // User option
+        int numPlayers; // Number of players
+        String[] playerNames; // An array of player names
+        String individualName; // Individual name of a player
+        int losingPoint = 0; // The point at which the game ends
+        Player currPlayer; // The current player of interest
+        String cardStr; // User-input string that represent a Card object (e.g. H-2 -> 2 of Heart)
+        Card card; // General Card object
+        Card openingCard; // The Card that will make the opening lead (depends on numPlayers)
+        String openingCardStr; // The string representation of the openingCard
+        int status; // Represents success or error codes
 
         // For the purpose of passing rotation
         Card[][] passingCards;
@@ -24,10 +27,14 @@ public class GameMain {
         int[] winnerIds;
         Player winner;
 
+        // Used when Players play a Card to make up a trick
+        int numCardThrown;
+        int numTrickRound;
+
         // Sentinel values that control the flow of the entire game
-        boolean exitGame = false;
-        boolean exitHand = false;
-        boolean exitTrick = false;
+        boolean exitGame = false; // Controls whether the game continues
+        boolean exitHand = false; // Controls whether each hand continues
+        boolean exitTrick = false; // Controls whether each trick continues
 
 
         // === TITLE PAGE ===
@@ -112,7 +119,20 @@ public class GameMain {
         
         // Instantiates the HeartEngine
         engine = new HeartEngine(numPlayers, playerNames, losingPoint);
+
+
+        // === IDENTIFY THE CARD THAT MAKES AN OPENING LEAD ===
+        // The player with 2 of Club make the opening lead.
+        // If 2 of Club is removed in 5-player game, the player with 3 of Club makes the opening lead instead.
+        if (numPlayers == 5) { // In a 5-player game, opening card is 3 of Club
+            openingCard = engine.ConvertToCard("C-3");
+            openingCardStr = "C-3";
+        } else { // In a 3 or 4 player game, opening card is 2 of Club
+            openingCard = engine.ConvertToCard("C-2");
+            openingCardStr = "C-2";
+        }
         
+
         // === MAIN GAME LOOP ===
         // This is the main game loop responsible for running the game until someone wins
         while(!exitGame) {
@@ -120,13 +140,14 @@ public class GameMain {
             engine.Shuffle();
             engine.DealPlayerCards();
 
+
             // === PASSING ROTATION ===
             // Instantiates the 2D array of Cards that is used for passing rotation
             // Each row represent each player, and each column represent each card they want to pass
             passingCards = new Card[numPlayers][3];
             int pos; // The current position of Card
 
-            System.out.println("======================================");
+            System.out.println("\n======================================");
             System.out.println("|          PASSING ROTATION          |");
             System.out.println("======================================");
             System.out.println("Each player has to pick three cards from their hand to be passed to another player.");
@@ -143,11 +164,10 @@ public class GameMain {
                     System.out.printf("#%d Card (Type it): ", pos + 1);
                     cardStr = input.nextLine();
 
-                    /*
+                    // Converts user-input String representation of Card into an actual Card object
                     card = engine.ConvertToCard(cardStr);
                     if (!currPlayer.HasCard(card)) { // ERROR HANDLING
-                        // An appropriate message is printed when the player does not have the card they typed
-                        // Or they mis-typed the card
+                        // A warning message is printed when the player does not have the card they typed or they mis-typed the card
                         System.out.println("\nWARNING: YOU DON'T HAVE THAT CARD or YOU MIS-TYPED YOUR CARD\n");
                     } else {
                         // Adds the chosen card to the array
@@ -155,23 +175,97 @@ public class GameMain {
                         // Update the current pos of the Card to the correct index when there is no error
                         pos++;
                     }
-                    */
-
                 }
             }
 
+            // The engine passes the Cards among Players according to the number of hand round.
+            engine.PassCards(passingCards);
+
+
+            // === IDENTIFY THE PLAYER WHO MAKES THE OPENING LEAD ===
+            // Iterates through every Player until it finds someone with openingCard
+            for (int playerId = 0; playerId < numPlayers; playerId++) {
+                // The Player with openingCard will be set to currPlayer, and make the opening lead in the hand
+                if (engine.GetAllPlayers()[playerId].HasCard(openingCard)) {
+                    engine.SetCurrPlayer(engine.GetAllPlayers()[playerId]);
+                    break; // Breaks out of the loop immediately once the currPlayer is set, for efficiency reason.
+                }
+            }
+
+
+            exitHand = false; // Resets the sentinel value every hand
+            // Resets the number of trick rounds every hand (Note: Counts from 1)
+            engine.SetNumTrickRound(1);
+            
+            // === LOOP RUNS UNTIL SOMEONE LOSES ALL OF THEIR HAND ===
             // This loop runs until all the players used all of their hand, and needs to be dealt cards again
             while(!exitHand) {
-                
+
+                currPlayer = engine.GetCurrPlayer(); // Stores the current Player into currPlayer for readability
+
+                numTrickRound = engine.GetNumTrickRound(); // Updates the numTrickRound from the HeartEngine
+
+                numCardThrown = 0; // Resets the numCardPlayed to 0 every trick
+
                 // This loops runs until all the players played one of their Cards to make up a trick
-                while(!exitTrick) {
+                while (numCardThrown < numPlayers) {
+                    // Displays all the Cards the current player holds
+                    disp.DisplayPlayerCards(currPlayer);
+
+                    // When it is the first trick and the first play of a Card, let the Player know what Card has to be played for the opening lead
+                    if (numTrickRound == 1 && numCardThrown == 0) { // This section is just a friendly reminder/UI
+                        System.out.println("The first trick must be led by " + openingCardStr);
+                        engine.SetLeadSuit(Card.CLUB); // The opening lead for the 1st trick is always Club (C-2 or C-3);
+                    }
+
+                    // Prompts the current player for the Card to play, and convert their String input into a Card object
+                    System.out.printf("PLAYER #d (%s), choose a Card to play: ", currPlayer.GetPlayerId(), currPlayer.GetPlayerName());
+                    cardStr = input.nextLine();
+                    card = engine.ConvertToCard(cardStr);
+
+                    // When it is the 1st trick and 1st play of a Card, and the lead player does not play the predetermined openingCard,
+                    // then they are warned and asked to play a card again
+                    if (numTrickRound == 1 && numCardThrown == 0 && !card.equals(openingCard)) { // Error handling
+                        System.out.println("WARNING: THE FIRST TRICK MUST BE LED BY \"" + openingCardStr + "\".");
+                    } else { // When the current round is not the 1st trick and the 1st play of a Card of each hand
+                        
+                        // The currPlayer throws/plays the card if successful, and its success or error status is stored
+                        status = engine.PlayCard(currPlayer, card);
+                        
+                        // The switch statement controls the flow of the program such that appropriate messages are displayed
+                        // and appropriate methods are called.
+                        switch(status) {
+                            // When the currPlayer throws the card SUCCESSFULLY, which is when
+                            case HeartEngine.SUCCESS: 
+
+                                break;
+
+                            case HeartEngine.HEART_HAS_BEEN_BROKEN:
+
+                                break;
+
+                            case HeartEngine.INVALID_CARD:
+
+                                break;
+
+                            case HeartEngine.HEART_NOT_BROKEN:
+
+                                break;
+
+                            case HeartEngine.SKIP_TRICK:
+
+                                break;
+                        }
+                    }
 
                 }
             }
+
 
             // === POINT CALCULATION ===
             // Calculates the point for every Player after each Hand
             engine.CalcPoint();
+
 
             // === CHECK WINNERS ===
             // Obtains the playerIds of the potential winners in an array
