@@ -426,14 +426,14 @@ public class HeartEngine {
     /* Updates the leading suit of the current trick to the specified one.
      * @param suitId       - The numerical id of a suit, which is declared in Card class. */
     public void SetLeadSuit(int suitId) {
-        this.leadSuit = suitId;
+        this.leadSuit = suitId; // Updates the lead suit
     }
 
     // By Haruki
     /* Updates the hand round number to the specified one (when players play all the cards in their hands).
      * @param numHandRound  -  The integer that represents the hand round number. */
     public void SetNumHandRound(int numHandRound) {
-        this.numHandRound = numHandRound;
+        this.numHandRound = numHandRound; // Updates the numHandRound
     }
 
     // By Haruki
