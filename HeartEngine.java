@@ -431,9 +431,9 @@ public class HeartEngine {
 
     // By Haruki
     /* Updates the hand round number to the specified one (when players play all the cards in their hands).
-     * @oaram numHandRound  -  The integer that represents the hand round number. */
+     * @param numHandRound  -  The integer that represents the hand round number. */
     public void SetNumHandRound(int numHandRound) {
-
+        this.numHandRound = numHandRound;
     }
 
     // By Haruki
