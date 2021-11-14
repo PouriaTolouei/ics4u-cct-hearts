@@ -70,7 +70,7 @@ public class Player {
         // Instantiate the "trimmed" (free of null) array of Card object
         Card[] cardsOfSuitTrimmed = new Card[currIndex];
         // Copies all Cards from the "untrimmed" array to "trimmed" array
-        for (int j = 0; j < cardsOfSuitUntrimmed.length; j++) {
+        for (int j = 0; j < cardsOfSuitTrimmed.length; j++) {
             cardsOfSuitTrimmed[j] = cardsOfSuitUntrimmed[j];
         }
         // Returns the trimmed version of the array that only consists of Card objects of specified suit
