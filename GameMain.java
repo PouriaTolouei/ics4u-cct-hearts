@@ -229,7 +229,7 @@ public class GameMain {
                         System.out.println("WARNING: THE FIRST TRICK MUST BE LED BY \"" + openingCardStr + "\".");
                     } else { // When the current round is not the 1st trick and the 1st play of a Card of each hand
                         
-                        // The currPlayer throws/plays the card if successful, and its success or error status is stored
+                        // The engine determines if the player can play/throw the card specified
                         status = engine.PlayCard(currPlayer, card);
                         
                         // The switch statement controls the flow of the program such that appropriate messages are displayed
