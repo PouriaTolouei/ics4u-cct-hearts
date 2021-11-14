@@ -158,18 +158,23 @@ public class GameMain {
                 disp.DisplayPlayerCards(currPlayer);
                 pos = 0; // Resets the current position of Card to be passed
                 System.out.printf("PLAYER %d, choose three cards you want to pass.\n", playerId);
+                input.nextLine(); // Fixes the scanner
                 while (pos < 3) {
-                    input.nextLine(); // Fixes the scanner
+                    
                     // Promps the user to type the string representation of the Card they want to pass
                     System.out.printf("#%d Card (Type it): ", pos + 1);
                     cardStr = input.nextLine();
 
                     // Converts user-input String representation of Card into an actual Card object
                     card = engine.ConvertToCard(cardStr);
+                    System.out.println("TEST #1");
+                    System.out.printf("TEST Suit: %d, Rank: %d\n", card.GetSuit(), card.GetRank());
                     if (!currPlayer.HasCard(card)) { // ERROR HANDLING
+                        System.out.println("TEST #2");
                         // A warning message is printed when the player does not have the card they typed or they mis-typed the card
                         System.out.println("\nWARNING: YOU DON'T HAVE THAT CARD or YOU MIS-TYPED YOUR CARD\n");
                     } else {
+                        System.out.println("TEST #3");
                         // Adds the chosen card to the array
                         passingCards[playerId][pos] = card;
                         // Update the current pos of the Card to the correct index when there is no error
@@ -222,7 +227,7 @@ public class GameMain {
                     System.out.printf("PLAYER #d (%s), choose a Card to play: ", currPlayer.GetPlayerId(), currPlayer.GetPlayerName());
                     cardStr = input.nextLine();
                     card = engine.ConvertToCard(cardStr);
-
+                    System.out.println("TEST");
                     // When it is the 1st trick and 1st play of a Card, and the lead player does not play the predetermined openingCard,
                     // then they are warned and asked to play a card again
                     if (numTrickRound == 1 && numCardThrown == 0 && !card.equals(openingCard)) { // Error handling
