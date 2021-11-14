@@ -5,22 +5,27 @@ public class HeartEngine {
     private Player[] allPlayers;
     private int numPlayers;
     private int numHandRound;
+    private int numTrickRound;
     private boolean isHeartBroken;
     private Player currPlayer;
     private int losingPoint;
     private int leadSuit;
 
     // Global variable representing the default losing point
-    public static final int DEFAULT_LOSING_POINT = 50;
+    public static final int DEFAULT_LOSING_POINT    = 50;
 
     // Global variable representing the point assigned to other players in the event of "shot the moon"
-    public static final int SHOT_THE_MOON_POINT = 26;
+    public static final int SHOT_THE_MOON_POINT     = 26;
 
     // Global variables representing error codes
-    public static final int SHOT_THE_MOON       =  2;
-    public static final int SUCCESS             =  1;
-    public static final int INVALID_CARD        = -1;
-    public static final int HEART_NOT_BROKEN    = -2;
+    public static final int HEART_HAS_BEEN_BROKEN   =  3;
+    public static final int SHOT_THE_MOON           =  2;
+    public static final int SUCCESS                 =  1;
+    public static final int INVALID_CARD            = -1;
+    public static final int HEART_NOT_BROKEN        = -2;
+    public static final int SKIP_TRICK              = -3;
+    public static final int MUST_FOLLOW_SUIT        = -4;
+    public static final int ILLEGAL_IN_FIRST_TRICK  = -5;
 
     // Constructor
     // By Pouria
@@ -36,6 +41,7 @@ public class HeartEngine {
         this.allPlayers = new Player[numPlayers]; // As many array blocks as the number of players.
         this.numPlayers = numPlayers; // number of players parameter is assigned.
         this.numHandRound = 1; // Rounds start from 1.
+        this.numTrickRound = 1; // Rounds start from 1.
         this.isHeartBroken = false; // Defult value is assigned.
         this.currPlayer = allPlayers[0]; // Starts with player 0 (the first player).
         this.losingPoint = losingPoint; // losing point paramter is assigned.
@@ -422,6 +428,13 @@ public class HeartEngine {
         return this.numHandRound; // Return the integer which represents the hand round number.
     }
 
+    // By Pouria
+    /* Obtains the current trick round number.
+     * @return - Returns the trick round number. */
+    public int GetNumTrickRound() {
+        return this.numTrickRound; // Return the integer which represents the trick round number.
+    }
+
     // By Haruki
     /* Updates the leading suit of the current trick to the specified one.
      * @param suitId       - The numerical id of a suit, which is declared in Card class. */
@@ -434,6 +447,13 @@ public class HeartEngine {
      * @param numHandRound  -  The integer that represents the hand round number. */
     public void SetNumHandRound(int numHandRound) {
         this.numHandRound = numHandRound; // Updates the numHandRound
+    }
+
+    // By Haruki
+    /* Updates the trick round number to the specified one (when players play one card to make up a trick).
+     * @param numTrickRound  -  The integer that represents the trick round number. */
+    public void SetNumTrickRound(int numTrickRound) {
+        this.numTrickRound = numTrickRound; // Updates the numTrickRound
     }
 
     // By Haruki
@@ -494,6 +514,81 @@ public class HeartEngine {
                 this.dealCardsExcept(illegalCards);
                 break;
         }
+    }
+
+
+    /* The specified Player ATTEMPTS to play/throw a specified Card. (Meaning, this method does not modify the player's playerCards.)
+     * This method returns error or success codes according to several conditions listed below.
+     * @param player    - The Player who will throw the card.
+     * @param card      - The Card that the player wants to play/throw for a trick.
+     * @return          - Returns 1 if the player successfully throws the card.
+     *                    Returns 3 if the player "breaks the heart" and successfully throws the card.
+     *                    Returns -1 if the player does not have the card or when the card is null.
+     *                    Returns -2 if the player tries to throw a Heart when heart is not broken. 
+     *                    Returns -3 if the player has no choice but to skip the trick 
+     *                    Returns -4 if the player throws a Card that is not in lead suit even if they have Cards in lead suit 
+     *                    Returns -5 if the player throws a Card of Hearts of Queen of Spade in the first trick, which is illegal. */
+    public int PlayCard(Player player, Card card) {
+        // This boolean indicates whether the player has Card of suit other than Heart
+        boolean hasSuitOtherThanHeart = (player.HasSuit(Card.CLUB) || player.HasSuit(Card.DIAMOND) || player.HasSuit(Card.SPADE));
+
+        // The following if-else statements check for potential errors
+
+        if (!player.HasCard(card)) { // #1 Check
+            // If the player does not have the card they want to throw or the card is null, then -1 is returned
+            return INVALID_CARD;
+        
+        } else if (!hasSuitOtherThanHeart && !this.isHeartBroken) { // #2 Check
+            // When the player does NOT have Cards in suits other than Heart AND the heart has NOT been broken, then 
+            // the player has no choice but to skip the trick; thus returns -3
+            return SKIP_TRICK;
+
+        } else if (this.numTrickRound == 1 && player.HasCard(this.ConvertToCard("S-Q"))) { // #3 Check
+            // This is for an extremely rare edge case where the player only has Cards of Hearts and Queen of Spade in the first trick
+            // In such a case, the player can only skip as card of Hearts of Queen of Spade are illegal to play in first trick
+
+            // Firstly, temporarily remove Queen of Spade from the player's playerCards
+            player.RemovePlayerCard(this.ConvertToCard("S-Q"));
+
+            // Re-evaluate whether the player has cards in suit other than Heart
+            // If true, that means the player has some Cards that they can play for the first trick
+            // If false, that means the player only has Hearts and Queen of Spade, both of which are illegal to play in first trick 
+            hasSuitOtherThanHeart = (player.HasSuit(Card.CLUB) || player.HasSuit(Card.DIAMOND) || player.HasSuit(Card.SPADE));
+
+            // Add the Queen of Spade back to the player's playerCards
+            player.SetPlayerCards(this.AddCardsToArray(player.GetPlayerCards(), new Card[] {this.ConvertToCard("S-Q")}));
+
+            // If the player does not have Cards in suits that is not Hearts when Queen of Spade is temporarily removed from their playerCard
+            // Then the player can only skip in the first trick; return -3. Otherwise, proceed for next checks.
+            if (!hasSuitOtherThanHeart) {
+                return SKIP_TRICK;
+            }
+
+        } else if (card.GetSuit() != this.leadSuit && player.HasSuit(this.leadSuit)) { // #4 Check
+            // If the card is not in lead suit while the player has Cards in lead suit, -4 is returned
+            return MUST_FOLLOW_SUIT;
+
+        } else if (this.numTrickRound == 1 && (card.GetSuit() == Card.HEART || card.equals(this.ConvertToCard("S-Q")))) { // #5 Check
+            // Note: The #3 Check above ensures that the player has some legal cards to play in the first trick
+            // It is illegal to throw a card of Hearts OR Queen of Spade IN the first trick
+            // Thus, if the player throws such Cards, -5 is returned
+            return ILLEGAL_IN_FIRST_TRICK;
+        } 
+
+        
+        // This if-else statement deal with "Heart has been broken" mechanism
+        if (card.GetSuit() == Card.HEART && !this.isHeartBroken && !player.HasSuit(this.leadSuit)) { // #6 Check
+            // If the card is Heart AND the heart is NOT broken AND the player has no Cards in lead suit
+            // then 3 is returned to indicate the heart has been broken
+            return HEART_HAS_BEEN_BROKEN;
+
+        } else if (card.GetSuit() == Card.HEART && !this.isHeartBroken) { // #7 Check
+            // If the card is Heart AND Heart is NOT broken, then -2 is returned
+            return HEART_NOT_BROKEN;
+        } 
+
+        // The several checks above ensures that the specified player can successfully play/throw the card specified
+        return SUCCESS;
     }
     
     
