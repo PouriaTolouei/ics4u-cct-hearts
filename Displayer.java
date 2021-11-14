@@ -68,13 +68,17 @@ public class Displayer {
      *                2nd row represents Card.HEART
      *                3rd row represents Card.SPADE     */
     private Card[][] separateBySuit(Card[] cards) {
-        // The 2D Card array that will be returned
-        Card[][] card2d = new Card[4][13];
+        // The temporary "untrimmed" 2D Card array, which may contain null
+        Card[][] card2dUntrimmed = new Card[4][13];
+        // The "trimmed" 2D Card array, which will not contain null
+        Card[][] card2dTrimmed = new Card[4][];
 
         // Represent the current index of each row/suit of card2d
-        // The position of the integer in counter correspond with the suit ID
+        // The position of the integer in counter correspond with the suit ID.
         // e.g. counter[0] represent current index for the 0th row of card2d, which 
-        //      only contains Card.CLUB, which is represented as 0 numerically. 
+        //      only contains Cards of Card.CLUB, which is represented as 0 numerically.
+        // Each integer will also represent the number of Cards in a certain suit as well.
+        // e.g. if counter[0] == 2, that would mean there are 2 Cards of Club (Card.CLUB = 0)
         int[] counter = new int[4];
 
         // Represents the suit and the index of the 2d array, respectively
@@ -85,10 +89,10 @@ public class Displayer {
         for (int i = 0; i < cards.length; i++) {
             if (cards[i] != null) {
                 suit = cards[i].GetSuit();
-                index = counter[i];
+                index = counter[suit];
                 // As long as the current Card object is not null
                 // Add that Card object to card2d according to their suit and current index
-                card2d[suit][index] = cards[i];
+                card2dUntrimmed[suit][index] = cards[i];
                 counter[suit]++;
             } else {
                 // For efficiency purpose, when there is a null object
@@ -97,7 +101,20 @@ public class Displayer {
                 break;
             }
         }
-        return card2d; // Returns the 2d Array 
+
+        // Represent each row/suit of Cards
+        Card[] cardRow;
+
+        for (int suitId = 0; suitId < counter.length; suitId++) {
+            // Instantiates a cardRow with correct number of Cards for each suit
+            cardRow = new Card[counter[suitId]];
+            for (int j = 0; j < counter[suitId]; j++) {
+                cardRow[j] = card2dUntrimmed[suitId][j];
+            }
+            card2dTrimmed[suitId] = cardRow;
+        }
+
+        return card2dTrimmed; // Returns the "trimmed" 2d Array without any null
     }
 
     // === Public Methods ===
