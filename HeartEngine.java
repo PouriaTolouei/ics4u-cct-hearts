@@ -360,6 +360,8 @@ public class HeartEngine {
         int rank; // Stores the rank later on for instantiating 
         
         String[] cardComponents = card.split("-"); // Splits the String card by "-" to get the suit and the rank
+        cardComponents[0] = cardComponents[0].toUpperCase(); // Makes sure that any lower case is convered to upper case for  the suit.
+        cardComponents[1] = cardComponents[1].toUpperCase();  // Makes sure that any lower case is convered to upper case for  the rank.
         
         // Incomplete card checking
         
