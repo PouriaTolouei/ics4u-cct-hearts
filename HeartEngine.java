@@ -109,7 +109,7 @@ public class HeartEngine {
             for (int j = 0; j < passCards[i].length; j++){
                 allPlayers[i + rightPass].RemovePlayerCard(passCards[i][j]);
             }
-            /*
+            */
         }
     }
     
