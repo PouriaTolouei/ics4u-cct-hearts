@@ -295,6 +295,8 @@ public class GameMain {
                         System.out.printf("PLAYER %d (%s), choose a Card to play: ", currPlayer.GetPlayerId(), currPlayer.GetPlayerName());
                         cardStr = input.nextLine();
                         card = engine.ConvertToCard(cardStr);
+
+
                         if (card == null) { // Error handling
                             System.out.println("\nWARNING: BAD NOTATION, PLEASE RE-TYPE THE CARD CORRECTLY.\n");
                         } else if (numTrickRound == 1 && numCardThrown == 0 && !card.equals(openingCard)) { // Error handling
@@ -303,6 +305,16 @@ public class GameMain {
                             System.out.println("\nWARNING: THE FIRST TRICK MUST BE LED BY \"" + openingCardStr + "\".\n");
                         } else { // When the current round is not the 1st trick and the 1st play of a Card of each hand
                             
+                            // If it's the first throw/play of the trick, update the lead suit according to the lead player's card
+                            // Note that the error handling above makes sure that the leading suit of the first trick is Club
+                            if (numCardThrown == 0) { 
+                                // If the card is NOT Heart OR the Heart is Broken (meaning Hearts are allowed), then update the lead suit
+                                if (card.GetSuit() != Card.HEART || engine.GetIsHeartBroken()) {
+                                    engine.SetLeadSuit(card.GetSuit());
+                                }
+                                // When the card is Heart and the Heart is not broken yet, the PlayCard() below takes care of it
+                            }
+
                             // The engine determines if the player can play/throw the card specified
                             status = engine.PlayCard(currPlayer, card);
                             
@@ -388,9 +400,10 @@ public class GameMain {
                         }
 
 
+                        // === DISPLAY OF TRICKS (cardThrown) ===
+                        // disp.DisplayCardThrown(cardsThrown);
                     }
                 }
-                
 
                 // === COLLECTION OF TRICKS (cardsThrown) BY A PLAYER ===
                 // Updates the cardsThrown (aka tricks) in HeartEngine so that it can be collected via CollectTrick()
@@ -402,7 +415,7 @@ public class GameMain {
 
                 // Announces the Player who won the trick
                 System.out.println("\n----------------------------------------");
-                System.out.printf("| PLAYER %d (%-8s) %-13s |", leadPlayerId, engine.GetAllPlayers()[leadPlayerId].GetPlayerName(), "WINS THE TRICK");
+                System.out.printf("| PLAYER %d ( %-8s ) %-14s |\n", leadPlayerId, engine.GetAllPlayers()[leadPlayerId].GetPlayerName(), "WINS THE TRICK");
                 System.out.println("----------------------------------------\n");
 
 
