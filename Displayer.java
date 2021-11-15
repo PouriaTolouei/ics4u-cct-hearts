@@ -40,20 +40,20 @@ public class Displayer {
             switch (cards[i].GetRank()){
                 // Non-numbered ranks get converted into their names before getting displayed.
                 case Card.CARD_JACK:
-                    System.out.print("J");
+                    System.out.print("J ");
                     break;
                 case Card.CARD_QUEEN:
-                    System.out.print("Q");
+                    System.out.print("Q ");
                     break;
                 case Card.CARD_KING:
-                    System.out.print("K");
+                    System.out.print("K ");
                     break;
                 case Card.CARD_ACE:
-                    System.out.print("A");
+                    System.out.print("A ");
                     break;
                 // Numbered ranks are directly displayed.
                 default:
-                    System.out.print(cards[i].GetRank());
+                    System.out.print(cards[i].GetRank() + " ");
             }
         }
         System.out.print("\n"); // Goes to the next line so that future displaying are seperate.
