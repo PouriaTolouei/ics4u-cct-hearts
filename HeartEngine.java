@@ -538,12 +538,7 @@ public class HeartEngine {
             // If the player does not have the card they want to throw or the card is null, then -1 is returned
             return INVALID_CARD;
         
-        } else if (!hasSuitOtherThanHeart && !this.isHeartBroken) { // #2 Check
-            // When the player does NOT have Cards in suits other than Heart AND the heart has NOT been broken, then 
-            // the player has no choice but to skip the trick; thus returns -3
-            return SKIP_TRICK;
-
-        } else if (this.numTrickRound == 1 && player.HasCard(this.ConvertToCard("S-Q"))) { // #3 Check
+        } else if (this.numTrickRound == 1 && player.HasCard(this.ConvertToCard("S-Q"))) { // #2 Check
             // This is for an extremely rare edge case where the player only has Cards of Hearts and Queen of Spade in the first trick
             // In such a case, the player can only skip as card of Hearts of Queen of Spade are illegal to play in first trick
 
@@ -564,12 +559,12 @@ public class HeartEngine {
                 return SKIP_TRICK;
             }
 
-        } else if (card.GetSuit() != this.leadSuit && player.HasSuit(this.leadSuit)) { // #4 Check
+        } else if (card.GetSuit() != this.leadSuit && player.HasSuit(this.leadSuit)) { // #3 Check
             // If the card is not in lead suit while the player has Cards in lead suit, -4 is returned
             return MUST_FOLLOW_SUIT;
 
-        } else if (this.numTrickRound == 1 && (card.GetSuit() == Card.HEART || card.equals(this.ConvertToCard("S-Q")))) { // #5 Check
-            // Note: The #3 Check above ensures that the player has some legal cards to play in the first trick
+        } else if (this.numTrickRound == 1 && (card.GetSuit() == Card.HEART || card.equals(this.ConvertToCard("S-Q")))) { // #4 Check
+            // Note: The #2 Check above ensures that the player has some legal cards to play in the first trick
             // It is illegal to throw a card of Hearts OR Queen of Spade IN the first trick
             // Thus, if the player throws such Cards, -5 is returned
             return ILLEGAL_IN_FIRST_TRICK;
@@ -577,12 +572,12 @@ public class HeartEngine {
 
         
         // This if-else statement deal with "Heart has been broken" mechanism
-        if (card.GetSuit() == Card.HEART && !this.isHeartBroken && !player.HasSuit(this.leadSuit)) { // #6 Check
+        if (card.GetSuit() == Card.HEART && !this.isHeartBroken && !player.HasSuit(this.leadSuit)) { // #5 Check
             // If the card is Heart AND the heart is NOT broken AND the player has no Cards in lead suit
             // then 3 is returned to indicate the heart has been broken
             return HEART_HAS_BEEN_BROKEN;
 
-        } else if (card.GetSuit() == Card.HEART && !this.isHeartBroken) { // #7 Check
+        } else if (card.GetSuit() == Card.HEART && !this.isHeartBroken) { // #6 Check
             // If the card is Heart AND Heart is NOT broken, then -2 is returned
             return HEART_NOT_BROKEN;
         } 
@@ -621,7 +616,15 @@ public class HeartEngine {
     /* Returns an array of Card objects that has been discarded by Players, which make up a trick.
      * @return  - An array of Card objects that make up a trick. */
     public Card[] GetCardsThrown() {
-        return this.cardsThrown;
+        return this.cardsThrown; // Returns the cardsThrown
+    }
+
+
+    // By Haruki
+    /* Updates the cardsThrown (aka tricks) to the one specified.
+     * @param cardsThrown   - An array that consists of Cards that the Player played during a trick*/
+    public void SetCardsThrown(Card[] cardsThrown) {
+        this.cardsThrown = cardsThrown; // Updates the cardsThrown
     }
 
 
