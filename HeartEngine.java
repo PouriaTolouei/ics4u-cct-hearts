@@ -96,20 +96,13 @@ public class HeartEngine {
     private void cardsPasser(int leftPass, int rightPass, Card[][] passCards){
         // Loops through all the players.
         for (int i = 0; i < numPlayers; i++){
-            Card[] playerCards = allPlayers[(i + leftPass) % numPlayers].GetPlayerCards(); // Passes the Card array of the current player into a new array for easier access.
+            Card[] playerCards = allPlayers[(i + leftPass) % numPlayers].GetPlayerCards(); // Passes the Card array of the reciever player into a new array for easier access.
             
             // For this method, either leftPass or RightPass will be 0 (only of them has a value at a time): 
             // For passing to the left, the reciever is moved up by some positions, so that the 3 cards get passed up by some positions (clockwise)
             // For passing to the right, the sender is moved up by some positions, so  that the 3 cards get passed down by some positions (counter-clockwise).
             // ** Remainder is used for the index so that position of [array length] would return back to player 0.
             allPlayers[(i + leftPass) % numPlayers].SetPlayerCards(AddCardsToArray(playerCards, passCards[(i + rightPass) % numPlayers]));
-
-            /*
-            // To complete the passing, it loops through the 3 cards to remove them from the Card array of the sender
-            for (int j = 0; j < passCards[i].length; j++){
-                allPlayers[i + rightPass].RemovePlayerCard(passCards[i][j]);
-            }
-            */
         }
     }
     
