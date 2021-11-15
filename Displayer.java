@@ -220,13 +220,18 @@ public class Displayer {
         // Sorts the player's cards by their suit and rank
         player.SortPlayerCards();
 
+        // The names of suit with corresponding index and suitId
+        // e.g. suitNames[0] = "CLUB", Card.CLUB = 0;
+        String[] suitNames = {"CLUB", "DIAMOND", "HEART", "SPADE"};
+
         // Obtains playerCards and organize them by their suit into 2D array
         Card[][] groupedCards = separateBySuit(player.GetPlayerCards());
 
         // Each row of groupedCards contains cards of a certain suit,
         // and each suit are printed row by row, in the order of Clubs, Diamonds, Hearts, and Spades.
-        for (int i = 0; i < groupedCards.length; i++) {
-            displayCards(groupedCards[i]);
+        for (int suit = 0; suit < groupedCards.length; suit++) {
+            System.out.printf("%7s: ", suitNames[suit]); // Adds the suit name in the beginning 
+            displayCards(groupedCards[suit]); // Prints out all the Cards of the specified suit
         }
     }
 

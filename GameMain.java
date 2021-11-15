@@ -95,11 +95,12 @@ public class GameMain {
         System.out.println("Would you like to play a: ");
         System.out.println("1. Default Mode (losing point of 50)");
         System.out.println("2. Custom Mode (customize losing point)");
-        System.out.print("Option: ");
-        option = input.nextInt();
-
+        
         // This loop is responsible for forcing the user to input either 1 or 2
         while (true) {
+            System.out.print("Option: ");
+            option = input.nextInt();
+
             if (option == 1) { // When the user chooses default mode
                 // The losingPoint is set to default losingPoint
                 losingPoint = HeartEngine.DEFAULT_LOSING_POINT;
@@ -161,40 +162,67 @@ public class GameMain {
             System.out.println("Each player has to pick three cards from their hand to be passed to another player.");
             // Prompts each Player for the three cards that they want to pass
             input.nextLine(); // Fixes the scanner
-            for (int playerId = 0; playerId < numPlayers; playerId++) {
-                currPlayer = engine.GetAllPlayers()[playerId]; // Obtains current player
-                pos = 0; // Resets the current position of Card to be passed
-                System.out.printf("PLAYER %d, choose three cards you want to pass.\n", playerId);
-                
-                while (pos < 3) {
-                    disp.DisplayPlayerCards(currPlayer); // Displays the playerCards of each Player
+
+            // This is for the case when it's the 4-player game, and it's the fourth hand,
+            // in which case the Cards will not be passed
+            if (numPlayers == 4 && engine.GetNumHandRound()%4 == 0) {
+                System.out.println("\nIT'S THE FOURTH HAND, SO THERE IS NO PASSING ROTATION!\n");
+            } else { // When above check passes, proceed to prompt each Player what cards they want to pass
+                for (int playerId = 0; playerId < numPlayers; playerId++) {
+                    currPlayer = engine.GetAllPlayers()[playerId]; // Obtains current player
+                    pos = 0; // Resets the current position of Card to be passed
+                    System.out.printf("\nPLAYER %d (%s), choose three cards you want to pass.\n", playerId, currPlayer.GetPlayerName());
                     
-                    // Promps the user to type the string representation of the Card they want to pass
-                    System.out.printf("#%d Card (Type it): ", pos + 1);
-                    cardStr = input.nextLine();
-
-                    // Converts user-input String representation of Card into an actual Card object
-                    card = engine.ConvertToCard(cardStr);
-
-                    if (!currPlayer.HasCard(card)) { // ERROR HANDLING
-                        System.out.println("TEST #2");
-                        // A warning message is printed when the player does not have the card they typed or they mis-typed the card
-                        System.out.println("\nWARNING: YOU DON'T HAVE THAT CARD or YOU MIS-TYPED YOUR CARD\n");
-                    } else {
-                        System.out.println("TEST #3");
-                        // Removes 
-                        // 
-                        // currPlayer.RemovePlayerCard(card);
-                        // Adds the chosen card to the array
-                        passingCards[playerId][pos] = card;
-                        // Update the current pos of the Card to the correct index when there is no error
-                        pos++;
+                    // This while loop ensures that each Player passes three Cards
+                    while (pos < 3) {
+                        disp.DisplayPlayerCards(currPlayer); // Displays the playerCards of each Player
+                        
+                        // Prompts the user to type the string representation of the Card they want to pass
+                        System.out.printf("\n#%d Card (Type it): ", pos + 1);
+                        cardStr = input.nextLine();
+    
+                        // Converts user-input String representation of Card into an actual Card object
+                        card = engine.ConvertToCard(cardStr);
+    
+                        if (!currPlayer.HasCard(card)) { // ERROR HANDLING
+                            // A warning message is printed when the player does not have the card they typed or they mis-typed the card
+                            System.out.println("\nWARNING: YOU DON'T HAVE THAT CARD or YOU MIS-TYPED YOUR CARD\n");
+                        } else {
+                            // Removes the specified card from the playerCards
+                            currPlayer.RemovePlayerCard(card);
+                            
+                            // Adds the chosen card to the array
+                            passingCards[playerId][pos] = card;
+                            // Update the current pos of the Card to the correct index when there is no error
+                            pos++;
+                        }
                     }
                 }
             }
 
+            System.out.println("\nTESTING PASSING CARDS");
+            // TESTING PURPOSE: PRINTS EVERY PLAYER'S PASSING CARDS
+            for (int playerId = 0; playerId < numPlayers; playerId++) {
+                
+                System.out.printf("#%d PLAYER: ", playerId);
+                disp.DisplayCardThrown(passingCards[playerId]);
+                
+            }
+            System.out.println();
+
+            
             // The engine passes the Cards among Players according to the number of hand round.
             engine.PassCards(passingCards);
+
+            
+            System.out.println("\nSHOW EVERYONE'S CARDS");
+            // TESTING PURPOSE: PRINT EVERYONE'S CARDS
+            for (int i = 0; i < numPlayers; i++) {
+                System.out.println("#"+i);
+                disp.DisplayPlayerCards(engine.GetAllPlayers()[i]);
+            }
+            System.out.println();
+            
 
 
             // === IDENTIFY THE PLAYER WHO MAKES THE OPENING LEAD ===
@@ -203,6 +231,7 @@ public class GameMain {
                 // The Player with openingCard will be set to currPlayer, and make the opening lead in the hand
                 if (engine.GetAllPlayers()[playerId].HasCard(openingCard)) {
                     engine.SetCurrPlayer(engine.GetAllPlayers()[playerId]);
+                    System.out.println("TEST: CURR PLAYER IS CHOSEN");
                     break; // Breaks out of the loop immediately once the currPlayer is set, for efficiency reason.
                 }
             }
@@ -234,40 +263,61 @@ public class GameMain {
                     }
 
                     // Prompts the current player for the Card to play, and convert their String input into a Card object
-                    System.out.printf("PLAYER #d (%s), choose a Card to play: ", currPlayer.GetPlayerId(), currPlayer.GetPlayerName());
+                    System.out.printf("PLAYER %d (%s), choose a Card to play: \n", currPlayer.GetPlayerId(), currPlayer.GetPlayerName());
                     cardStr = input.nextLine();
                     card = engine.ConvertToCard(cardStr);
-                    System.out.println("TEST");
                     // When it is the 1st trick and 1st play of a Card, and the lead player does not play the predetermined openingCard,
                     // then they are warned and asked to play a card again
                     if (numTrickRound == 1 && numCardThrown == 0 && !card.equals(openingCard)) { // Error handling
-                        System.out.println("WARNING: THE FIRST TRICK MUST BE LED BY \"" + openingCardStr + "\".");
+                        System.out.println("\nWARNING: THE FIRST TRICK MUST BE LED BY \"" + openingCardStr + "\".\n");
                     } else { // When the current round is not the 1st trick and the 1st play of a Card of each hand
                         
                         // The engine determines if the player can play/throw the card specified
                         status = engine.PlayCard(currPlayer, card);
                         
+                        System.out.println(); // Formatting purpose
+
                         // The switch statement controls the flow of the program such that appropriate messages are displayed
                         // and appropriate methods are called.
                         switch(status) {
-                            // When the currPlayer throws the card SUCCESSFULLY, which is when
+                            // When the currPlayer throws the card SUCCESSFULLY
                             case HeartEngine.SUCCESS: 
-
+                                // Prints an appropriate message and the player throws the card
+                                System.out.println("SUCCESS!");
+                                currPlayer.SetCardThrown(card);
                                 break;
 
+                            // When the currPlayer "breaks the Heart"
                             case HeartEngine.HEART_HAS_BEEN_BROKEN:
-
+                                // Announces that the heart has been broken, and sets the
+                                // isHeartBroken boolean value to true
+                                System.out.println("THE HEART HAS BEEN BROKEN!");
+                                engine.SetIsHeartBroken(true);
                                 break;
 
+                            // When the currPlayer throws an invalid Card or mistypes a Card
                             case HeartEngine.INVALID_CARD:
-
+                                
                                 break;
 
+                            // When the currPlayer attemps to throw a Card of Hearts when heart is not broken
                             case HeartEngine.HEART_NOT_BROKEN:
 
                                 break;
 
+                            // When the currPlayer can only skip
                             case HeartEngine.SKIP_TRICK:
+
+                                break;
+                            
+                            // When the currPlayer attempts to throw a Card not of leading suit
+                            // even though currPlayer has Cards in the leading suit
+                            case HeartEngine.MUST_FOLLOW_SUIT:
+
+                                break;
+
+                            // When the currPlayer makes an illegal move in the first trick
+                            case HeartEngine.ILLEGAL_IN_FIRST_TRICK:
 
                                 break;
                         }
