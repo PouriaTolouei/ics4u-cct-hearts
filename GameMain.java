@@ -98,24 +98,32 @@ public class GameMain {
         System.out.print("Option: ");
         option = input.nextInt();
 
-        if (option == 1) { // When the user chooses default mode
-            // The losingPoint is set to default losingPoint
-            losingPoint = HeartEngine.DEFAULT_LOSING_POINT;
-        } else if (option == 2) { // When the user chooses custom mode
-            // This while-loop is responsible for ensuring the customized losing point is valid
-            while(true) {
-                // Prompts the user for customized losingPoint
-                System.out.print("Enter customized losing point (>0): ");
-                losingPoint = input.nextInt();
-
-                if (losingPoint > 0) {
-                    break; // If the losingPoint is positive, break out of the loop
-                } else {
-                    // When the user inputs negative losingPoint, warning is shown and loop continues
-                    System.out.println("\nWARNING: Invalid Losing Point\n");
+        // This loop is responsible for forcing the user to input either 1 or 2
+        while (true) {
+            if (option == 1) { // When the user chooses default mode
+                // The losingPoint is set to default losingPoint
+                losingPoint = HeartEngine.DEFAULT_LOSING_POINT;
+                break;
+            } else if (option == 2) { // When the user chooses custom mode
+                // This while-loop is responsible for ensuring the customized losing point is valid
+                while(true) {
+                    // Prompts the user for customized losingPoint
+                    System.out.print("Enter customized losing point (>0): ");
+                    losingPoint = input.nextInt();
+    
+                    if (losingPoint > 0) {
+                        break; // If the losingPoint is positive, break out of the loop
+                    } else {
+                        // When the user inputs negative losingPoint, warning is shown and loop continues
+                        System.out.println("\nWARNING: Invalid Losing Point\n");
+                    }
                 }
+                break;
+            } else { // Warning message when a wrong input is chosen
+                System.out.println("\nWARNING: INVALID OPTION\n");
             }
         }
+        
         
         // Instantiates the HeartEngine
         engine = new HeartEngine(numPlayers, playerNames, losingPoint);
@@ -152,14 +160,14 @@ public class GameMain {
             System.out.println("======================================");
             System.out.println("Each player has to pick three cards from their hand to be passed to another player.");
             // Prompts each Player for the three cards that they want to pass
+            input.nextLine(); // Fixes the scanner
             for (int playerId = 0; playerId < numPlayers; playerId++) {
-                // Displays the playerCards of each Player
-                currPlayer = engine.GetAllPlayers()[playerId];
-                disp.DisplayPlayerCards(currPlayer);
+                currPlayer = engine.GetAllPlayers()[playerId]; // Obtains current player
                 pos = 0; // Resets the current position of Card to be passed
                 System.out.printf("PLAYER %d, choose three cards you want to pass.\n", playerId);
-                input.nextLine(); // Fixes the scanner
+                
                 while (pos < 3) {
+                    disp.DisplayPlayerCards(currPlayer); // Displays the playerCards of each Player
                     
                     // Promps the user to type the string representation of the Card they want to pass
                     System.out.printf("#%d Card (Type it): ", pos + 1);
@@ -167,14 +175,16 @@ public class GameMain {
 
                     // Converts user-input String representation of Card into an actual Card object
                     card = engine.ConvertToCard(cardStr);
-                    System.out.println("TEST #1");
-                    System.out.printf("TEST Suit: %d, Rank: %d\n", card.GetSuit(), card.GetRank());
+
                     if (!currPlayer.HasCard(card)) { // ERROR HANDLING
                         System.out.println("TEST #2");
                         // A warning message is printed when the player does not have the card they typed or they mis-typed the card
                         System.out.println("\nWARNING: YOU DON'T HAVE THAT CARD or YOU MIS-TYPED YOUR CARD\n");
                     } else {
                         System.out.println("TEST #3");
+                        // Removes 
+                        // 
+                        // currPlayer.RemovePlayerCard(card);
                         // Adds the chosen card to the array
                         passingCards[playerId][pos] = card;
                         // Update the current pos of the Card to the correct index when there is no error
