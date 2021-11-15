@@ -487,20 +487,18 @@ public class HeartEngine {
 
 
     // By Haruki
-    /* Deals Cards from the shuffled standard deck of card to all players.
+    /* Deals Cards from the standard deck of card to all players.
      * The Cards are dealt differently depending on the number of players.
      * When there are:
      *      - 3 players: 2 of Diamond is removed, and each player is dealt 17 cards
      *      - 4 players: Each player is dealt 13 cards.
      *      - 5 players: 2 of Diamond and 2 of Club are removed, and each player is dealth 10 cards. */
     public void DealPlayerCards() {
-        // Shuffles the standard deck of card before dealing cards to players
-        this.Shuffle();
 
         // The Cards that are removed before dealing. Refer to Java Doc.
         Card[] illegalCards;
 
-        // For different number of players, the behaviour of DealHand() varies 
+        // For different number of players, the behaviour of DealPlayerCards() varies 
         switch(this.numPlayers) {
             case 3: // In a 3-player game
                 // 2 of Diamond is removed before dealing Cards,
