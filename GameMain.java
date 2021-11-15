@@ -263,7 +263,7 @@ public class GameMain {
                     }
 
                     // Prompts the current player for the Card to play, and convert their String input into a Card object
-                    System.out.printf("PLAYER %d (%s), choose a Card to play: \n", currPlayer.GetPlayerId(), currPlayer.GetPlayerName());
+                    System.out.printf("PLAYER %d (%s), choose a Card to play: ", currPlayer.GetPlayerId(), currPlayer.GetPlayerName());
                     cardStr = input.nextLine();
                     card = engine.ConvertToCard(cardStr);
                     // When it is the 1st trick and 1st play of a Card, and the lead player does not play the predetermined openingCard,
@@ -282,17 +282,20 @@ public class GameMain {
                         switch(status) {
                             // When the currPlayer throws the card SUCCESSFULLY
                             case HeartEngine.SUCCESS: 
-                                // Prints an appropriate message and the player throws the card
+                                // Prints an appropriate message
                                 System.out.println("SUCCESS!");
-                                currPlayer.SetCardThrown(card);
+                                engine.SwitchPlayer(); // Switches the current player
+                                currPlayer.SetCardThrown(card); // The currPlayer throws the card
+                                numCardThrown++; // Increments the number of card thrown 
                                 break;
 
-                            // When the currPlayer "breaks the Heart"
+                            // When the currPlayer "breaks the Heart". This is also considered successful.
                             case HeartEngine.HEART_HAS_BEEN_BROKEN:
-                                // Announces that the heart has been broken, and sets the
-                                // isHeartBroken boolean value to true
+                                // Announces that the heart has been broken
                                 System.out.println("THE HEART HAS BEEN BROKEN!");
-                                engine.SetIsHeartBroken(true);
+                                engine.SwitchPlayer(); // Switches the current player
+                                engine.SetIsHeartBroken(true); // Sets isHeartBroken to true
+                                numCardThrown++; // Increments the number of card thrown 
                                 break;
 
                             // When the currPlayer throws an invalid Card or mistypes a Card
@@ -329,7 +332,7 @@ public class GameMain {
 
             // === POINT CALCULATION ===
             // Calculates the point for every Player after each Hand
-            engine.CalcPoint();
+            status = engine.CalcPoint();
 
 
             // === CHECK WINNERS ===
