@@ -368,6 +368,13 @@ public class HeartEngine {
         
         String[] cardComponents = card.split("-"); // Splits the String card by "-" to get the suit and the rank
         
+        // Incomplete card checking
+        
+        // Check whether the format is not followed (when split doesn't seperate suit and rank by "-") and returns null.
+        if (cardComponents.length == 1){
+            return null;
+        }
+        
         // Rank checking 
 
         // Checks whether it's a valid rank letter (J, Q, K, and A) and assigns the correct integer value.
