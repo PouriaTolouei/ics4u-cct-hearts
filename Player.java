@@ -121,7 +121,7 @@ public class Player {
         // Loops through the player's hand (Card array).
         for (int i = 0; i < this.playerCards.length; i++){
             // Checks both the rank and suit to make sure that it doesn't match with the card that needs to be removed.
-            if (this.playerCards[i].equals(card)){
+            if (!this.playerCards[i].equals(card)){
                 temp[counter] = playerCards[i]; // Copies the card from the player's hand to the temporary array as long as it's not the card that needs to be removed.
                 counter++; // Increments the position in the temporary array when a value has been sucesfully copied to the temporary array.
             }

@@ -104,10 +104,12 @@ public class HeartEngine {
             // ** Remainder is used for the index so that position of [array length] would return back to player 0.
             allPlayers[(i + leftPass) % numPlayers].SetPlayerCards(AddCardsToArray(playerCards, passCards[(i + rightPass) % numPlayers]));
 
+            /*
             // To complete the passing, it loops through the 3 cards to remove them from the Card array of the sender
             for (int j = 0; j < passCards[i].length; j++){
                 allPlayers[i + rightPass].RemovePlayerCard(passCards[i][j]);
             }
+            */
         }
     }
     
