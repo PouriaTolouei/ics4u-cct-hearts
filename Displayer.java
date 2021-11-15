@@ -105,13 +105,15 @@ public class Displayer {
         // Represent each row/suit of Cards
         Card[] cardRow;
 
+        // Copies every Card from the "Untrimmed" array into the "Trimmed" array
         for (int suitId = 0; suitId < counter.length; suitId++) {
             // Instantiates a cardRow with correct number of Cards for each suit
             cardRow = new Card[counter[suitId]];
+            // Copies Cards from each row of "Untrimmed" array into the temporary cardRow array
             for (int j = 0; j < counter[suitId]; j++) {
                 cardRow[j] = card2dUntrimmed[suitId][j];
             }
-            card2dTrimmed[suitId] = cardRow;
+            card2dTrimmed[suitId] = cardRow; // Assigns the cardRow into appropriate row of the "trimmed" array
         }
 
         return card2dTrimmed; // Returns the "trimmed" 2d Array without any null
@@ -125,14 +127,18 @@ public class Displayer {
     public void ExplainRule(int sectionId) {
         switch(sectionId) {
             case SECTION_OBJECTIVE: // The general overview and objective of the game
-                System.out.println("====== OBJECTIVE ======");
+                System.out.println("----------------------------------------");
+                System.out.println("|               OBJECTIVE              |");
+                System.out.println("----------------------------------------");
                 System.out.println("- The objective of the game is to get AS LITTLE POINTS AS POSSIBLE, as the player with the LOWEST SCORE WINS the game.");
                 System.out.println("- The GAME ENDS WHEN ONE PLAYER EXCEEDS 50 POINTS (Default) or customized points");
                 System.out.println("- The game can be played by 3 TO 5 PLAYERS.");
                 break;
 
             case SECTION_SETUP: // The explanation of how cards are dealt to players to set up the game
-                System.out.println("====== SET UP ======");
+                System.out.println("----------------------------------------");
+                System.out.println("|                SET UP                |");
+                System.out.println("----------------------------------------");
                 System.out.println("- A standard deck of card is shuffled and dealt to players.");
                 System.out.println("- In a 4-PLAYER game, each player is DEALT 13 CARDS.");
                 System.out.println("- In a 3-PLAYER game, each player is DEALT 17 CARDS from a deck of card without 2 of Diamond.");
@@ -140,7 +146,9 @@ public class Displayer {
                 break;
 
             case SECTION_TERMS: // The explanation of the terminologies used in the game
-                System.out.println("====== TERMINOLOGY ======");
+                System.out.println("----------------------------------------");
+                System.out.println("|              TERMINOLOGY             |");
+                System.out.println("----------------------------------------");
                 System.out.printf("%20s | %s\n", "Hand", "The time it takes to play all the cards that each player holds. Hand also refers to the cards the player holds. ");
                 System.out.printf("%20s | %s\n", "Trick", "One round of play where each each player plays one card and make up a trick.");
                 System.out.printf("%20s | %s\n", "Game", "Each game begins by dealing cards to each player and ends whenever someone reaches 100 or customized points.");
@@ -149,14 +157,18 @@ public class Displayer {
                 break;
 
             case SECTION_PASSING: // The explanation of the passing rotation, which occurs every hand
-                System.out.println("====== PASSING ROTATION ======");
+                System.out.println("----------------------------------------");
+                System.out.println("|            PASSING ROTATION          |");
+                System.out.println("----------------------------------------");
                 System.out.println("- After looking at your hand, EACH PLAYER PICKS THREE CARDS from their hand, and PASSES THEM to another player.");
                 System.out.println("- In a 4-player game, pass the cards to the person on the left on the 1st hand, right on the 2nd hand, across the player on 3rd hand, and no passing on 4th hand. This cycle continues.");
                 System.out.println("- In a 3-player or 5-player game, pass the cards to the person on the left on 1st hand, then right on 2nd hand, and this cycle continues.");
                 break;
 
             case SECTION_GAME_PROCEDURE: // This section explains how the game proceeds
-                System.out.println("====== GAME PROCEDURE ======");
+                System.out.println("----------------------------------------");
+                System.out.println("|            GAME PROCEDURE            |");
+                System.out.println("----------------------------------------");
                 System.out.println("1. The player who has the 2 OF CLUB after the deal makes the OPENING LEAD.");
                 System.out.println("   If 2 of Club has been removed, it is the 3 of Club that makes the opening lead instead.");
                 System.out.println("2. The play proceeds in the ASCENDING ORDER (by player ID) from the led player.");
@@ -176,7 +188,9 @@ public class Displayer {
                 break;
 
             case SECTION_POINT: // This section explains the point system of the game.
-                System.out.println("====== POINT SYSTEM ======");
+                System.out.println("----------------------------------------");
+                System.out.println("|             POINT SYSTEM             |");
+                System.out.println("----------------------------------------");
                 System.out.printf("%20s | %10s\n", "Suit", "Point");
                 System.out.println("---------------------------------");
                 System.out.printf("%20s | %10s\n", "Heart", "1 point");
@@ -187,7 +201,9 @@ public class Displayer {
                 break;
             
             case SECTION_NOTATION: // This section explains the notation used in the game.
-                System.out.println("====== NOTATIONS ======");
+                System.out.println("----------------------------------------");
+                System.out.println("|                NOTATION              |");
+                System.out.println("----------------------------------------");
                 System.out.println("Suits: C (Club), D (Diamond), H (Heart), and S(Spade)");
                 System.out.println("Ranks: A (Ace), 2, 3, ..., 10, J (Jack), Q (Queen), K (King)");
                 System.out.println("   Ex: C-2 (2 of Club), H-A (Ace of Heart), S-Q (Queen of Spade)");
@@ -213,8 +229,7 @@ public class Displayer {
 
 
     // By Haruki
-    /* Displays the hand (their playerCards) of a specified player 
-     * in an ascending order within each suit.
+    /* Displays the hand (their playerCards) of a specified player in an ascending order, row by row, for each suit.
      * @param player    - A Player whose hand will be displayed. */
     public void DisplayPlayerCards(Player player) {
         // Sorts the player's cards by their suit and rank
@@ -226,6 +241,11 @@ public class Displayer {
 
         // Obtains playerCards and organize them by their suit into 2D array
         Card[][] groupedCards = separateBySuit(player.GetPlayerCards());
+
+        // Display's the information of the player
+        System.out.println("----------------------------------------");
+        System.out.printf("| PLAYER %d ( %-8s ): %-13s |\n", player.GetPlayerId(), player.GetPlayerName(), "YOUR CARDS");
+        System.out.println("----------------------------------------");
 
         // Each row of groupedCards contains cards of a certain suit,
         // and each suit are printed row by row, in the order of Clubs, Diamonds, Hearts, and Spades.
