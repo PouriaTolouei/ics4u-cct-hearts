@@ -361,14 +361,12 @@ public class HeartEngine {
     public Card ConvertToCard(String card) {
         int rank; // Stores the rank later on for instantiating 
         
-        String[] cardComponents = card.split("-"); // Splits the String card by "-" to get the suit and the rank
-        cardComponents[0] = cardComponents[0].toUpperCase(); // Makes sure that any lower case is convered to upper case for  the suit.
-        cardComponents[1] = cardComponents[1].toUpperCase();  // Makes sure that any lower case is convered to upper case for  the rank.
+        String[] cardComponents = card.toUpperCase().split("-"); // Makes the card string all capital to handle lower case and then split it by "-" to get the suit and the rank.
         
-        // Incomplete card checking
+        // Incorrect card format checking
         
-        // Check whether the format is not followed (when split doesn't seperate suit and rank by "-") and returns null.
-        if (cardComponents.length == 1){
+        // Check whether the format is not followed (when split doesn't result in two seperate Strings for the suit and the rank) and returns null.
+        if (cardComponents.length != 2){
             return null;
         }
         
