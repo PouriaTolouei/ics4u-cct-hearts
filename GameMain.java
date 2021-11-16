@@ -318,6 +318,10 @@ public class GameMain {
                             }
 
                             // The engine determines if the player can play/throw the card specified
+                            System.out.println("\nTEST: PlayCard() is called");
+                            System.out.println("TEST: PLAYER INFO: " + currPlayer.GetPlayerId() + " " + currPlayer.GetPlayerName());
+                            System.out.println("TEST: CARD INFO  : " + card.GetSuit());
+                            System.out.println("TEST: card.GetSuit() == leadSuit: " + (card.GetSuit() == engine.GetLeadSuit()));
                             status = engine.PlayCard(currPlayer, card);
                             
                             System.out.println(); // Formatting purpose
@@ -331,6 +335,11 @@ public class GameMain {
                                 numCardThrown++; // Increments the number of card thrown 
                                 pos++; // Increments the index of cardsThrown
                             }
+
+                            // TEST
+                            System.out.println("LEAD SUIT  : " + engine.GetLeadSuit());
+                            System.out.println("PLAYER INFO: ID " + currPlayer.GetPlayerId() + " " + currPlayer.GetPlayerName());
+                            System.out.println("CARD INFO  : " + card.GetSuit());
 
                             // The main purpose of this switch statement is to control the flow of the program such that appropriate messages are displayed
                             // and appropriate methods are called if necessary.
@@ -403,7 +412,8 @@ public class GameMain {
 
 
                         // === DISPLAY OF TRICKS (cardThrown) ===
-                        // disp.DisplayCardThrown(cardsThrown);
+                        // System.out.println("DISPLAY CARD THROWN");
+                        disp.DisplayCardThrown(cardsThrown);
                     }
                 }
 
