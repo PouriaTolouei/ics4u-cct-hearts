@@ -561,8 +561,11 @@ public class HeartEngine {
             if (!hasSuitOtherThanHeart) {
                 return SKIP_TRICK;
             }
-
-        } else if (card.GetSuit() != this.GetLeadSuit() && player.HasSuit(this.GetLeadSuit())) { // #3 Check
+        } 
+        
+        // This if-else statement cannot be combined with the if-else statment above
+        // This is so that #3 will still be checked against when #2 check is triggered but returns nothing
+        if (card.GetSuit() != this.GetLeadSuit() && player.HasSuit(this.GetLeadSuit())) { // #3 Check
             // If the card is not in lead suit while the player has Cards in lead suit, -4 is returned
             return MUST_FOLLOW_SUIT;
 

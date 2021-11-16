@@ -140,12 +140,10 @@ public class Player {
         for (int i = 0; i < this.playerCards.length; i++){
             // Checks to see if any card has the specified suit and returns true and ends the loop if so.
             if(this.playerCards[i].GetSuit() == suit){
-                System.out.println("HASSUIT( " + suit + ") IS RETURNING: TRUE");
                 return true;
             }
         }
         // Otherwise no card was found with the specified suit.
-        System.out.println("HASSUIT( " + suit + ") IS RETUNING FALSE");
         return false;
     }
 
