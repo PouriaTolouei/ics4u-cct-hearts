@@ -327,9 +327,9 @@ public class HeartEngine {
         Card cardThrown = allPlayers[currMaxIndex].GetCardThrown(); // Stores the first player with a suit's thrown card into a new variable for easier access.
         int currMaxRank = cardThrown.GetRank(); // It keeps track of the highest lead suit rank thrown.
 
-        // Loops through the players but only starting after the first player in the array who threw a lead suit card
+        // Loops through the players but only starting from the first player in the array who threw a lead suit card
         // Since the other players before who did not throw a lead suit card can never collect the trick.
-        for (int i = currMaxIndex + 1; i < numPlayers; i++){
+        for (int i = currMaxIndex; i < numPlayers; i++){
             cardThrown = allPlayers[i].GetCardThrown(); // Stores the current player's thrown card into a variable for easier access.
             // Checks to see if the current player threw a lead suit because without it, even the highest rank wouldn't collect the trick.
             if (cardThrown.GetSuit() == leadSuit){
