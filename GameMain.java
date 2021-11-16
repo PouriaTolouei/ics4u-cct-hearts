@@ -200,6 +200,8 @@ public class GameMain {
                             pos++;
                         }
                     }
+                    // Displays the currPlayer's playerCards last time before switching to the next player
+                    disp.DisplayPlayerCards(currPlayer);
                 }
             }
 
