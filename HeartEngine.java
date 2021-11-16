@@ -116,9 +116,10 @@ public class HeartEngine {
         for (int i = 0; i < numPlayers; i++){
             Card cardThrown = allPlayers[i].GetCardThrown(); // Stores the current player's thrown card into a new variable for easier access.
             // Finds the first player who threw a card with a lead suit
-            // And stores the id of that player 
+            // Stores the id of that player and breaks the loop 
             if (cardThrown.GetSuit() == leadSuit){
                 firstIndex = i;
+                break;
             }
         }
         return firstIndex; // Return the id of that player.
