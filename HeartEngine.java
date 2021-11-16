@@ -562,7 +562,7 @@ public class HeartEngine {
                 return SKIP_TRICK;
             }
 
-        } else if (card.GetSuit() != this.leadSuit && player.HasSuit(this.leadSuit)) { // #3 Check
+        } else if (card.GetSuit() != this.GetLeadSuit() && player.HasSuit(this.GetLeadSuit())) { // #3 Check
             // If the card is not in lead suit while the player has Cards in lead suit, -4 is returned
             return MUST_FOLLOW_SUIT;
 
