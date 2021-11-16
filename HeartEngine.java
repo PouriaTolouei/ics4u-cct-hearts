@@ -323,21 +323,22 @@ public class HeartEngine {
     public int CollectTrick() {
         // Starts the comparison by setting the current highest rank and index, 
         // Based on the first player in the array who threw a lead suit card.
-        int currMaxIndex = findFirstThrewLeadSuit();; // It keeps track of the id of the player who threw the highest lead suit rank.
-        Card cardThrown = allPlayers[currMaxIndex].GetCardThrown(); // Stores the player's thrown card into a new variable for easier access.
+        int currMaxIndex = findFirstThrewLeadSuit(); // It keeps track of the id of the player who threw the highest lead suit rank.
+        Card cardThrown = allPlayers[currMaxIndex].GetCardThrown(); // Stores the first player with a suit's thrown card into a new variable for easier access.
         int currMaxRank = cardThrown.GetRank(); // It keeps track of the highest lead suit rank thrown.
 
         // Loops through the players but only starting after the first player in the array who threw a lead suit card
         // Since the other players before who did not throw a lead suit card can never collect the trick.
         for (int i = currMaxIndex + 1; i < numPlayers; i++){
-            
+            cardThrown = allPlayers[i].GetCardThrown(); // Stores the current player's thrown card into a variable for easier access.
             // Checks to see if the current player threw a lead suit because without it, even the highest rank wouldn't collect the trick.
             if (cardThrown.GetSuit() == leadSuit){
                 // Checks to see if the current player's lead suit card has a higher rank than the current highest rank.
                 // If so, it becomes the current highest rank and that player would be the one closest to collecting the trick.
                 if (cardThrown.GetRank() > currMaxRank){
-                    currMaxRank = cardThrown.GetRank();
                     currMaxIndex = i;
+                    currMaxRank = cardThrown.GetRank();
+                    
                 }
             }
         }
