@@ -282,7 +282,7 @@ public class Displayer {
         System.out.println("----------------------------------------");
         // Displays the top border (based on the number of players).
         for (int i = 0; i < allPlayers.length; i++){
-            System.out.print("===============");
+            System.out.print("============");
         }
         System.out.print("\n");
         System.out.print("|"); // Displays the left border.
@@ -299,7 +299,7 @@ public class Displayer {
         System.out.print("\n");
         // Displays the bottom border (based on the number of players).
         for (int i = 0; i < allPlayers.length; i++){
-            System.out.print("===============");
+            System.out.print("============");
         }
         System.out.print("\n"); // Goes to the next line so that future displayings are seperate.
     }
