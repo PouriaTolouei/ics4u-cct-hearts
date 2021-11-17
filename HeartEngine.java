@@ -640,27 +640,23 @@ public class HeartEngine {
             }
         }
 
-        // If it is the first play/throw of a trick AND the player does NOT have cards other than Hearts AND Heart has not been broken
-        if (this.numCardsThrown == 0 && !hasSuitOtherThanHeart && !this.isHeartBroken) {
-            // Returns -7 to signify that the lead must be passed to the next player
-            return GIVE_LEAD_TO_NEXT;
-        }
-         
-        
-        // This if-else statement cannot be combined with the if-else statment above
-        // This is so that #3 will still be checked against when #2 check is triggered but returns nothing
-        if (card.GetSuit() != this.leadSuit && player.HasSuit(this.leadSuit) && this.numCardsThrown != 0) { // #3 Check
-            // If the card is not in lead suit while the player has Cards in lead suit 
-            // and it is not the first throw of a trick, -4 is returned
-            return MUST_FOLLOW_SUIT;
-
-        } else if (this.numTrickRound == 1 && (card.GetSuit() == Card.HEART || card.equals(this.ConvertToCard("S-Q")))) { // #4 Check
+        // This if-else statements cannot be combined with the above if-else statement, 
+        // this is to ensure #3 will still be checked even if #2 check passes
+        if (this.numTrickRound == 1 && (card.GetSuit() == Card.HEART || card.equals(this.ConvertToCard("S-Q")))) { // #3 Check
             // Note: The #2 Check above ensures that the player has some legal cards to play in the first trick
             // It is illegal to throw a card of Hearts OR Queen of Spade IN the first trick
             // Thus, if the player throws such Cards, -5 is returned
             return ILLEGAL_IN_FIRST_TRICK;
+        } else if (this.numCardsThrown == 0 && !hasSuitOtherThanHeart && !this.isHeartBroken) { // #4
+            // If it is the first play/throw of a trick AND the player does NOT have cards other than Hearts AND Heart has not been broken
+            // Returns -7 to signify that the lead must be passed to the next player
+            return GIVE_LEAD_TO_NEXT;
+        } else if (card.GetSuit() != this.leadSuit && player.HasSuit(this.leadSuit) && this.numCardsThrown != 0) { // #5 Check
+            // If the card is not in lead suit while the player has Cards in lead suit 
+            // and it is not the first throw of a trick, -4 is returned
+            return MUST_FOLLOW_SUIT;
 
-        } else if (this.GetNumCardsThrown() == 0 && this.GetNumTrickRound() == 1 && !card.equals(this.openingCard)) { // #5 Check
+        } else if (this.GetNumCardsThrown() == 0 && this.GetNumTrickRound() == 1 && !card.equals(this.openingCard)) { // #6 Check
             // If it is the first throw of a Card in the first trick of a hand AND the player does not play the openingCard
             return MUST_PLAY_OPENING_CARD; // -6 is returned to indicate that the player must play the openingCard
         }
@@ -669,17 +665,17 @@ public class HeartEngine {
         // === "HEART HAS BEEN BROKEN" MECHANISM ===
         // This if-else statement deal with "Heart has been broken" mechanism
         if (card.GetSuit() == Card.HEART && !this.isHeartBroken) {
-            if (this.numCardsThrown == 0) { // #6 Check
+            if (this.numCardsThrown == 0) { // #7 Check
                 // If the card is Heart AND the heart is NOT broken AND it is the first throw of a trick
                 // A heart cannot be broken so -2 is returned
                 return HEART_NOT_BROKEN;
-            } else if (!player.HasSuit(this.leadSuit) && this.numCardsThrown != 0) { // #7 Check
+            } else if (!player.HasSuit(this.leadSuit) && this.numCardsThrown != 0) { // #8 Check
                 // If the card is Heart AND the heart is NOT broken 
                 // AND the player has no Cards in lead suit AND it is not the first throw/play in a trick
                 // then 3 is returned to indicate the heart has been broken
                 return HEART_HAS_BEEN_BROKEN;
     
-            } else { // #8 Check
+            } else { // #9 Check
                 // If the card is Heart AND Heart is NOT broken, then -2 is returned
                 return HEART_NOT_BROKEN;
             } 
