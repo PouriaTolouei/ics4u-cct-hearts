@@ -64,16 +64,16 @@ public abstract class Card {
         switch (this.GetRank()){
             // Non-numbered ranks get converted into their names before getting stored.
             case Card.CARD_JACK:
-                stringCard += "J ";
+                stringCard += "J";
                 break;
             case Card.CARD_QUEEN:
-                stringCard += "Q ";
+                stringCard += "Q";
                 break;
             case Card.CARD_KING:
-                stringCard += "K ";
+                stringCard += "K";
                 break;
             case Card.CARD_ACE:
-                stringCard += "A ";
+                stringCard += "A";
                 break;
             // Numbered ranks are directly stored.
             default:
