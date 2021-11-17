@@ -471,14 +471,18 @@ public class HeartEngine {
     }
 
     // By Pouria
-    /*
-     * */
+    /* States whether the hand round has ended or not.
+     * @return - Returns true if any of the players has no more cards to play.
+     *         - Returns false if all players have at least one card to play. */
     public boolean HasHandEnded() {
-        for (int playerId = 0; playerId < this.numPlayers; playerId++) {
-            if (GetAllPlayers()[playerId].GetPlayerCards().length == 0) {
+        // Loops through all of the players
+        for (int i = 0; i < numPlayers; i++) {
+            // Checks to see if any player has no cards and true is returned.
+            if (GetAllPlayers()[i].GetPlayerCards().length == 0) {
                 return true; 
             }
         }
+        // Otherwise false is returned (when all players have atleast one card).
         return false;
     }
     
