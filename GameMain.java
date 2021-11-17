@@ -347,7 +347,7 @@ public class GameMain {
                             System.out.println("---------------------------------------------");
                             System.out.printf("| PLAYER %d HAS TO PASS LEAD TO NEXT PLAYER |\n", currPlayer.GetPlayerId());
                             System.out.println("---------------------------------------------");
-                            engine.SetCardsThrown(null); // Sets the cardsThrown to null to indicate that no Cards are thrown this trick
+                            // engine.SetCardsThrown(null); // Sets the cardsThrown to null to indicate that no Cards are thrown this trick
                             break;
                     }
 
@@ -357,10 +357,12 @@ public class GameMain {
                         currPlayer.SetCardThrown(card); // The currPlayer throws the card
                         engine.SwitchPlayer(); // Switches the current player for next iteration
                         
+                        /*
                         // In a case where currPlayer has to skip for whatever reason, set their card to null to indicate that they are skipping
                         if (status == HeartEngine.SKIP_TRICK || status == HeartEngine.GIVE_LEAD_TO_NEXT) {
                             card = null;
                         }
+                        */
 
                         engine.GetCardsThrown()[pos] = card; // Add a card to cardsThrown to make up a trick
                         engine.SetNumCardsThrown(engine.GetNumCardsThrown() + 1); // Increments the number of card thrown 
