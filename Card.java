@@ -39,6 +39,50 @@ public abstract class Card {
         return false;
     }
 
+    // By Pouria
+    /* Converts the Card object into its String version for displaying purposes (eg. 2 of hearts --> "H-2"). */
+    public String toString() {
+        String stringCard = null; // Stores the string version of the Card object 
+
+        
+        // Checks for the suit of each Card object to store the proper suit.
+        switch (this.GetSuit()){
+            case Card.CLUB:
+                stringCard = "C-";
+                break;
+            case Card.DIAMOND:
+                stringCard = "D-";
+                break;
+            case Card.HEART:
+                stringCard = "H-";
+                break;
+            case Card.SPADE:
+                stringCard = "S-";
+                break;
+        }
+        // Checks for the rank ofeach Card object to store the proper rank.
+        switch (this.GetRank()){
+            // Non-numbered ranks get converted into their names before getting stored.
+            case Card.CARD_JACK:
+                stringCard += "J ";
+                break;
+            case Card.CARD_QUEEN:
+                stringCard += "Q ";
+                break;
+            case Card.CARD_KING:
+                stringCard += "K ";
+                break;
+            case Card.CARD_ACE:
+                stringCard += "A ";
+                break;
+            // Numbered ranks are directly stored.
+            default:
+                stringCard += this.GetRank();
+        }
+        
+        return stringCard; // Returns the String version of the Card object.
+    }
+
     public abstract int GetPoint();
 
     public abstract int GetSuit();
