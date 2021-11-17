@@ -46,7 +46,7 @@ public class HeartEngine {
         this.numPlayers = numPlayers; // number of players parameter is assigned.
         this.numHandRound = 1; // Rounds start from 1.
         this.numTrickRound = 1; // Rounds start from 1.
-        this.numCardsThrown = 0; 
+        this.numCardsThrown = 0; // Default value is assigned
         this.isHeartBroken = false; // Defult value is assigned.
         this.currPlayer = allPlayers[0]; // Starts with player 0 (the first player).
         this.losingPoint = losingPoint; // losing point paramter is assigned.
@@ -57,10 +57,11 @@ public class HeartEngine {
             allPlayers[i] = new Player(playerNames[i], i); // Assigns a name to each from the player names array parameter.
         }
 
-
+        // Assigns the opening card (for beignning a hand round) to be 3 of Club if there are 5 players.
         if (numPlayers == 5) {
             this.openingCard = ConvertToCard("C-3");
         } 
+        // Otherise the opening card should be 2 of Club/
         else {
             this.openingCard = ConvertToCard("C-2");
         }
@@ -460,10 +461,10 @@ public class HeartEngine {
     }
 
     // By Pouria
-    /* 
-     * */
+    /* Obtain the opening card needed for starting a hand round (either 2 or 3 of clubs).
+     * @return - Returns the opening card that must be used for beiginning all the hand rounds*/
     public Card GetOpeningCard() {
-        return this.openingCard;
+        return this.openingCard; // Returns the Card object that represents the opening card.
     }
 
     // By Haruki
