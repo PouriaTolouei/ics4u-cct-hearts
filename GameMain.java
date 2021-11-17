@@ -18,8 +18,7 @@ public class GameMain {
         Card card; // General Card object
         Card openingCard; // The Card that will make the opening lead (depends on numPlayers)
         String openingCardStr; // The string representation of the openingCard
-        int status; // Represents success or error codes
-        Card[] cardsThrown; // Represents the tricks; the pile of cards
+        int status = 0; // Represents success or error codes
         int pos; // General representation of an index of an array
         int leadPlayerId; // The id of the player who will lead the trick
 
@@ -30,15 +29,10 @@ public class GameMain {
         int[] winnerIds;
         Player winner;
 
-        // Used when Players play a Card to make up a trick
-        /*
-        int numCardsThrown;
-        int numTrickRound;
-        */
-
         // Sentinel values that control the flow of the entire game
         boolean exitGame = false; // Controls whether the game continues
         boolean exitHand = false; // Controls whether each hand continues
+        boolean exitTrick = false; // Controls whether each trick continues
 
 
         // === TITLE PAGE ===
@@ -244,14 +238,16 @@ public class GameMain {
                 engine.SetNumCardsThrown(0); // Resets the numCardsThrown to 0 every trick
 
                 pos = 0; // Resets the position/index of cardsThrown to 0 every trick
-                cardsThrown = new Card[numPlayers]; // The pile of Card that one player collect at the end of each trick
-                engine.SetCardsThrown(cardsThrown); // Updates the cardsThrown (aka tricks) in HeartEngine 
+                engine.SetCardsThrown(new Card[numPlayers]); // Updates the cardsThrown (aka tricks) in HeartEngine to an empty array
 
+                exitTrick = false; // Resets the sentinel value every trick
 
                 // This loops runs until all the players played one of their Cards to make up a trick
-                while (engine.GetNumCardsThrown() < numPlayers) {
+                while (!exitTrick) {
                     // Updates and stores the current Player into currPlayer for readability
                     currPlayer = engine.GetCurrPlayer(); 
+
+                    disp.DisplayRounds(engine.GetNumHandRound(), engine.GetNumTrickRound());
 
                     // Displays all the Cards the current player holds
                     disp.DisplayPlayerCards(currPlayer);
@@ -259,152 +255,158 @@ public class GameMain {
                     // When it is the first trick and the first play of a Card, let the Player know what Card has to be played for the opening lead
                     if (engine.GetNumTrickRound() == 1 && engine.GetNumCardsThrown() == 0) { // This section is just a friendly reminder/UI
                         System.out.println("\nREMINDER: The first trick must be led by " + openingCardStr + ".");
-                        engine.SetLeadSuit(Card.CLUB); // The opening lead for the 1st trick is always Club (C-2 or C-3);
                     }
 
-                    // This is for a case when the current player does not have Cards other than Hearts but the Heart has not been broken yet
-                    // In such a case, the lead is passed to the next person.
-                    if (!currPlayer.HasSuit(Card.CLUB) && !currPlayer.HasSuit(Card.DIAMOND) && !currPlayer.HasSuit(Card.SPADE) && !engine.GetIsHeartBroken()) {
-                        System.out.println("\nPLAYER %d HAS TO SKIP THIS ROUND BECAUSE HE/SHE ONLY HAS HEARTS.\n");
-                        engine.SwitchPlayer();
-                    } else {
-                        // When the above check passes, begin the trick (the time it takes for everyone to play a card)
+                    // Prompts the current player for the Card to play, and convert their String input into a Card object
+                    System.out.printf("PLAYER %d (%s), choose a Card to play: ", currPlayer.GetPlayerId(), currPlayer.GetPlayerName());
+                    cardStr = input.nextLine();
+                    card = engine.ConvertToCard(cardStr);
 
-                        // Prompts the current player for the Card to play, and convert their String input into a Card object
-                        System.out.printf("PLAYER %d (%s), choose a Card to play: ", currPlayer.GetPlayerId(), currPlayer.GetPlayerName());
-                        cardStr = input.nextLine();
-                        card = engine.ConvertToCard(cardStr);
+                    // The engine determines if the player can play/throw the card specified
+                    status = engine.PlayCard(currPlayer, card);
+
+                    System.out.println(); // Formatting purpose
 
 
-                        // The engine determines if the player can play/throw the card specified
-                        status = engine.PlayCard(currPlayer, card);
+                    // The main purpose of this switch statement is to control the flow of the program such that appropriate messages are displayed
+                    // and appropriate methods are called if necessary.
+                    switch(status) {
+                        // When the currPlayer throws the card SUCCESSFULLY
+                        case HeartEngine.SUCCESS:
+                            // Prints an appropriate message
+                            System.out.println("----------------------------------------");
+                            System.out.println("|               SUCCESS!               |");
+                            System.out.println("----------------------------------------");
+                            break;
 
-                        System.out.println(); // Formatting purpose
+                        // When the currPlayer "breaks the Heart". This is also considered successful.
+                        case HeartEngine.HEART_HAS_BEEN_BROKEN:
+                            // Announces that the heart has been broken
+                            System.out.println("----------------------------------------");
+                            System.out.println("|        HEART HAS BEEN BROKEN!        |");
+                            System.out.println("----------------------------------------");
+                            System.out.println("YOU MAY NOW LEAD A TRICK WITH HEARTS.");
+                            engine.SetIsHeartBroken(true); // Sets isHeartBroken to true
+                            break;
 
-                        // When the PlayCard() is successful, breaks a heart, or the currPlayer has to skip a trick
-                        // The following methods are called (they are methods that are common in those three scenarios)
-                        if (status == HeartEngine.SUCCESS || status == HeartEngine.HEART_HAS_BEEN_BROKEN || status == HeartEngine.SKIP_TRICK) {
-                            engine.SwitchPlayer(); // Switches the current player
-                            currPlayer.SetCardThrown(card); // The currPlayer throws the card
-                            cardsThrown[pos] = card; // Add a card to cardsThrown to make up a trick
-                            engine.SetNumCardsThrown(engine.GetNumCardsThrown() + 1); // Increments the number of card thrown 
-                            pos++; // Increments the index of cardsThrown
-                        }
+                        // When the currPlayer throws an invalid Card (when they don't have it) or mistypes a Card
+                        case HeartEngine.INVALID_CARD:
+                            // Let the player know that they either don't have the card or mistyped their card
+                            System.out.println("-------------------------------------------");
+                            System.out.println("| YOU DON'T HAVE THE CARD or BAD NOTATION |");
+                            System.out.println("-------------------------------------------");
+                            System.out.println("ENSURE YOU HAVE THE CARD OR TYPED THE NOTATION CORRECTLY.");
+                            break;
 
-                        // The main purpose of this switch statement is to control the flow of the program such that appropriate messages are displayed
-                        // and appropriate methods are called if necessary.
-                        switch(status) {
-                            // When the currPlayer throws the card SUCCESSFULLY
-                            case HeartEngine.SUCCESS: 
-                                // Prints an appropriate message
-                                System.out.println("----------------------------------------");
-                                System.out.println("|               SUCCESS!               |");
-                                System.out.println("----------------------------------------");
-                                break;
+                        // When the currPlayer attemps to throw a Card of Hearts when heart is not broken
+                        case HeartEngine.HEART_NOT_BROKEN:
+                            // Let the user know the Heart has not been broken yet
+                            System.out.println("----------------------------------------");
+                            System.out.println("|    HEART HAS NOT BEEN BROKEN YET!    |");
+                            System.out.println("----------------------------------------");
+                            System.out.println("YOU CANNOT PLAY A CARD OF HEART WHEN HEART HAS NOT BEEN BROKEN.");
+                            break;
 
-                            // When the currPlayer "breaks the Heart". This is also considered successful.
-                            case HeartEngine.HEART_HAS_BEEN_BROKEN:
-                                // Announces that the heart has been broken
-                                System.out.println("----------------------------------------");
-                                System.out.println("|        HEART HAS BEEN BROKEN!        |");
-                                System.out.println("----------------------------------------");
-                                System.out.println("YOU MAY NOW LEAD A TRICK WITH HEARTS.");
-                                engine.SetIsHeartBroken(true); // Sets isHeartBroken to true
-                                break;
+                        // When the currPlayer can only skip
+                        case HeartEngine.SKIP_TRICK:
+                            // Let the player know that the current player has no choice but to skip
+                            // When a player skips, they still have to play a card, but that card will not be
+                            // taken into consideration when it comes to collection of trick
+                            System.out.println("-------------------------------------------");
+                            System.out.printf("| PLAYER %d DON'T HAVE CHOICE BUT TO SKIP |\n", currPlayer.GetPlayerId());
+                            System.out.println("-------------------------------------------");
+                            break;
+                        
+                        // When the currPlayer attempts to throw a Card not of leading suit
+                        // even though currPlayer has Cards in the leading suit
+                        case HeartEngine.MUST_FOLLOW_SUIT:
+                            // Remind the player that suits must be followed if possible
+                            System.out.println("----------------------------------------");
+                            System.out.println("|   YOU MUST FOLLOW SUIT IF POSSIBLE!  |");
+                            System.out.println("----------------------------------------");
+                            break;
 
-                            // When the currPlayer throws an invalid Card (when they don't have it) or mistypes a Card
-                            case HeartEngine.INVALID_CARD:
-                                // Let the player know that they either don't have the card or mistyped their card
-                                System.out.println("-------------------------------------------");
-                                System.out.println("| YOU DON'T HAVE THE CARD or BAD NOTATION |");
-                                System.out.println("-------------------------------------------");
-                                System.out.println("ENSURE YOU HAVE THE CARD OR TYPED THE NOTATION CORRECTLY.");
-                                break;
+                        // When the currPlayer makes an illegal move in the first trick
+                        case HeartEngine.ILLEGAL_IN_FIRST_TRICK:
+                            // Remind the player that certain moves are illegal in the first trick
+                            System.out.println("----------------------------------------");
+                            System.out.println("|   ILLEGAL MOVE IN THE FIRST TRICK    |");
+                            System.out.println("----------------------------------------");
+                            System.out.println("YOU CANNOT PLAY HEARTS OR QUEEN OF SPADE IN THE FIRST TRICK.");
+                            break;
+                        
+                        // When the currPlayer does not play the openingCard in for the first throw of a Card in the first trick
+                        case HeartEngine.MUST_PLAY_OPENING_CARD:
+                            // Remind the player that the first trick must be led by openingCard
+                            System.out.println("----------------------------------------");
+                            System.out.printf("|  THE FIRST TRICK MUST BE LED BY %3s  |\n", openingCardStr);
+                            System.out.println("----------------------------------------");
+                            break;
 
-                            // When the currPlayer attemps to throw a Card of Hearts when heart is not broken
-                            case HeartEngine.HEART_NOT_BROKEN:
-                                // Let the user know the Heart has not been broken yet
-                                System.out.println("----------------------------------------");
-                                System.out.println("|    HEART HAS NOT BEEN BROKEN YET!    |");
-                                System.out.println("----------------------------------------");
-                                System.out.println("YOU CANNOT PLAY A CARD OF HEART WHEN HEART HAS NOT BEEN BROKEN.");
-                                break;
-
-                            // When the currPlayer can only skip
-                            case HeartEngine.SKIP_TRICK:
-                                // Let the player know that the current player has no choice but to skip
-                                // When a player skips, they still have to play a card, but that card will not be
-                                // taken into consideration when it comes to collection of trick
-                                System.out.println("-------------------------------------------");
-                                System.out.printf("| PLAYER %d DON'T HAVE CHOICE BUT TO SKIP |\n", currPlayer.GetPlayerId());
-                                System.out.println("-------------------------------------------");
-                                break;
-                            
-                            // When the currPlayer attempts to throw a Card not of leading suit
-                            // even though currPlayer has Cards in the leading suit
-                            case HeartEngine.MUST_FOLLOW_SUIT:
-                                // Remind the player that suits must be followed if possible
-                                System.out.println("----------------------------------------");
-                                System.out.println("|   YOU MUST FOLLOW SUIT IF POSSIBLE!  |");
-                                System.out.println("----------------------------------------");
-                                break;
-
-                            // When the currPlayer makes an illegal move in the first trick
-                            case HeartEngine.ILLEGAL_IN_FIRST_TRICK:
-                                // Remind the player that certain moves are illegal in the first trick
-                                System.out.println("----------------------------------------");
-                                System.out.println("|   ILLEGAL MOVE IN THE FIRST TRICK    |");
-                                System.out.println("----------------------------------------");
-                                System.out.println("YOU CANNOT PLAY HEARTS OR QUEEN OF SPADE IN THE FIRST TRICK.");
-                                break;
-                            
-                            // When the currPlayer does not play the openingCard in for the first throw of a Card in the first trick
-                            case HeartEngine.MUST_PLAY_OPENING_CARD:
-                                // Remind the player that the first trick must be led by openingCard
-                                System.out.println("----------------------------------------");
-                                System.out.printf("|  THE FIRST TRICK MUST BE LED BY %3s  |\n", openingCardStr);
-                                System.out.println("----------------------------------------");
-                                break;
-
-                        }
-
-
-                        // === DISPLAY OF TRICKS (cardThrown) ===
-                        disp.DisplayCardThrown(cardsThrown);
+                        case HeartEngine.GIVE_LEAD_TO_NEXT:
+                            System.out.println("---------------------------------------------");
+                            System.out.printf("| PLAYER %d HAS TO PASS LEAD TO NEXT PLAYER |\n", currPlayer.GetPlayerId());
+                            System.out.println("---------------------------------------------");
+                            engine.SetCardsThrown(null); // Sets the cardsThrown to null to indicate that no Cards are thrown this trick
+                            break;
                     }
+
+                    // When the PlayCard() is successful, breaks a heart, the currPlayer has to skip a trick in the first trick, or the currPlayer has to give lead to the next Player
+                    // The following methods are called (they are methods that are common in those three scenarios)
+                    if (status == HeartEngine.SUCCESS || status == HeartEngine.HEART_HAS_BEEN_BROKEN || status == HeartEngine.SKIP_TRICK || status == HeartEngine.GIVE_LEAD_TO_NEXT) {
+                        currPlayer.SetCardThrown(card); // The currPlayer throws the card
+                        engine.SwitchPlayer(); // Switches the current player for next iteration
+                        
+                        // In a case where currPlayer has to skip for whatever reason, set their card to null to indicate that they are skipping
+                        if (status == HeartEngine.SKIP_TRICK || status == HeartEngine.GIVE_LEAD_TO_NEXT) {
+                            card = null;
+                        }
+
+                        engine.GetCardsThrown()[pos] = card; // Add a card to cardsThrown to make up a trick
+                        engine.SetNumCardsThrown(engine.GetNumCardsThrown() + 1); // Increments the number of card thrown 
+                        pos++; // Increments the index of cardsThrown
+                    }
+
+
+                    // === DISPLAY OF TRICKS (cardThrown) ===
+                    disp.DisplayCardThrown(engine.GetCardsThrown());
+                    
+
+                    // Adjusts the sentinel value to break out of a trick when everyone has thrown/played a card (numCardsThrown >= numPlayers)
+                    // OR when currPlayer has to give the lead to the next Player according to the status
+                    if (engine.GetNumCardsThrown() >= numPlayers || status == HeartEngine.GIVE_LEAD_TO_NEXT) {
+                        exitTrick = true;
+                    }
+
                 }
 
-                // === COLLECTION OF TRICKS (cardsThrown) BY A PLAYER ===
-                // Updates the cardsThrown (aka tricks) in HeartEngine so that it can be collected via CollectTrick()
-                engine.SetCardsThrown(cardsThrown);
-
-                // The Player who played a card with highest rank in the leading suit wins the cardsThrown (aka tricks)
-                // The id of the Player who will lead the next trick is stored
-                leadPlayerId = engine.CollectTrick();
-
-                // Announces the Player who won the trick
-                System.out.println("\n----------------------------------------");
-                System.out.printf("| PLAYER %d ( %-8s ) %-14s |\n", leadPlayerId, engine.GetAllPlayers()[leadPlayerId].GetPlayerName(), "WINS THE TRICK");
-                System.out.println("----------------------------------------\n");
+                // If status is not GIVE_LEAD_TO_NEXT, proceed to collect tricks and announce the trick winner
+                if (status != HeartEngine.GIVE_LEAD_TO_NEXT) {
+                    // === COLLECTION OF TRICKS (cardsThrown) BY A PLAYER ===
+                    // The Player who played a card with highest rank in the leading suit wins the cardsThrown (aka tricks)
+                    // The id of the Player who will lead the next trick is stored
+                    leadPlayerId = engine.CollectTrick();
 
 
-                // === UPDATES THE currPlayer TO THE PLAYER WHO WON THE TRICK ===
-                // This is because the person who won the trick leads the next trick
-                engine.SetCurrPlayer(engine.GetAllPlayers()[leadPlayerId]);
+                    // === UPDATES THE currPlayer TO THE PLAYER WHO WON THE TRICK ===
+                    // This is because the person who won the trick leads the next trick
+                    engine.SetCurrPlayer(engine.GetAllPlayers()[leadPlayerId]);
 
 
-                // === INCREMENTS the numTrickRound by 1 ===
-                engine.SetNumTrickRound(engine.GetNumTrickRound() + 1); // Increments the numTrickRound by 1
+                    // === ANNOUNCEMENT OF TRICK WINNER ===
+                    disp.AnnounceTrickWinner(engine.GetCurrPlayer());
+                    
 
+                    // === INCREMENTS the numTrickRound by 1 ===
+                    engine.SetNumTrickRound(engine.GetNumTrickRound() + 1); // Increments the numTrickRound by 1
+
+                } else { // If the status is GIVE_LEAD_TO_NEXT, set the currPlayer to the next Player (according to their player Id)
+                    engine.SetCurrPlayer(engine.GetAllPlayers()[(engine.GetCurrPlayer().GetPlayerId() + 1) % numPlayers]);
+                }
 
                 // === CHECKS IF SOMEONE HAS USED ALL OF THEIR CARDS AWAY ===
-                // In such a case, the game proceeds to either next hand or the game end when there are winners or ties
-                for (int playerId = 0; playerId < numPlayers; playerId++) {
-                    // Checks if someone does not have a card at all
-                    if (engine.GetAllPlayers()[playerId].GetPlayerCards().length == 0) {
-                        exitHand = true; // Updates the sentinel value to break out of the loop
-                    }
-                }
+                // In such a case, the game proceeds to either next hand or the game ends when there are winners or ties
+                exitHand = engine.HasHandEnded(); // Updates the sentinel value based on if someone has used all of their cards away
 
             }
             
