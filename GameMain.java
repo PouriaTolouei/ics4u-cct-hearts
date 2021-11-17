@@ -17,7 +17,7 @@ public class GameMain {
         String cardStr; // User-input string that represent a Card object (e.g. H-2 -> 2 of Heart)
         Card card; // General Card object
         Card openingCard; // The Card that will make the opening lead (depends on numPlayers)
-        String openingCardStr; // The string representation of the openingCard
+        // String openingCardStr; // The string representation of the openingCard
         int status = 0; // Represents success or error codes
         int pos; // General representation of an index of an array
         int leadPlayerId; // The id of the player who will lead the trick
@@ -136,12 +136,14 @@ public class GameMain {
         // The player with 2 of Club make the opening lead.
         // If 2 of Club is removed in 5-player game, the player with 3 of Club makes the opening lead instead.
         openingCard = engine.GetOpeningCard(); // openingCard has already been set in the constructor according to numPlayers
+
+        /*
         if (numPlayers == 5) { // In a 5-player game, opening card is 3 of Club
             openingCardStr = "C-3";
         } else { // In a 3 or 4 player game, opening card is 2 of Club
             openingCardStr = "C-2";
         }
-        
+        */
 
         // === MAIN GAME LOOP ===
         // This is the main game loop responsible for running the game until someone wins
@@ -254,8 +256,11 @@ public class GameMain {
 
                     // When it is the first trick and the first play of a Card, let the Player know what Card has to be played for the opening lead
                     if (engine.GetNumTrickRound() == 1 && engine.GetNumCardsThrown() == 0) { // This section is just a friendly reminder/UI
-                        System.out.println("\nREMINDER: The first trick must be led by " + openingCardStr + ".");
+                        System.out.println("\nREMINDER: The first trick must be led by " + openingCard.toString() + ".");
                     }
+
+                    // Display's current leading suit
+                    System.out.println("LEADING SUIT: " + Card.SUITS_NAME[engine.GetLeadSuit()]);
 
                     // Prompts the current player for the Card to play, and convert their String input into a Card object
                     System.out.printf("PLAYER %d (%s), choose a Card to play: ", currPlayer.GetPlayerId(), currPlayer.GetPlayerName());
@@ -339,7 +344,7 @@ public class GameMain {
                         case HeartEngine.MUST_PLAY_OPENING_CARD:
                             // Remind the player that the first trick must be led by openingCard
                             System.out.println("----------------------------------------");
-                            System.out.printf("|  THE FIRST TRICK MUST BE LED BY %3s  |\n", openingCardStr);
+                            System.out.printf("|  THE FIRST TRICK MUST BE LED BY %3s  |\n", openingCard.toString());
                             System.out.println("----------------------------------------");
                             break;
 

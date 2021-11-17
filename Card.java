@@ -14,6 +14,9 @@ public abstract class Card {
     public static final int DIAMOND     = 1;
     public static final int HEART       = 2;
     public static final int SPADE       = 3;
+
+    // Represents the name of each suit
+    public static final String[] SUITS_NAME = {"CLUB", "DIAMOND", "HEART", "SPADE"};
     
     // By Pouria
     // Constructor for the Card object (Assigns the rank of the card)
