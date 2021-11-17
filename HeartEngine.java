@@ -29,6 +29,7 @@ public class HeartEngine {
     public static final int MUST_FOLLOW_SUIT        = -4;
     public static final int ILLEGAL_IN_FIRST_TRICK  = -5;
     public static final int MUST_PLAY_OPENING_CARD  = -6;
+    public static final int GIVE_LEAD_TO_NEXT       = -7;
 
 
     // Constructor
@@ -467,6 +468,19 @@ public class HeartEngine {
         return this.openingCard; // Returns the Card object that represents the opening card.
     }
 
+    // By Pouria
+    /*
+     * */
+    public boolean HasHandEnded() {
+        for (int playerId = 0; playerId < this.numPlayers; playerId++) {
+            if (GetAllPlayers()[playerId].GetPlayerCards().length == 0) {
+                return true; 
+            }
+        }
+        return false;
+    }
+    
+
     // By Haruki
     /* Updates the leading suit of the current trick to the specified one.
      * @param suitId       - The numerical id of a suit, which is declared in Card class. */
@@ -563,10 +577,11 @@ public class HeartEngine {
      *                    Returns 3 if the player "breaks the heart" and successfully throws the card.
      *                    Returns -1 if the player does not have the card or when the card is null.
      *                    Returns -2 if the player tries to throw a Heart when heart is not broken. 
-     *                    Returns -3 if the player has no choice but to skip the trick 
+     *                    Returns -3 if the player has no choice but to skip the first trick 
      *                    Returns -4 if the player throws a Card that is not in lead suit even if they have Cards in lead suit 
      *                    Returns -5 if the player throws a Card of Hearts of Queen of Spade in the first trick, which is illegal. 
-     *                    Returns -6 if the player throws a Card other than openingCard in the first throw of the first trick */
+     *                    Returns -6 if the player throws a Card other than openingCard in the first throw of the first trick 
+     *                    Returns -7 if the player has no choice but to give the lead to the next person */
     public int PlayCard(Player player, Card card) {
         
         // The following if-else statements check for potential errors
@@ -584,27 +599,47 @@ public class HeartEngine {
         }
         
         // === EDGE CASES CHECK ===
-        if (this.numTrickRound == 1 && player.HasCard(this.ConvertToCard("S-Q"))) { // #2 Check
-            // This is for an extremely rare edge case where the player only has Cards of Hearts and Queen of Spade in the first trick
-            // In such a case, the player can only skip as card of Hearts of Queen of Spade are illegal to play in first trick
-
-            // Firstly, temporarily remove Queen of Spade from the player's playerCards
-            player.RemovePlayerCard(this.ConvertToCard("S-Q"));
-
-            // This boolean indicates whether the player has Card of suit other than Heart
-            // If true, that means the player has some Cards that they can play for the first trick
-            // If false, that means the player only has Hearts and Queen of Spade, both of which are illegal to play in first trick 
-            boolean hasSuitOtherThanHeart = (player.HasSuit(Card.CLUB) || player.HasSuit(Card.DIAMOND) || player.HasSuit(Card.SPADE));
-
-            // Add the Queen of Spade back to the player's playerCards
-            player.SetPlayerCards(this.AddCardsToArray(player.GetPlayerCards(), new Card[] {this.ConvertToCard("S-Q")}));
-
-            // If the player does not have Cards in suits that is not Hearts when Queen of Spade is temporarily removed from their playerCard
-            // Then the player can only skip in the first trick; return -3. Otherwise, proceed for next checks.
-            if (!hasSuitOtherThanHeart) {
+        // This boolean indicates whether the player has Card in suits other than Heart
+        boolean hasSuitOtherThanHeart = (player.HasSuit(Card.CLUB) || player.HasSuit(Card.DIAMOND) || player.HasSuit(Card.SPADE));
+        // This is for the edge cases involving the first trick of a hand
+        if (this.numTrickRound == 1) {
+            if (!hasSuitOtherThanHeart) { // #1 Check
+                // This is when the player only has Cards in Hearts in the first trick
+                // Such a player can only skip (returns -3). This is because playing Hearts is illegal in the first trick.
                 return SKIP_TRICK;
+
+            } else if (player.HasCard(this.ConvertToCard("S-Q"))) { // #2 Check
+                // This is for an extremely rare edge case where the player only has Cards of Hearts and Queen of Spade in the first trick
+                // In such a case, the player can only skip as card of Hearts of Queen of Spade are illegal to play in first trick
+    
+                // Firstly, temporarily remove Queen of Spade from the player's playerCards
+                player.RemovePlayerCard(this.ConvertToCard("S-Q"));
+    
+                // Re-evalute hasSuitOtherThanHeart without Queen of Spade
+                // If true, that means the player has some Cards that they can play for the first trick
+                // If false, that means the player only has Hearts and Queen of Spade, both of which are illegal to play in first trick 
+                hasSuitOtherThanHeart = (player.HasSuit(Card.CLUB) || player.HasSuit(Card.DIAMOND) || player.HasSuit(Card.SPADE));
+    
+                // Add the Queen of Spade back to the player's playerCards
+                player.SetPlayerCards(this.AddCardsToArray(player.GetPlayerCards(), new Card[] {this.ConvertToCard("S-Q")}));
+    
+                // If the player does not have Cards in suits that is not Hearts when Queen of Spade is temporarily removed from their playerCard
+                // Then the player can only skip in the first trick; return -3. Otherwise, proceed for next checks.
+                if (!hasSuitOtherThanHeart) {
+                    return SKIP_TRICK;
+                }
+
+                // Re-evaluate hasSuitOtherThanHeart with Queen of Spade for later use
+                hasSuitOtherThanHeart = (player.HasSuit(Card.CLUB) || player.HasSuit(Card.DIAMOND) || player.HasSuit(Card.SPADE));
             }
-        } 
+        }
+
+        // If it is the first play/throw of a trick AND the player does NOT have cards other than Hearts AND Heart has not been broken
+        if (this.numCardsThrown == 0 && !hasSuitOtherThanHeart && !this.isHeartBroken) {
+            // Returns -7 to signify that the lead must be passed to the next player
+            return GIVE_LEAD_TO_NEXT;
+        }
+         
         
         // This if-else statement cannot be combined with the if-else statment above
         // This is so that #3 will still be checked against when #2 check is triggered but returns nothing

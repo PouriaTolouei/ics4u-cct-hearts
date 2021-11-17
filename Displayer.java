@@ -225,9 +225,9 @@ public class Displayer {
      * @param numTrickRound - The number of trick rounds. */
     public void DisplayRounds(int numHandRound, int numTrickRound) {
         // Prints out the numHandRound and numTrickRound in a formatted way
-        System.out.println("======================");
-        System.out.printf("HAND: %2d | TRICK: %2d\n", numHandRound, numTrickRound);
-        System.out.println("======================");
+        System.out.println("----------------------------------------");
+        System.out.printf("| HAND: %2d         | TRICK: %2d         |\n", numHandRound, numTrickRound);
+        System.out.println("----------------------------------------");
     }
 
 
@@ -256,6 +256,15 @@ public class Displayer {
             System.out.printf("%7s: ", suitNames[suit]); // Adds the suit name in the beginning 
             displayCards(groupedCards[suit]); // Prints out all the Cards of the specified suit
         }
+    }
+
+    // By Haruki
+    /* Announces that trickWinner won a trick in a formatted way.
+     * @param trickWinner    - The winner of tricks */
+    public void AnnounceTrickWinner(Player trickWinner) {
+        System.out.println("----------------------------------------");
+        System.out.printf("| PLAYER %d ( %-8s ) %-14s |\n", trickWinner.GetPlayerId(), trickWinner.GetPlayerName(), "WINS THE TRICK");
+        System.out.println("----------------------------------------\n");
     }
 
 
