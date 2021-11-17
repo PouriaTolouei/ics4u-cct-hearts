@@ -245,7 +245,7 @@ public class HeartEngine {
             
             // Otherwise, it's normal point calculation, meaning points of the cards in each player's tricks is added to each player's points
             else{
-                allPlayers[i].SetPlayerPoints(allPlayers[index].GetPlayerPoints() + points);
+                allPlayers[i].SetPlayerPoints(allPlayers[i].GetPlayerPoints() + points);
             }
         }
         return SUCCESS; // Returns success value, indicating normal calculation.
