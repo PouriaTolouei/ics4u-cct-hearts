@@ -47,7 +47,6 @@ public abstract class Card {
     public String toString() {
         String stringCard = null; // Stores the string version of the Card object 
 
-        
         // Checks for the suit of each Card object to store the proper suit.
         switch (this.GetSuit()){
             case Card.CLUB:
