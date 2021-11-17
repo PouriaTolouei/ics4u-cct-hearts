@@ -59,7 +59,7 @@ public class GameMain {
 
         // All of the game rules are handled by the Displayer class.
         for (int i = 0; i < Displayer.NUM_SECTIONS; i++) {
-            disp.ExplainRule(i);
+            disp.ExplainRule(i); // Rules are explained from Section #0 up to Section #NUM_SECTIONS
             // The user can press enter to read the next rule section
             System.out.println("\nPRESS ENTER TO PROCEED ...");
             input.nextLine();
@@ -96,15 +96,17 @@ public class GameMain {
             }
         }
 
-        // This section is responsible for prompting users for the mode in which they want to play
-        // Prompts the user if they would like to play a default or a customized game
+        
         System.out.println(); // Formatting purpose
-        System.out.println("Would you like to play a: ");
-        System.out.println("1. Default Mode (losing point of 50)");
-        System.out.println("2. Custom Mode (customize losing point)");
+        
         
         // This loop is responsible for forcing the user to input either 1 or 2
         while (true) {
+            // This section is responsible for prompting users for the mode in which they want to play
+            // Prompts the user if they would like to play a default or a customized game
+            System.out.println("Would you like to play a: ");
+            System.out.println("1. Default Mode (losing point of 50)");
+            System.out.println("2. Custom Mode (customize losing point)");
             System.out.print("Option: ");
             option = input.nextInt();
 
@@ -139,7 +141,7 @@ public class GameMain {
         // === IDENTIFY THE CARD THAT MAKES AN OPENING LEAD ===
         // The player with 2 of Club make the opening lead.
         // If 2 of Club is removed in 5-player game, the player with 3 of Club makes the opening lead instead.
-        openingCard = engine.GetOpeningCard();
+        openingCard = engine.GetOpeningCard(); // openingCard has already been set in the constructor according to numPlayers
         if (numPlayers == 5) { // In a 5-player game, opening card is 3 of Club
             openingCardStr = "C-3";
         } else { // In a 3 or 4 player game, opening card is 2 of Club
@@ -173,7 +175,7 @@ public class GameMain {
                 System.out.println("\nIT'S THE FOURTH HAND, SO THERE IS NO PASSING ROTATION!\n");
             } else { // When above check passes, proceed to prompt each Player what cards they want to pass
                 for (int playerId = 0; playerId < numPlayers; playerId++) {
-                    currPlayer = engine.GetAllPlayers()[playerId]; // Obtains current player
+                    currPlayer = engine.GetAllPlayers()[playerId]; // Obtains player of current iteration
                     pos = 0; // Resets the current position of Card to be passed
                     System.out.printf("\nPLAYER %d (%s), choose three cards you want to pass.\n", playerId, currPlayer.GetPlayerName());
                     
@@ -183,7 +185,7 @@ public class GameMain {
                         
                         // Prompts the user to type the string representation of the Card they want to pass
                         System.out.printf("\n#%d Card (Type it): ", pos + 1);
-                        cardStr = input.nextLine().toUpperCase(); // Ensures the SUIT character is capitalized
+                        cardStr = input.nextLine(); 
     
                         // Converts user-input String representation of Card into an actual Card object
                         card = engine.ConvertToCard(cardStr);
@@ -206,17 +208,6 @@ public class GameMain {
                 }
             }
 
-            /*
-            System.out.println("\nTESTING PASSING CARDS");
-            // TESTING PURPOSE: PRINTS EVERY PLAYER'S PASSING CARDS
-            for (int playerId = 0; playerId < numPlayers; playerId++) {
-                
-                System.out.printf("#%d PLAYER: ", playerId);
-                disp.DisplayCardThrown(passingCards[playerId]);
-                
-            }
-            System.out.println();
-            */
             
             // Cards will be passed as long as the numPlayers is NOT 4 OR numHandRound IS NOT 4
             // This is because PASSING ROTATION is skipped when it's the fourth hand in a 4-player game
@@ -226,19 +217,7 @@ public class GameMain {
                 System.out.println("\nTHE THREE CARDS FROM EACH PLAYER ARE PASSED TO ANOTHER PLAYER.\n");
             }
             
-
-            /*
-            System.out.println("\nSHOW EVERYONE'S CARDS");
-            // TESTING PURPOSE: PRINT EVERYONE'S CARDS
-            for (int i = 0; i < numPlayers; i++) {
-                System.out.println("#"+i);
-                disp.DisplayPlayerCards(engine.GetAllPlayers()[i]);
-            }
-            System.out.println();
-            */
             
-
-
             // === IDENTIFY THE PLAYER WHO MAKES THE OPENING LEAD ===
             // Iterates through every Player until it finds someone with openingCard
             for (int playerId = 0; playerId < numPlayers; playerId++) {
@@ -261,8 +240,6 @@ public class GameMain {
             // === LOOP RUNS UNTIL EVERYONE LOSES ALL OF THEIR HAND ===
             // This loop runs until all the players used all of their hand, and needs to be dealt cards again
             while(!exitHand) {
-
-                // numTrickRound = engine.GetNumTrickRound(); // Updates the numTrickRound from the HeartEngine
 
                 engine.SetNumCardsThrown(0); // Resets the numCardsThrown to 0 every trick
 
@@ -298,31 +275,8 @@ public class GameMain {
                         cardStr = input.nextLine();
                         card = engine.ConvertToCard(cardStr);
 
-                        /*
-                        if (card == null) { // Error handling
-                            System.out.println("\nWARNING: BAD NOTATION, PLEASE RE-TYPE THE CARD CORRECTLY.\n");
-                        } else if (engine.GetNumTrickRound() == 1 && engine.GetNumCardsThrown() == 0 && !card.equals(openingCard)) { // Error handling
-                            // When it is the 1st trick and 1st play of a Card, and the lead player does not play the predetermined openingCard,
-                            // then they are warned and asked to play a card again
-                            System.out.println("\nWARNING: THE FIRST TRICK MUST BE LED BY \"" + openingCardStr + "\".\n");
-                        } else { // When the current round is not the 1st trick and the 1st play of a Card of each hand
-                        */
-
-
-                        /*
-                        // If it's the first throw/play of the trick, update the lead suit according to the lead player's card
-                        // Note that the error handling above makes sure that the leading suit of the first trick is Club
-                        if (engine.GetNumCardsThrown() == 0) { 
-                            // If the card is NOT Heart OR the Heart is Broken (meaning Hearts are allowed), then update the lead suit
-                            if (card.GetSuit() != Card.HEART || engine.GetIsHeartBroken()) {
-                                engine.SetLeadSuit(card.GetSuit());
-                            }
-                            // When the card is Heart and the Heart is not broken yet, the PlayCard() below takes care of it
-                        }
-                        */
 
                         // The engine determines if the player can play/throw the card specified
-                        
                         status = engine.PlayCard(currPlayer, card);
 
                         System.out.println(); // Formatting purpose
@@ -335,12 +289,6 @@ public class GameMain {
                             cardsThrown[pos] = card; // Add a card to cardsThrown to make up a trick
                             engine.SetNumCardsThrown(engine.GetNumCardsThrown() + 1); // Increments the number of card thrown 
                             pos++; // Increments the index of cardsThrown
-
-                            // If it was the first throw of the trick, update the lead suit accordingly
-                            if (engine.GetNumCardsThrown() == 0) {
-                                engine.SetLeadSuit(card.GetSuit());
-                            }
-
                         }
 
                         // The main purpose of this switch statement is to control the flow of the program such that appropriate messages are displayed
@@ -419,11 +367,9 @@ public class GameMain {
                                 break;
 
                         }
-                        //}
 
 
                         // === DISPLAY OF TRICKS (cardThrown) ===
-                        // System.out.println("DISPLAY CARD THROWN");
                         disp.DisplayCardThrown(cardsThrown);
                     }
                 }
@@ -480,6 +426,13 @@ public class GameMain {
             System.out.println("\nPOINTS HAVE BEEN CALCULATED!\n"); // Let the players know the points have been calculated
 
 
+            // === RESET PLAYER'S TRICKS EVERY HAND ===
+            // Iterate through every player and reset their playerTricks
+            for (int playerId = 0; playerId < numPlayers; playerId++) {
+                engine.GetAllPlayers()[playerId].SetPlayerTricks(new Card[0]);
+            }
+
+
             // === CHECK WINNERS ===
             // Obtains the playerIds of the potential winners in an array
             winnerIds = engine.CheckWinner();
@@ -487,12 +440,18 @@ public class GameMain {
             if (winnerIds.length == numPlayers) {
                 // If all players are "winners", meaning everyone got the same point while exceeding the losingPoint
                 // Then the users are notified that the game tied, and the game ends
-                System.out.println("\n====== GAME TIED ======");
+                System.out.println();
+                System.out.println("----------------------------------------");
+                System.out.println("|               GAME TIED!             |");
+                System.out.println("----------------------------------------");
                 disp.DisplayPointsTable(engine.GetAllPlayers()); // Displays the Players' points
                 exitGame = true; // Adjusts the sentinel value to exit the main game loop
             } else if (winnerIds.length != 0) {
                 // If there is at least one player who won the game, announce the winner(s) and the game ends
-                System.out.println("\n====== CONGRATULATIONS ======");
+                System.out.println();
+                System.out.println("----------------------------------------");
+                System.out.println("|            CONGRATULATIONS!          |");
+                System.out.println("----------------------------------------");
                 disp.DisplayPointsTable(engine.GetAllPlayers()); // Displays the Players' points
                 System.out.println(); // For formatting reason
                 System.out.println("The following player(s) won the game!");
