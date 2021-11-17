@@ -20,6 +20,7 @@ public class Displayer {
     /* Displays the 1D array of Card objects that is passed to it (a suit of player's hand or the cards thrown).
     * @oaram cards         - The 1D array of Card objects that will be displayed. */
     private void displayCards(Card[]cards){
+        // Loops through a Card object array
         for (int i = 0; i < cards.length; i++){
             System.out.print(cards[i].toString() + " "); // Displays the string version of each Card object with one spacing at the front.
         }
