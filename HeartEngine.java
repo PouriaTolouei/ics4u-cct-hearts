@@ -6,6 +6,7 @@ public class HeartEngine {
     private int numPlayers;
     private int numHandRound;
     private int numTrickRound;
+    private int numCardsThrown;
     private boolean isHeartBroken;
     private Player currPlayer;
     private int losingPoint;
@@ -42,6 +43,7 @@ public class HeartEngine {
         this.numPlayers = numPlayers; // number of players parameter is assigned.
         this.numHandRound = 1; // Rounds start from 1.
         this.numTrickRound = 1; // Rounds start from 1.
+        this.numCardsThrown = 0; 
         this.isHeartBroken = false; // Defult value is assigned.
         this.currPlayer = allPlayers[0]; // Starts with player 0 (the first player).
         this.losingPoint = losingPoint; // losing point paramter is assigned.
@@ -437,6 +439,20 @@ public class HeartEngine {
      * @return - Returns the trick round number. */
     public int GetNumTrickRound() {
         return this.numTrickRound; // Return the integer which represents the trick round number.
+    }
+
+    // By Pouria
+    /* Obtains the number of Cards thrown during a trick so far.
+     * @return - Returns the number of cards thrown by Players so far during a trick */
+    public int GetNumCardsThrown() {
+        return this.numCardsThrown; // Returns the number of Cards thrown by Players during a trick
+    }
+
+    // By Haruki
+    /* Updates the number of Cards thrown during a trick to the specified value.
+     * @rapam numCardsThrown    - The number of cards thrown by Players during a trick */
+    public void SetNumCardsThrown(int numCardsThrown) {
+        this.numCardsThrown = numCardsThrown; // Updates the numCardsThrown to the specified one
     }
 
     // By Haruki
