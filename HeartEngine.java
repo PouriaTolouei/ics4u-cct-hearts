@@ -226,16 +226,16 @@ public class HeartEngine {
      *          - Returns 2 if 'shot the moon' calculations are applied (when a player reaches 26 points). */
 
     public int CalcPoint() {
-        int points = 0; // Keeps track of the point being added to each player by the end of each hand.
-        int index = 0; // Keeps track of a special index in the event of "shot the moon".
-
         // Loops through all the players
         for (int i = 0; i < numPlayers; i++){
+            int points = 0; // Keeps track of the point being added to each player by the end of each hand, and also resets it.
+            int index = 0; // Keeps track of a special index in the event of "shot the moon", and also resets it.
+            
             Card[] playerTricks = allPlayers[i].GetPlayerTricks(); // Stores the player's trick in a new array for easier accessing
             
             // Loops through the current player's tricks
             for (int j = 0; j < playerTricks.length; j++){
-                points += playerTricks[i].GetPoint(); // Adds the point of each card in the tricks
+                points += playerTricks[j].GetPoint(); // Adds the point of each card in the tricks
             }
 
             // If the point of that player adds up to 26 for that round, they have "shot the moon",
@@ -244,10 +244,10 @@ public class HeartEngine {
             if (points == SHOT_THE_MOON_POINT){
 
                 // Loops through all the other players except the current player ()
-                for (int j = i + 1; j < numPlayers + i; j++){
+                for (int k = i + 1; k < numPlayers + i; k++){
                     // When i exceeds array length, index uses remainder to reset it to 0 and count from there again.
                     // This is done until the index of the player who initiated 'shot the moon' is reached after one loop (numPlayers + i)/
-                    index = j % numPlayers; 
+                    index = k % numPlayers; 
                     // The points of the player who 'shot the moon' doesn't change and all other players get 26 points.
                     allPlayers[index].SetPlayerPoints(allPlayers[index].GetPlayerPoints() + SHOT_THE_MOON_POINT); 
                 }
