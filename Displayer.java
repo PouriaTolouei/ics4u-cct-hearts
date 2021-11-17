@@ -21,43 +21,7 @@ public class Displayer {
     * @oaram cards         - The 1D array of Card objects that will be displayed. */
     private void displayCards(Card[]cards){
         for (int i = 0; i < cards.length; i++){
-            // Makes sure that the Card is not null, otherwise it's ignored.
-            if (cards[i] != null){
-                // Checks for the suit of each Card object to display the proper suit.
-                switch (cards[i].GetSuit()){
-                    case Card.CLUB:
-                        System.out.print("C-");
-                        break;
-                    case Card.DIAMOND:
-                        System.out.print("D-");
-                        break;
-                    case Card.HEART:
-                        System.out.print("H-");
-                        break;
-                    case Card.SPADE:
-                        System.out.print("S-");
-                        break;
-                }
-                // Checks for the rank of each Card object to display the proper rank.
-                switch (cards[i].GetRank()){
-                    // Non-numbered ranks get converted into their names before getting displayed.
-                    case Card.CARD_JACK:
-                        System.out.print("J ");
-                        break;
-                    case Card.CARD_QUEEN:
-                        System.out.print("Q ");
-                        break;
-                    case Card.CARD_KING:
-                        System.out.print("K ");
-                        break;
-                    case Card.CARD_ACE:
-                        System.out.print("A ");
-                        break;
-                    // Numbered ranks are directly displayed.
-                    default:
-                        System.out.print(cards[i].GetRank() + " ");
-                }
-            }
+            System.out.print(cards[i].toString() + " "); // Displays the string version of each Card object with one spacing at the front.
         }
         System.out.print("\n"); // Goes to the next line so that future displayings are seperate.
     }
