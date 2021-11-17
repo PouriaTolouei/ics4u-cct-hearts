@@ -102,6 +102,7 @@ public class GameMain {
             System.out.println("2. Custom Mode (customize losing point)");
             System.out.print("Option: ");
             option = input.nextInt();
+            input.nextLine(); // Fixes the scanner
 
             if (option == 1) { // When the user chooses default mode
                 // The losingPoint is set to default losingPoint
@@ -113,6 +114,7 @@ public class GameMain {
                     // Prompts the user for customized losingPoint
                     System.out.print("Enter customized losing point (>0): ");
                     losingPoint = input.nextInt();
+                    input.nextLine(); // Fixes the scanner
     
                     if (losingPoint > 0) {
                         break; // If the losingPoint is positive, break out of the loop
@@ -154,7 +156,7 @@ public class GameMain {
             System.out.println("==========================================");
             System.out.println("Each player has to pick three cards from their hand to be passed to another player.");
             // Prompts each Player for the three cards that they want to pass
-            input.nextLine(); // Fixes the scanner
+            // input.nextLine(); // Fixes the scanner
 
             // This is for the case when it's the 4-player game, and it's the fourth hand,
             // in which case the Cards will not be passed
@@ -250,8 +252,12 @@ public class GameMain {
                         System.out.println("\nREMINDER: The first trick must be led by " + openingCard.toString() + ".");
                     }
 
-                    // Display's current leading suit
-                    System.out.println("LEADING SUIT: " + Card.SUITS_NAME[engine.GetLeadSuit()]);
+                    // Displays current leading suit if it isn't the first throw/play in a trick
+                    // This is because the leading suit is decided by the first throw/play in a trick, thus make no sense to display it.
+                    if (engine.GetNumCardsThrown() != 0) {
+                        System.out.println("LEADING SUIT: " + Card.SUITS_NAME[engine.GetLeadSuit()]);
+                    }
+                    
 
                     // Prompts the current player for the Card to play, and convert their String input into a Card object
                     System.out.printf("PLAYER %d (%s), choose a Card to play: ", currPlayer.GetPlayerId(), currPlayer.GetPlayerName());
@@ -428,6 +434,11 @@ public class GameMain {
                 System.out.println("| SOMEONE SHOT THE MOON! +26 POINTS FOR EVERYONE ELSE! |");
                 System.out.println("--------------------------------------------------------");
             }
+
+            // === PRINTS OUT EVERY PLAYER'S POINTS ===
+            // This is the second time the player's points are displayed in one hand
+            // This is so that Players can check their points more frequently
+            disp.DisplayPointsTable(engine.GetAllPlayers());
 
             System.out.println("\nPOINTS HAVE BEEN CALCULATED!\n"); // Let the players know the points have been calculated
 
