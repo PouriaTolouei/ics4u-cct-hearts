@@ -17,7 +17,6 @@ public class GameMain {
         String cardStr; // User-input string that represent a Card object (e.g. H-2 -> 2 of Heart)
         Card card; // General Card object
         Card openingCard; // The Card that will make the opening lead (depends on numPlayers)
-        // String openingCardStr; // The string representation of the openingCard
         int status = 0; // Represents success or error codes
         int pos; // General representation of an index of an array
         int leadPlayerId; // The id of the player who will lead the trick
@@ -136,14 +135,6 @@ public class GameMain {
         // The player with 2 of Club make the opening lead.
         // If 2 of Club is removed in 5-player game, the player with 3 of Club makes the opening lead instead.
         openingCard = engine.GetOpeningCard(); // openingCard has already been set in the constructor according to numPlayers
-
-        /*
-        if (numPlayers == 5) { // In a 5-player game, opening card is 3 of Club
-            openingCardStr = "C-3";
-        } else { // In a 3 or 4 player game, opening card is 2 of Club
-            openingCardStr = "C-2";
-        }
-        */
 
         // === MAIN GAME LOOP ===
         // This is the main game loop responsible for running the game until someone wins
@@ -348,6 +339,7 @@ public class GameMain {
                             System.out.println("----------------------------------------");
                             break;
 
+                        // When the currPlayer have no choice but to give the lead to the next player
                         case HeartEngine.GIVE_LEAD_TO_NEXT:
                             System.out.println("---------------------------------------------");
                             System.out.printf("| PLAYER %d HAS TO PASS LEAD TO NEXT PLAYER |\n", currPlayer.GetPlayerId());
@@ -359,7 +351,12 @@ public class GameMain {
                     // When the PlayCard() is successful, breaks a heart, the currPlayer has to skip a trick in the first trick, or the currPlayer has to give lead to the next Player
                     // The following methods are called (they are methods that are common in those three scenarios)
                     if (status == HeartEngine.SUCCESS || status == HeartEngine.HEART_HAS_BEEN_BROKEN || status == HeartEngine.SKIP_TRICK || status == HeartEngine.GIVE_LEAD_TO_NEXT) {
-                        currPlayer.SetCardThrown(card); // The currPlayer throws the card
+                        // Only when the player is not skipping (meaning only when success or breaking a heart), the player throws that card
+                        if (status == HeartEngine.SUCCESS || status == HeartEngine.HEART_HAS_BEEN_BROKEN) {
+                            currPlayer.SetCardThrown(card); // The currPlayer throws the card
+                            engine.GetCardsThrown()[pos] = card; // Add a card to cardsThrown to make up a trick
+                        }
+
                         engine.SwitchPlayer(); // Switches the current player for next iteration
                         
                         /*
@@ -368,9 +365,9 @@ public class GameMain {
                             card = null;
                         }
                         */
-
-                        engine.GetCardsThrown()[pos] = card; // Add a card to cardsThrown to make up a trick
-                        engine.SetNumCardsThrown(engine.GetNumCardsThrown() + 1); // Increments the number of card thrown 
+                        
+                        // Increments the number of card thrown. This still occurs even if the player skips.
+                        engine.SetNumCardsThrown(engine.GetNumCardsThrown() + 1); 
                         pos++; // Increments the index of cardsThrown
                     }
 
