@@ -555,6 +555,7 @@ public class HeartEngine {
 
     /* The specified Player ATTEMPTS to play/throw a specified Card. (Meaning, this method does not modify the player's playerCards.)
      * This method returns error or success codes according to several conditions listed below.
+     * This method is also responsible for updating the leadSuit according to the game rule.
      * @param player    - The Player who will throw the card.
      * @param card      - The Card that the player wants to play/throw for a trick.
      * @return          - Returns 1 if the player successfully throws the card.
@@ -566,12 +567,23 @@ public class HeartEngine {
      *                    Returns -5 if the player throws a Card of Hearts of Queen of Spade in the first trick, which is illegal. 
      *                    Returns -6 if the player throws a Card other than openingCard in the first throw of the first trick */
     public int PlayCard(Player player, Card card) {
+        
         // The following if-else statements check for potential errors
+        // === PREREQUISITE CHECK ===
+        // Checks if the card the player wants to throw/play is valid in the first place
         if (!player.HasCard(card)) { // #1 Check
             // If the player does not have the card they want to throw or the card is null, then -1 is returned
             return INVALID_CARD;
+        }
+
+        // === UPDATING LEAD SUIT ===
+        // If it is the first throw/play in a trick AND ( the card thrown is NOT heart OR the Heart is broken )
+        if (this.numCardsThrown == 0 && (card.GetSuit() != Card.HEART || this.isHeartBroken)) {
+            this.SetLeadSuit(card.GetSuit()); // Update the lead suit before proceeding to conduct below checks
+        }
         
-        } else if (this.numTrickRound == 1 && player.HasCard(this.ConvertToCard("S-Q"))) { // #2 Check
+        // === EDGE CASES CHECK ===
+        if (this.numTrickRound == 1 && player.HasCard(this.ConvertToCard("S-Q"))) { // #2 Check
             // This is for an extremely rare edge case where the player only has Cards of Hearts and Queen of Spade in the first trick
             // In such a case, the player can only skip as card of Hearts of Queen of Spade are illegal to play in first trick
 
@@ -605,33 +617,33 @@ public class HeartEngine {
             // It is illegal to throw a card of Hearts OR Queen of Spade IN the first trick
             // Thus, if the player throws such Cards, -5 is returned
             return ILLEGAL_IN_FIRST_TRICK;
-        } 
+
+        } else if (this.GetNumCardsThrown() == 0 && this.GetNumTrickRound() == 1 && !card.equals(this.openingCard)) { // #5 Check
+            // If it is the first throw of a Card in the first trick of a hand AND the player does not play the openingCard
+            return MUST_PLAY_OPENING_CARD; // -6 is returned to indicate that the player must play the openingCard
+        }
 
         
+        // === "HEART HAS BEEN BROKEN" MECHANISM ===
         // This if-else statement deal with "Heart has been broken" mechanism
         if (card.GetSuit() == Card.HEART && !this.isHeartBroken) {
-            if (this.numCardsThrown == 0) { // #5 Check
+            if (this.numCardsThrown == 0) { // #6 Check
                 // If the card is Heart AND the heart is NOT broken AND it is the first throw of a trick
                 // A heart cannot be broken so -2 is returned
                 return HEART_NOT_BROKEN;
-            } else if (!player.HasSuit(this.leadSuit) && this.numCardsThrown != 0) { // #6 Check
+            } else if (!player.HasSuit(this.leadSuit) && this.numCardsThrown != 0) { // #7 Check
                 // If the card is Heart AND the heart is NOT broken 
                 // AND the player has no Cards in lead suit AND it is not the first throw/play in a trick
                 // then 3 is returned to indicate the heart has been broken
                 return HEART_HAS_BEEN_BROKEN;
     
-            } else { // #7 Check
+            } else { // #8 Check
                 // If the card is Heart AND Heart is NOT broken, then -2 is returned
                 return HEART_NOT_BROKEN;
             } 
         }
         
-
-        // If it is the first throw of a Card in the first trick of a hand AND the player does not play the openingCard
-        if (this.GetNumCardsThrown() == 0 && this.GetNumTrickRound() == 1 && !card.equals(this.openingCard)) {
-            return MUST_PLAY_OPENING_CARD; // -6 is returned to indicate that the player must play the openingCard
-        }
-
+        // === AFTER ALL CASES ARE CHECKED AGAINST ===
         // The several checks above ensures that the specified player can successfully play/throw the card specified
         return SUCCESS;
     }
