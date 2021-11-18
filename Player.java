@@ -1,11 +1,11 @@
 public class Player {
     // Instance variables
-    private Card[] playerCards;
-    private Card[] playerTricks;
-    private int playerPoints;
-    private String playerName;
-    private int playerId;
-    private Card cardThrown;
+    private int playerId; // The id of the player
+    private String playerName; // The name of the player
+    private int playerPoints; // The points the player earns throughout the game
+    private Card[] playerCards; // The Cards the player holds (aka hand)
+    private Card[] playerTricks; // The array of Cards that represent the tricks the player wins
+    private Card cardThrown; // The Card the player throws during a trick
 
     // Constructor 
     // By Pouria
@@ -45,6 +45,7 @@ public class Player {
         }
     }
 
+
     // By Haruki
     /* It parses through the player's cards, and return an array of Card objects 
      * that only contain the suit specified.
@@ -81,35 +82,40 @@ public class Player {
     // === Public Methods ===
 
     // By Pouria
-    /* Obtains the name of the player.
-     * @return  - the name of the player. */
-    public String GetPlayerName() {
-        return this.playerName; // returns the player's name (given at the beiginning of the game).
+    /* Indicates whether the player has a Card of a specified suit.
+     * @param suit  - An integer representation of the suit 
+     * @return      - Returns true if the player has a card of the specified suit.
+     *              - Returns false if the player doesn't have a card of the specified suit.  */
+    public boolean HasSuit(int suit) {
+        // Loops through the player's hand (Card array).
+        for (int i = 0; i < this.playerCards.length; i++){
+            // Checks to see if any card has the specified suit and returns true and ends the loop if so.
+            if(this.playerCards[i].GetSuit() == suit){
+                return true;
+            }
+        }
+        // Otherwise no card was found with the specified suit.
+        return false;
     }
 
 
     // By Pouria
-    /* Obtains the id of the player.
-     * @return  - the id of the player. */
-    public int GetPlayerId() {
-        return this.playerId; // return the player's unique id (ranges from 0 to 4 for the 5 potential players).
+    /* Indicates whether the player has a specified Card in their hand.
+     * @param card  - The specified Card object. 
+     * @return      - Returns true if the player has the specified card.
+     *              - Returns false if the player doesn't have the specified card or the card is null. */
+    public boolean HasCard(Card card) {
+        // Loops through the player's hand (Card array).
+        for (int i = 0; i < this.playerCards.length; i++){
+            // Checks to see if any card matches the specified card and it's not null, then returns true and ends the loop if so.
+            if(card != null && this.playerCards[i].equals(card)){
+                return true;
+            }
+        }
+        // Otherwise the specified card was not found or it was null.
+        return false;
     }
 
-
-    // By Pouria
-    /* Obtains the player's hand as an array of Card objects.
-     * @return  - The player's hand as a 1D array of Card objects. */
-    public Card[] GetPlayerCards() {
-        return this.playerCards; // Returns the 1D array of Card objects that represent the player's hand.
-    }
-
-
-    // By Pouria
-    /* Updates the player's hand to a specified array of Card objects.
-     * @param cards - 1D array of Card objects, which will be set to the player's hand */
-    public void SetPlayerCards(Card[] cards) {
-        this.playerCards = cards; // Passes the refernce of a new array to represent the player's hand.
-    }
 
     // By Pouria
     /* Removes a specified card from the player's hand.
@@ -130,112 +136,7 @@ public class Player {
         this.playerCards = temp; // The reference of the temporary array is assigned back to player's hand, so now it doesn't have the removed card.
     }
 
-    // By Pouria
-    /* Indicates whether the player has a Card of a specified suit.
-     * @param suit  - An integer representation of the suit 
-     * @return      - Returns true if the player has a card of the specified suit.
-     *              - Returns false if the player doesn't have a card of the specified suit.  */
-    public boolean HasSuit(int suit) {
-        // Loops through the player's hand (Card array).
-        for (int i = 0; i < this.playerCards.length; i++){
-            // Checks to see if any card has the specified suit and returns true and ends the loop if so.
-            if(this.playerCards[i].GetSuit() == suit){
-                return true;
-            }
-        }
-        // Otherwise no card was found with the specified suit.
-        return false;
-    }
 
-    // By Pouria
-    /* Indicates whether the player has a specified Card in their hand.
-     * @param card  - The specified Card object. 
-     * @return      - Returns true if the player has the specified card.
-     *              - Returns false if the player doesn't have the specified card or the card is null. */
-    public boolean HasCard(Card card) {
-        // Loops through the player's hand (Card array).
-        for (int i = 0; i < this.playerCards.length; i++){
-            // Checks to see if any card matches the specified card and it's not null, then returns true and ends the loop if so.
-            if(card != null && this.playerCards[i].equals(card)){
-                return true;
-            }
-        }
-        // Otherwise the specified card was not found or it was null.
-        return false;
-    }
-
-    // By Pouria
-    /* Updates the Card that the player throws each trick and removes that from the player's cards(hand).
-     * @param card  - A player's Card that is to be thrown during trick. 
-     * @ return     - Returns 1 if thrown card was set succesfully.
-     *              - Returns -1 if the player doesn't have that card. */
-    public int SetCardThrown(Card card) {
-        // A special case where the player has to skip (no card thrown).
-        if (card == null){
-            this.cardThrown = null; // Sets the card thrown to nothing (null).
-            return HeartEngine.SUCCESS; // Card thrown has been succesfully set.
-        }
-        // Makes sure that the player has the Card object that they want to throw.
-        else if (HasCard(card)){ 
-            this.cardThrown = card; // Sets the new Card object that the player wants to throw/play.
-            RemovePlayerCard(card); // Removes the Card object that is about to be thrown from player's cards.
-            return HeartEngine.SUCCESS; // Card thrown has been succesfully set.
-        }
-        // Otherwise the card was not found, so error value is returned.
-        else{
-            return HeartEngine.INVALID_CARD;
-        }
-    }
-
-
-    // By Haruki
-    /* Obtains the Card object that the player has thrown in a trick.
-     * @return - The card object that the player has thrown in current trick */
-    public Card GetCardThrown() {
-        // Returns the Card object that the player has thrown/played in a trick.
-        return this.cardThrown;
-    }
-
-
-    // By Haruki
-    /* Obtains the player's accumulated points as they play the game.
-     * @return  - The player's points. */
-    public int GetPlayerPoints() {
-        // Returns the player's accumulated point throughout the game
-        return this.playerPoints; 
-    }
-
-
-    // By Haruki
-    /* Updates the player's points to a specified value.
-     * @param point - The player's new point */
-    public void SetPlayerPoints(int point) {
-        // Updates the player's point to a specified one
-        this.playerPoints = point;
-    }
-
-
-    // By Haruki
-    /* Obtains the array of Card objects that the player 
-     * has collected as tricks each hand (the time it takes to play all cards)
-     * @return  - An array of Card objects that contains tricks the player has collected. */
-    public Card[] GetPlayerTricks() {
-        // Returns the player's tricks, which is 
-        // a pile of cards that the player has collected through each hand
-        return this.playerTricks;
-    }
-
-
-    // By Haruki
-    /* Updates the player's tricks to a specified one.
-     * @param cards - 1D array of Card objects that represent a 
-     *                new pile of tricks that the player holds. */
-    public void SetPlayerTricks(Card[] cards) {
-        // Updates the player's tricks to the specified one
-        this.playerTricks = cards;
-    }
-
-    
     // By Haruki & Pouria
     /* Sorts player's cards (their hand) by suit as well as the ranks. */
     public void SortPlayerCards() {
@@ -274,5 +175,123 @@ public class Player {
             }
         }
     }
+
+
+    // === Getter and Setter ===
+
+    // By Pouria
+    /* Obtains the id of the player.
+     * @return  - the id of the player. */
+    public int GetPlayerId() {
+        return this.playerId; // return the player's unique id (ranges from 0 to 4 for the 5 potential players).
+    }
+
+
+    // By Pouria
+    /* Obtains the name of the player.
+     * @return  - the name of the player. */
+    public String GetPlayerName() {
+        return this.playerName; // returns the player's name (given at the beiginning of the game).
+    }
+
+
+    // By Haruki
+    /* Obtains the player's accumulated points as they play the game.
+     * @return  - The player's points. */
+    public int GetPlayerPoints() {
+        // Returns the player's accumulated point throughout the game
+        return this.playerPoints; 
+    }
+
+
+    // By Haruki
+    /* Updates the player's points to a specified value.
+     * @param point - The player's new point */
+    public void SetPlayerPoints(int point) {
+        // Updates the player's point to a specified one
+        this.playerPoints = point;
+    }
+
+
+    // By Pouria
+    /* Obtains the player's hand as an array of Card objects.
+     * @return  - The player's hand as a 1D array of Card objects. */
+    public Card[] GetPlayerCards() {
+        return this.playerCards; // Returns the 1D array of Card objects that represent the player's hand.
+    }
+
+
+    // By Pouria
+    /* Updates the player's hand to a specified array of Card objects.
+     * @param cards - 1D array of Card objects, which will be set to the player's hand */
+    public void SetPlayerCards(Card[] cards) {
+        this.playerCards = cards; // Passes the refernce of a new array to represent the player's hand.
+    }
+
+    
+    // By Haruki
+    /* Obtains the array of Card objects that the player 
+     * has collected as tricks each hand (the time it takes to play all cards)
+     * @return  - An array of Card objects that contains tricks the player has collected. */
+    public Card[] GetPlayerTricks() {
+        // Returns the player's tricks, which is 
+        // a pile of cards that the player has collected through each hand
+        return this.playerTricks;
+    }
+
+
+    // By Haruki
+    /* Updates the player's tricks to a specified one.
+     * @param cards - 1D array of Card objects that represent a 
+     *                new pile of tricks that the player holds. */
+    public void SetPlayerTricks(Card[] cards) {
+        // Updates the player's tricks to the specified one
+        this.playerTricks = cards;
+    }
+
+
+    // By Haruki
+    /* Obtains the Card object that the player has thrown in a trick.
+     * @return - The card object that the player has thrown in current trick */
+    public Card GetCardThrown() {
+        // Returns the Card object that the player has thrown/played in a trick.
+        return this.cardThrown;
+    }
+
+
+    // By Pouria
+    /* Updates the Card that the player throws each trick and removes that from the player's cards(hand).
+     * @param card  - A player's Card that is to be thrown during trick. 
+     * @ return     - Returns 1 if thrown card was set succesfully.
+     *              - Returns -1 if the player doesn't have that card. */
+    public int SetCardThrown(Card card) {
+        // A special case where the player has to skip (no card thrown).
+        if (card == null){
+            this.cardThrown = null; // Sets the card thrown to nothing (null).
+            return HeartEngine.SUCCESS; // Card thrown has been succesfully set.
+        }
+        // Makes sure that the player has the Card object that they want to throw.
+        else if (HasCard(card)){ 
+            this.cardThrown = card; // Sets the new Card object that the player wants to throw/play.
+            RemovePlayerCard(card); // Removes the Card object that is about to be thrown from player's cards.
+            return HeartEngine.SUCCESS; // Card thrown has been succesfully set.
+        }
+        // Otherwise the card was not found, so error value is returned.
+        else{
+            return HeartEngine.INVALID_CARD;
+        }
+    }
+
+
+    
+
+
+    
+
+
+    
+
+    
+    
 
 }
