@@ -222,7 +222,9 @@ public class GameMain {
             // This is because points are only calculated after each hand
             disp.DisplayPointsTable(engine.GetAllPlayers());
 
+
             exitHand = false; // Resets the sentinel value every hand
+            engine.SetIsHeartBroken(false); // Reset the "heart has been broken" status to false every hand
             // Resets the number of trick rounds every hand (Note: Counts from 1)
             engine.SetNumTrickRound(1);
             
@@ -257,9 +259,13 @@ public class GameMain {
                     if (engine.GetNumCardsThrown() != 0) {
                         System.out.println("LEADING SUIT: " + Card.SUITS_NAME[engine.GetLeadSuit()]);
                     }
+
+                    // Displays if the Heart has been broken yet in a formatted way
+                    System.out.println("HEART HAS BEEN BROKEN: " + (engine.GetIsHeartBroken() + "").toUpperCase());
                     
 
                     // Prompts the current player for the Card to play, and convert their String input into a Card object
+                    System.out.println(); // formatting purpose
                     System.out.printf("PLAYER %d (%s), choose a Card to play: ", currPlayer.GetPlayerId(), currPlayer.GetPlayerName());
                     cardStr = input.nextLine();
                     card = engine.ConvertToCard(cardStr);
@@ -347,9 +353,9 @@ public class GameMain {
 
                         // When the currPlayer have no choice but to give the lead to the next player
                         case HeartEngine.GIVE_LEAD_TO_NEXT:
-                            System.out.println("---------------------------------------------");
+                            System.out.println("--------------------------------------------");
                             System.out.printf("| PLAYER %d HAS TO PASS LEAD TO NEXT PLAYER |\n", currPlayer.GetPlayerId());
-                            System.out.println("---------------------------------------------");
+                            System.out.println("--------------------------------------------");
                             // engine.SetCardsThrown(null); // Sets the cardsThrown to null to indicate that no Cards are thrown this trick
                             break;
                     }
@@ -410,9 +416,9 @@ public class GameMain {
                     // === INCREMENTS the numTrickRound by 1 ===
                     engine.SetNumTrickRound(engine.GetNumTrickRound() + 1); // Increments the numTrickRound by 1
 
-                } else { // If the status is GIVE_LEAD_TO_NEXT, set the currPlayer to the next Player (according to their player Id)
-                    engine.SetCurrPlayer(engine.GetAllPlayers()[(engine.GetCurrPlayer().GetPlayerId() + 1) % numPlayers]);
-                }
+                }  
+                // If the status is GIVE_LEAD_TO_NEXT, then the game simply proceeds with the next player
+                
 
                 // === CHECKS IF SOMEONE HAS USED ALL OF THEIR CARDS AWAY ===
                 // In such a case, the game proceeds to either next hand or the game ends when there are winners or ties
