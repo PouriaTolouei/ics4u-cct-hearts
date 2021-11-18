@@ -319,9 +319,9 @@ public class GameMain {
                             // Let the player know that the current player has no choice but to skip
                             // When a player skips, they still have to play a card, but that card will not be
                             // taken into consideration when it comes to collection of trick
-                            System.out.println("-------------------------------------------");
+                            System.out.println("------------------------------------------");
                             System.out.printf("| PLAYER %d DON'T HAVE CHOICE BUT TO SKIP |\n", currPlayer.GetPlayerId());
-                            System.out.println("-------------------------------------------");
+                            System.out.println("------------------------------------------");
                             break;
                         
                         // When the currPlayer attempts to throw a Card not of leading suit
