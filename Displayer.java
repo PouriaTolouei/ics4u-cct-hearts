@@ -30,6 +30,7 @@ public class Displayer {
         System.out.print("\n"); // Goes to the next line so that future displayings are seperate.
     }
 
+
     // By Haruki
     /* Separates an array of Card objects by suit, and return a 2D array where each row corresponds to each suit.
      * @param cards - An array of Card objects to be separated by suit
@@ -226,15 +227,6 @@ public class Displayer {
         }
     }
 
-    // By Haruki
-    /* Announces that trickWinner won a trick in a formatted way.
-     * @param trickWinner    - The winner of tricks */
-    public void AnnounceTrickWinner(Player trickWinner) {
-        System.out.println("----------------------------------------");
-        System.out.printf("| PLAYER %d ( %-8s ) %-14s |\n", trickWinner.GetPlayerId(), trickWinner.GetPlayerName(), "WINS THE TRICK");
-        System.out.println("----------------------------------------\n");
-    }
-
 
     // By Pouria
     /* Displays the thrown cards that make up a trick in the order it was thrown.
@@ -280,4 +272,15 @@ public class Displayer {
         }
         System.out.print("\n"); // Goes to the next line so that future displayings are seperate.
     }
+
+
+    // By Haruki
+    /* Announces that trickWinner won a trick in a formatted way.
+     * @param trickWinner    - The winner of tricks */
+    public void AnnounceTrickWinner(Player trickWinner) {
+        System.out.println("----------------------------------------");
+        System.out.printf("| PLAYER %d ( %-8s ) %-14s |\n", trickWinner.GetPlayerId(), trickWinner.GetPlayerName(), "WINS THE TRICK");
+        System.out.println("----------------------------------------\n");
+    }
+
 }
