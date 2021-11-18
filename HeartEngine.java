@@ -412,7 +412,8 @@ public class HeartEngine {
             rank = Card.CARD_ACE;
         }
         // Checks whether it's a rank number between 2 and 10 (inclusive) and then converts it to be stored as integer.
-        else if (Integer.parseInt(cardComponents[1]) >= 2 && Integer.parseInt(cardComponents[1]) <= 10){
+        // ** It must be checked as a String because parsing them for checking would break the code if the user inputs wrong letter rank.
+        else if (cardComponents[1].equals("2") || cardComponents[1].equals("3") || cardComponents[1].equals("4") || cardComponents[1].equals("5") || cardComponents[1].equals("6") || cardComponents[1].equals("7") || cardComponents[1].equals("8") || cardComponents[1].equals("9") || cardComponents[1].equals("10")){
             rank = Integer.parseInt(cardComponents[1]);
         }
         // Otherwise it is not a valid rank, so null is returned as it cannot be used to create a valid Card object.
