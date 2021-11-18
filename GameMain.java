@@ -142,32 +142,8 @@ public class GameMain {
         // This is the main game loop responsible for running the game until someone wins
         while(!exitGame) {
             // Shuffles the standard deck of card and deals the Cards to each Player
-            // engine.Shuffle();
-            // engine.DealPlayerCards();
-
-            // TEST
-            
-            Card[] cards1 = {engine.ConvertToCard("C-2"), engine.ConvertToCard("C-3"), engine.ConvertToCard("C-4"), engine.ConvertToCard("C-5"), 
-            engine.ConvertToCard("C-6"), engine.ConvertToCard("C-7"), engine.ConvertToCard("C-8"), engine.ConvertToCard("C-9"), engine.ConvertToCard("C-10"), 
-            engine.ConvertToCard("C-J"), engine.ConvertToCard("C-Q"), engine.ConvertToCard("C-K"), engine.ConvertToCard("C-A") };
-
-            Card[] cards2 = {engine.ConvertToCard("D-2"), engine.ConvertToCard("D-3"), engine.ConvertToCard("D-4"), engine.ConvertToCard("D-5"), 
-            engine.ConvertToCard("D-6"), engine.ConvertToCard("D-7"), engine.ConvertToCard("D-8"), engine.ConvertToCard("D-9"), engine.ConvertToCard("D-10"), 
-            engine.ConvertToCard("D-J"), engine.ConvertToCard("H-A"), engine.ConvertToCard("H-K"), engine.ConvertToCard("H-Q") };
-
-            Card[] cards3 = {engine.ConvertToCard("H-2"), engine.ConvertToCard("H-3"), engine.ConvertToCard("H-4"), engine.ConvertToCard("H-5"), 
-            engine.ConvertToCard("H-6"), engine.ConvertToCard("H-7"), engine.ConvertToCard("H-8"), engine.ConvertToCard("H-9"), engine.ConvertToCard("H-10"), 
-            engine.ConvertToCard("H-J"), engine.ConvertToCard("D-Q"), engine.ConvertToCard("D-K"), engine.ConvertToCard("D-A") };
-
-            Card[] cards4 = {engine.ConvertToCard("S-2"), engine.ConvertToCard("S-3"), engine.ConvertToCard("S-4"), engine.ConvertToCard("S-5"), 
-            engine.ConvertToCard("S-6"), engine.ConvertToCard("S-7"), engine.ConvertToCard("S-8"), engine.ConvertToCard("S-9"), engine.ConvertToCard("S-10"), 
-            engine.ConvertToCard("S-J"), engine.ConvertToCard("S-Q"), engine.ConvertToCard("S-K"), engine.ConvertToCard("S-A") };
-
-            engine.GetAllPlayers()[0].SetPlayerCards(cards1);
-            engine.GetAllPlayers()[1].SetPlayerCards(cards2);
-            engine.GetAllPlayers()[2].SetPlayerCards(cards3);
-            engine.GetAllPlayers()[3].SetPlayerCards(cards4);
-            
+            engine.Shuffle();
+            engine.DealPlayerCards();    
 
             // === PASSING ROTATION ===
             // Instantiates the 2D array of Cards that is used for passing rotation

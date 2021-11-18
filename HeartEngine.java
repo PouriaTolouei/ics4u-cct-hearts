@@ -241,7 +241,10 @@ public class HeartEngine {
             
             // Loops through the current player's tricks
             for (int j = 0; j < playerTricks.length; j++){
-                points += playerTricks[j].GetPoint(); // Adds the point of each card in the tricks
+                // Makes sure that current Card in player's trick is not null, otherwise it gets skipped.
+                if (playerTricks[j] != null){
+                    points += playerTricks[j].GetPoint(); // Adds the point of each card in the tricks
+                }
             }
 
             // If the point of that player adds up to 26 for that round, they have "shot the moon",
