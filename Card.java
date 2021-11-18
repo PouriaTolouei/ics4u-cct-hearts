@@ -18,18 +18,15 @@ public abstract class Card {
     // Represents the name of each suit
     public static final String[] SUITS_NAME = {"CLUB", "DIAMOND", "HEART", "SPADE"};
     
+    // === Constructor ===
     // By Pouria
     // Constructor for the Card object (Assigns the rank of the card)
     public Card(int rank) {
         this.rank = rank;
     }
 
-    // By Haruki
-    /* Obtains the rank of the Card, ranging from 2 to 14, where 14 represents Ace.
-     * @return  - The rank of the card.*/
-    public int GetRank() {
-        return this.rank;
-    }
+
+    // === Public Methods ===
 
     // By Haruki & Pouria
     /* Indicates whether this Card has the same suit and rank as the card that is compared against.
@@ -41,6 +38,7 @@ public abstract class Card {
         }
         return false;
     }
+
 
     // By Pouria
     /* Converts the Card object into its String version for displaying purposes (eg. 2 of hearts --> "H-2"). */
@@ -83,6 +81,16 @@ public abstract class Card {
         }
         
         return stringCard; // Returns the String version of the Card object.
+    }
+
+    
+    // === Getters ===
+
+    // By Haruki
+    /* Obtains the rank of the Card, ranging from 2 to 14, where 14 represents Ace.
+     * @return  - The rank of the card.*/
+    public int GetRank() {
+        return this.rank;
     }
 
     public abstract int GetPoint();
