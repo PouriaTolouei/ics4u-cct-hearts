@@ -12,7 +12,7 @@ public class GameMain {
         int numPlayers; // Number of players
         String[] playerNames; // An array of player names
         String individualName; // Individual name of a player
-        int losingPoint = 0; // The point at which the game ends
+        int endingPoint = 0; // The point at which the game ends
         Player currPlayer; // The current player of interest
         String cardStr; // User-input string that represent a Card object (e.g. H-2 -> 2 of Heart)
         Card card; // General Card object
@@ -98,29 +98,29 @@ public class GameMain {
             // This section is responsible for prompting users for the mode in which they want to play
             // Prompts the user if they would like to play a default or a customized game
             System.out.println("Would you like to play a: ");
-            System.out.println("1. Default Mode (losing point of 50)");
-            System.out.println("2. Custom Mode (customize losing point)");
+            System.out.println("1. Default Mode (ending point of 50)");
+            System.out.println("2. Custom Mode (customize ending point)");
             System.out.print("Option: ");
             option = input.nextInt();
             input.nextLine(); // Fixes the scanner
 
             if (option == 1) { // When the user chooses default mode
-                // The losingPoint is set to default losingPoint
-                losingPoint = HeartEngine.DEFAULT_LOSING_POINT;
+                // The endingPoint is set to default endingPoint
+                endingPoint = HeartEngine.DEFAULT_ENDING_POINT;
                 break;
             } else if (option == 2) { // When the user chooses custom mode
-                // This while-loop is responsible for ensuring the customized losing point is valid
+                // This while-loop is responsible for ensuring the customized ending point is valid
                 while(true) {
-                    // Prompts the user for customized losingPoint
-                    System.out.print("Enter customized losing point (>0): ");
-                    losingPoint = input.nextInt();
+                    // Prompts the user for customized endingPoint
+                    System.out.print("Enter customized ending point (>0): ");
+                    endingPoint = input.nextInt();
                     input.nextLine(); // Fixes the scanner
     
-                    if (losingPoint > 0) {
-                        break; // If the losingPoint is positive, break out of the loop
+                    if (endingPoint > 0) {
+                        break; // If the endingPoint is positive, break out of the loop
                     } else {
-                        // When the user inputs negative losingPoint, warning is shown and loop continues
-                        System.out.println("\nWARNING: Invalid Losing Point\n");
+                        // When the user inputs negative endingPoint, warning is shown and loop continues
+                        System.out.println("\nWARNING: Invalid Ending Point\n");
                     }
                 }
                 break;
@@ -130,7 +130,7 @@ public class GameMain {
         }
         
         // Instantiates the HeartEngine
-        engine = new HeartEngine(numPlayers, playerNames, losingPoint);
+        engine = new HeartEngine(numPlayers, playerNames, endingPoint);
 
 
         // === IDENTIFY THE CARD THAT MAKES AN OPENING LEAD ===
@@ -461,7 +461,7 @@ public class GameMain {
             winnerIds = engine.CheckWinner();
 
             if (winnerIds.length == numPlayers) {
-                // If all players are "winners", meaning everyone got the same point while exceeding the losingPoint
+                // If all players are "winners", meaning everyone got the same point while exceeding the endingPoint
                 // Then the users are notified that the game tied, and the game ends
                 System.out.println();
                 System.out.println("----------------------------------------");

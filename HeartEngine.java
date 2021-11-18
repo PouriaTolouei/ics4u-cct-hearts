@@ -9,12 +9,12 @@ public class HeartEngine {
     private int numCardsThrown;
     private boolean isHeartBroken;
     private Player currPlayer;
-    private int losingPoint;
+    private int endingPoint;
     private int leadSuit;
     private Card openingCard;
 
-    // Global variable representing the default losing point
-    public static final int DEFAULT_LOSING_POINT    = 50;
+    // Global variable representing the default ending point
+    public static final int DEFAULT_ENDING_POINT    = 50;
 
     // Global variable representing the point assigned to other players in the event of "shot the moon"
     public static final int SHOT_THE_MOON_POINT     = 26;
@@ -39,8 +39,8 @@ public class HeartEngine {
      * of the game of Hearts.
      * @param numPlayers    - The number of players that play the game.
      * @param playerNames   - An array of players' names 
-     * @param losingPoint   - The game ends after a player achieves this point */
-    public HeartEngine(int numPlayers, String[] playerNames, int losingPoint) {
+     * @param endingPoint   - The game ends after a player achieves this point */
+    public HeartEngine(int numPlayers, String[] playerNames, int endingPoint) {
         this.standardDeck = new Card[52]; // 52 array blocks for the stadard deck of cards.
         this.cardsThrown = new Card[numPlayers]; // Cards thrown each round is one per player.
         this.allPlayers = new Player[numPlayers]; // As many array blocks as the number of players.
@@ -50,7 +50,7 @@ public class HeartEngine {
         this.numCardsThrown = 0; // Default value is assigned
         this.isHeartBroken = false; // Defult value is assigned.
         this.currPlayer = allPlayers[0]; // Starts with player 0 (the first player).
-        this.losingPoint = losingPoint; // losing point paramter is assigned.
+        this.endingPoint = endingPoint; // ending point paramter is assigned.
         this.leadSuit = Card.CLUB; // Defult value is assigned.
         
         // Loops through all the players
@@ -741,7 +741,7 @@ public class HeartEngine {
      * @return  - An array of player id(s) of the winner(s).
      *            An empty array is returned to signify no one has won yet
      *            There is no winner when:
-     *            - No one has exceeded the losingPoint, and thus the game still continues. */
+     *            - No one has exceeded the endingPoint, and thus the game still continues. */
     public int[] CheckWinner() {
         // Keeps track of the greatest and lowest points among the Players
         int maxPoint = this.allPlayers[0].GetPlayerPoints();
@@ -770,9 +770,9 @@ public class HeartEngine {
         int[] winnerIds = new int[numPlayersWithMinPoint];
         int pos = 0; // Current position of winnerIds
 
-        // If the max point is greater than or equal to the losingPoint 
+        // If the max point is greater than or equal to the endingPoint 
         // that indicates the game has ended and there needs to be winner(s)
-        if (maxPoint >= this.losingPoint) {
+        if (maxPoint >= this.endingPoint) {
             // Parses through each Player's points and store their playerIds into an array if they have the lowest score
             for (int playerId = 0; playerId < this.allPlayers.length; playerId++) {
                 if (this.allPlayers[playerId].GetPlayerPoints() == minPoint) {
