@@ -365,12 +365,12 @@ public class GameMain {
 
                         engine.SwitchPlayer(); // Switches the current player for next iteration
                         
-                        /*
-                        // In a case where currPlayer has to skip for whatever reason, set their card to null to indicate that they are skipping
-                        if (status == HeartEngine.SKIP_TRICK || status == HeartEngine.GIVE_LEAD_TO_NEXT) {
+                        
+                        // In a case where currPlayer has to skip playing a Card in the first trick, set their card to null to indicate that they are skipping
+                        if (status == HeartEngine.SKIP_TRICK) {
                             card = null;
                         }
-                        */
+                        
                         
                         // Increments the number of card thrown. This still occurs even if the player skips.
                         engine.SetNumCardsThrown(engine.GetNumCardsThrown() + 1); 
