@@ -170,8 +170,13 @@ public class Player {
      * @ return     - Returns 1 if thrown card was set succesfully.
      *              - Returns -1 if the player doesn't have that card. */
     public int SetCardThrown(Card card) {
+        // A special case where the player has to skip (no card thrown).
+        if (card == null){
+            this.cardThrown = null; // Sets the card thrown to nothing (null).
+            return HeartEngine.SUCCESS; // Card thrown has been succesfully set.
+        }
         // Makes sure that the player has the Card object that they want to throw.
-        if (HasCard(card)){ 
+        else if (HasCard(card)){ 
             this.cardThrown = card; // Sets the new Card object that the player wants to throw/play.
             RemovePlayerCard(card); // Removes the Card object that is about to be thrown from player's cards.
             return HeartEngine.SUCCESS; // Card thrown has been succesfully set.

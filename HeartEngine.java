@@ -131,11 +131,14 @@ public class HeartEngine {
         for (int i = 0; i < numPlayers; i++){
             Card cardThrown = allPlayers[i].GetCardThrown(); // Stores the current player's thrown card into a new variable for easier access.
             
-            // Finds the first player who threw a card with a lead suit
-            // Stores the id of that player and breaks the loop 
-            if (cardThrown.GetSuit() == leadSuit){
-                firstIndex = i;
-                break;
+            // Makes sure the the player has thrown a card, otherwise the player gets skipped.
+            if (cardThrown != null){
+                // Finds the first player who threw a card with a lead suit
+                // Stores the id of that player and breaks the loop 
+                if (cardThrown.GetSuit() == leadSuit){
+                    firstIndex = i;
+                    break;
+                }
             }
         }
         return firstIndex; // Return the id of that player.
@@ -349,14 +352,17 @@ public class HeartEngine {
         for (int i = currMaxIndex; i < numPlayers; i++){
             cardThrown = allPlayers[i].GetCardThrown(); // Stores the current player's thrown card into a variable for easier access.
             
-            // Checks to see if the current player threw a lead suit because without it, even the highest rank wouldn't collect the trick.
-            if (cardThrown.GetSuit() == leadSuit){
-                // Checks to see if the current player's lead suit card has a higher rank than the current highest rank.
-                // If so, it becomes the current highest rank and that player would be the one closest to collecting the trick.
-                if (cardThrown.GetRank() > currMaxRank){
-                    currMaxIndex = i;
-                    currMaxRank = cardThrown.GetRank();
-                    
+            // Makes sure the the player has thrown a card, otherwise the player gets skipped.
+            if (cardThrown != null){
+                // Checks to see if the current player threw a lead suit because without it, even the highest rank wouldn't collect the trick.
+                if (cardThrown.GetSuit() == leadSuit){
+                    // Checks to see if the current player's lead suit card has a higher rank than the current highest rank.
+                    // If so, it becomes the current highest rank and that player would be the one closest to collecting the trick.
+                    if (cardThrown.GetRank() > currMaxRank){
+                        currMaxIndex = i;
+                        currMaxRank = cardThrown.GetRank();
+                        
+                    }
                 }
             }
         }
