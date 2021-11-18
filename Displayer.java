@@ -151,11 +151,11 @@ public class Displayer {
                 System.out.println("4. The HIGHEST CARD OF THE SUIT LED WINS THE TRICK, and the winner of");
                 System.out.println("   that trick takes all the cards from that trick.");
                 System.out.println("5. The WINNER OF THE LAST TRICK LEADS THE NEXT TRICK");
-                System.out.println("   i. A player MAY NOT LEAD A HEART OR QUEEN OF SPADE until \"HEART HAS BEEN BROKEN\"");
+                System.out.println("   i. A player MAY NOT LEAD A HEART until \"HEART HAS BEEN BROKEN\"");
                 System.out.println("   ii.If the player to lead only has Hearts and Heart has not been broken, then they pass the lead to the next person.");
                 System.out.println("6. The play CONTINUES UNTILL ALL THE TRICKS HAVE BEEN TAKEN, then points");
                 System.out.println("   are scored for each player based on the cards from each of the tricks they have won.");
-                System.out.println("7. If no player exceeds the maximum amount of points, then the CARDS ARE SHUFFLED AND DEALT AGAIN.");
+                System.out.println("7. If no player exceeds the maximum amount of points (ending point), then the CARDS ARE SHUFFLED AND DEALT AGAIN.");
                 System.out.println("8. The player with LOWEST SCORE WINS THE GAME once someone exceeds the maximum amount of points.");
                 break;
 
