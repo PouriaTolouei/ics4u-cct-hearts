@@ -1,17 +1,17 @@
 public class HeartEngine {
     // Instance variables
-    private Card[] standardDeck;
-    private Card[] cardsThrown;
-    private Player[] allPlayers;
-    private int numPlayers;
-    private int numHandRound;
-    private int numTrickRound;
-    private int numCardsThrown;
-    private boolean isHeartBroken;
-    private Player currPlayer;
-    private int endingPoint;
-    private int leadSuit;
-    private Card openingCard;
+    private Card[] standardDeck; // The standard deck of 52 Cards without Jokers
+    private Card[] cardsThrown; // The array of Cards thrown by each Player during a trick (this makes up a trick)
+    private Player[] allPlayers; // The array of all Players
+    private int numPlayers; // The number of Players
+    private int numHandRound; // The number of rounds a hand (the time it takes to play all Cards) occurred
+    private int numTrickRound; // The number of rounds a trick (the time it takes for each player to play a card) occurred during a hand
+    private int numCardsThrown; // The number of Cards thrown by players during a trick
+    private boolean isHeartBroken; // The status of whether the Heart has been broken
+    private Player currPlayer; // The current player who plays a card
+    private int endingPoint; // The game ends when at least one Player reach or exceeds this point
+    private int leadSuit; // The leading suit of a trick
+    private Card openingCard; // The Card that must be played to lead the very first trick of each hand
 
     // Global variable representing the default ending point
     public static final int DEFAULT_ENDING_POINT    = 50;
@@ -70,6 +70,7 @@ public class HeartEngine {
         createStandardDeck(); // Creates a standard deck of card   
     }
 
+
     // == Private Methods ===
 
     // By Pouria
@@ -99,6 +100,7 @@ public class HeartEngine {
         }
     }
     
+
     // By Pouria
     /* Passes the 3 cards among players in the given direction.
      * For example:
@@ -121,6 +123,7 @@ public class HeartEngine {
         }
     }
     
+
     // By Pouria
     /* Finds the first player in the order of the array who threw a lead suit card.
      * @return   - Returns the ID of that player who has the first lead suit card.*/
@@ -143,6 +146,7 @@ public class HeartEngine {
         }
         return firstIndex; // Return the id of that player.
     }
+
 
     // By Haruki
     /* Deals appropriate number of Cards (refer to DealPlayerCards() Java Doc) to all Players, 
@@ -199,6 +203,7 @@ public class HeartEngine {
         }
     }
 
+
     // By Haruki
     /* Checks if there is an identical Card as the given Card within an array of Cards given.
      * @param cardChecked           - The Card object, which is to be checked against 
@@ -230,7 +235,6 @@ public class HeartEngine {
     /* Calculates and updates the points earned by each Player according to their tricks by the end of each hand.
      * @return  - Returns 1 if normal calculations are applied. 
      *          - Returns 2 if 'shot the moon' calculations are applied (when a player reaches 26 points). */
-
     public int CalcPoint() {
         // Loops through all the players
         for (int i = 0; i < numPlayers; i++){
@@ -270,6 +274,7 @@ public class HeartEngine {
         }
         return SUCCESS; // Returns success value, indicating normal calculation.
     }
+
 
     // By Pouria
     /* The Game of Hearts require players to pass 3 cards from their initial hand to other players every hand (time takes to play all cards).
@@ -317,26 +322,6 @@ public class HeartEngine {
         }
     }
 
-    // By Pouria
-    /* Indicates whether the Heart has been broken.
-     * @return  - true when the Heart has been broken, false otherwise. */
-    public boolean GetIsHeartBroken() {
-        return this.isHeartBroken; // Returns the latest boolean status of whether heart is broken or not.
-    }
-
-    // By Pouria
-    /* Adjusts the boolean value of the isHeartBroken variable, which represents if the Heart has been broken yet.
-     * @param isHeartBroken - The boolean status of whether the heart has been broken yet in the game */
-    public void SetIsHeartBroken(boolean isHeartBroken) {
-        this.isHeartBroken = isHeartBroken; // Updates the boolean status of whether heart is broken or not.
-    }
-
-    // By Pouria
-    /* Returns an array consisting of all Player objects.
-     * @return  - An array of all Player objects. */
-    public Player[] GetAllPlayers() {
-        return this.allPlayers; // Returns the array of all player objects.
-    }
 
     // By Pouria
     /* The trick will be given to a player who played a lead suit card with the highest rank, 
@@ -375,6 +360,7 @@ public class HeartEngine {
 
         return currMaxIndex; // The id of the player who had the highest ranking lead suit card will be returned.
     }
+
 
     // By Pouria
     /* Converts a card expressed in String to a Card object.
@@ -442,88 +428,48 @@ public class HeartEngine {
         }
     }
 
-    // By Pouria
-    /* Obtains the lead suit for the current trick.
-     * @return  - Returns 0 if it is Club
-     *          - Returns 1 if it is Diamond
-     *          - Returns 2 if it is Heart   
-     *          - Returns 3 if it is Spade */
-    public int GetLeadSuit() {
-        return this.leadSuit; // Returns the integer representation of the lead suit.
+
+    // By Haruki
+    /* Switches the current player. */
+    public void SwitchPlayer() {
+        // Switches the current Player to the Player with next playerId
+        // Player ID of current player in 4-player game: 0 -> 1 -> 2 -> 3 -> 0, and the cycle continues
+        this.SetCurrPlayer(this.allPlayers[(this.GetCurrPlayer().GetPlayerId() + 1) % this.numPlayers]);
     }
 
-    // By Pouria 
-    /* Obtains the current hand round number.
-     * @return - Returns the hand round number. */
-    public int GetNumHandRound() {
-        return this.numHandRound; // Return the integer which represents the hand round number.
-    }
 
-    // By Pouria
-    /* Obtains the current trick round number.
-     * @return - Returns the trick round number. */
-    public int GetNumTrickRound() {
-        return this.numTrickRound; // Return the integer which represents the trick round number.
-    }
-
-    // By Pouria
-    /* Obtains the number of Cards thrown during a trick so far.
-     * @return - Returns the number of cards thrown by Players so far during a trick */
-    public int GetNumCardsThrown() {
-        return this.numCardsThrown; // Returns the number of Cards thrown by Players during a trick
-    }
-
-    // By Pouria
-    /* Obtain the opening card needed for starting a hand round (either 2 or 3 of clubs).
-     * @return - Returns the opening card that must be used for beiginning all the hand rounds*/
-    public Card GetOpeningCard() {
-        return this.openingCard; // Returns the Card object that represents the opening card.
-    }
-
-    // By Pouria
-    /* States whether the hand round has ended or not.
-     * @return - Returns true if any of the players has no more cards to play.
-     *         - Returns false if all players have at least one card to play. */
-    public boolean HasHandEnded() {
-        // Loops through all of the players
-        for (int i = 0; i < numPlayers; i++) {
-            // Checks to see if any player has no cards and true is returned.
-            if (GetAllPlayers()[i].GetPlayerCards().length == 0) {
-                return true; 
-            }
+    // By Haruki
+    /* Adds several Card objects into a specified array of Card objects.
+     * @param destArray - The destination array of Card objects where newCards will be added to.
+     * @param newCards  - The array of Card objects that are to be added to a specified array.
+     * @return          - An array of Card objects that include the original elements as well as
+     *                    new elements */
+    public Card[] AddCardsToArray(Card[] destArray, Card[] newCards) {
+        // If the array of new Card objects is null or empty, it will simply return the destArray
+        if (newCards == null || newCards.length == 0) {
+            return destArray;
+        } else if (destArray == null) {
+            // If the destArray is null, instantiate it as an array of Card object with length 0.
+            destArray = new Card[0]; // The length of 0 signifies that it is empty
         }
-        // Otherwise false is returned (when all players have atleast one card).
-        return false;
-    }
-    
 
-    // By Haruki
-    /* Updates the leading suit of the current trick to the specified one.
-     * @param suitId       - The numerical id of a suit, which is declared in Card class. */
-    public void SetLeadSuit(int suitId) {
-        this.leadSuit = suitId; // Updates the lead suit
-    }
+        // If the newCards is not null or empty, create a new array with the length 
+        // that is larger than the destination array's length by the length of newCards
+        Card[] updatedArray = new Card[destArray.length + newCards.length];
 
-    // By Haruki
-    /* Updates the hand round number to the specified one (when players play all the cards in their hands).
-     * @param numHandRound  -  The integer that represents the hand round number. */
-    public void SetNumHandRound(int numHandRound) {
-        this.numHandRound = numHandRound; // Updates the numHandRound
-    }
+        // Copy all of the elements in the destination array to the updatedArray
+        for (int i = 0; i < destArray.length; i++) {
+            updatedArray[i] = destArray[i];
+        }
 
-    // By Haruki
-    /* Updates the trick round number to the specified one (when players play one card to make up a trick).
-     * @param numTrickRound  -  The integer that represents the trick round number. */
-    public void SetNumTrickRound(int numTrickRound) {
-        this.numTrickRound = numTrickRound; // Updates the numTrickRound
+        // Add all of the elements in the newCards at the end of the updatedArray
+        for (int i = 0; i < newCards.length; i++) {
+            updatedArray[destArray.length + i] = newCards[i];
+        }
+
+        return updatedArray; // Return the array with newly added elements
     }
 
-    // By Haruki
-    /* Updates the number of Cards thrown during a trick to the specified value.
-     * @rapam numCardsThrown    - The number of cards thrown by Players during a trick */
-    public void SetNumCardsThrown(int numCardsThrown) {
-        this.numCardsThrown = numCardsThrown; // Updates the numCardsThrown to the specified one
-    }
 
     // By Haruki
     /* Shuffles the standard deck of card in a random order. */
@@ -695,46 +641,22 @@ public class HeartEngine {
         // The several checks above ensures that the specified player can successfully play/throw the card specified
         return SUCCESS;
     }
-    
-    
-    // By Haruki
-    /* Returns the current player of the current trick.
-     * @return  - A Player object who is currently playing a card to make up a trick */
-    public Player GetCurrPlayer() {
-        return this.currPlayer;
-    }
 
 
-    // By Haruki
-    /* Replaces current player with a new player.
-     * @param newCurrPlayer - A new Player object who will be playing a card to make up a trick */
-    public void SetCurrPlayer(Player newCurrPlayer) {
-        this.currPlayer = newCurrPlayer; // Updates the currPlayer with a new one
-    }
-
-
-    // By Haruki
-    /* Switches the current player. */
-    public void SwitchPlayer() {
-        // Switches the current Player to the Player with next playerId
-        // Player ID of current player in 4-player game: 0 -> 1 -> 2 -> 3 -> 0, and the cycle continues
-        this.SetCurrPlayer(this.allPlayers[(this.GetCurrPlayer().GetPlayerId() + 1) % this.numPlayers]);
-    }
-
-
-    // By Haruki
-    /* Returns an array of Card objects that has been discarded by Players, which make up a trick.
-     * @return  - An array of Card objects that make up a trick. */
-    public Card[] GetCardsThrown() {
-        return this.cardsThrown; // Returns the cardsThrown
-    }
-
-
-    // By Haruki
-    /* Updates the cardsThrown (aka tricks) to the one specified.
-     * @param cardsThrown   - An array that consists of Cards that the Player played during a trick*/
-    public void SetCardsThrown(Card[] cardsThrown) {
-        this.cardsThrown = cardsThrown; // Updates the cardsThrown
+    // By Pouria
+    /* States whether the hand round has ended or not.
+     * @return - Returns true if any of the players has no more cards to play.
+     *         - Returns false if all players have at least one card to play. */
+    public boolean HasHandEnded() {
+        // Loops through all of the players
+        for (int i = 0; i < numPlayers; i++) {
+            // Checks to see if any player has no cards and true is returned.
+            if (GetAllPlayers()[i].GetPlayerCards().length == 0) {
+                return true; 
+            }
+        }
+        // Otherwise false is returned (when all players have atleast one card).
+        return false;
     }
 
 
@@ -793,36 +715,136 @@ public class HeartEngine {
     }
 
 
+    // === Getters and Setters
+
     // By Haruki
-    /* Adds several Card objects into a specified array of Card objects.
-     * @param destArray - The destination array of Card objects where newCards will be added to.
-     * @param newCards  - The array of Card objects that are to be added to a specified array.
-     * @return          - An array of Card objects that include the original elements as well as
-     *                    new elements */
-    public Card[] AddCardsToArray(Card[] destArray, Card[] newCards) {
-        // If the array of new Card objects is null or empty, it will simply return the destArray
-        if (newCards == null || newCards.length == 0) {
-            return destArray;
-        } else if (destArray == null) {
-            // If the destArray is null, instantiate it as an array of Card object with length 0.
-            destArray = new Card[0]; // The length of 0 signifies that it is empty
-        }
+    /* Returns an array of Card objects that has been discarded by Players, which make up a trick.
+     * @return  - An array of Card objects that make up a trick. */
+    public Card[] GetCardsThrown() {
+        return this.cardsThrown; // Returns the cardsThrown
+    }
 
-        // If the newCards is not null or empty, create a new array with the length 
-        // that is larger than the destination array's length by the length of newCards
-        Card[] updatedArray = new Card[destArray.length + newCards.length];
 
-        // Copy all of the elements in the destination array to the updatedArray
-        for (int i = 0; i < destArray.length; i++) {
-            updatedArray[i] = destArray[i];
-        }
+    // By Haruki
+    /* Updates the cardsThrown (aka tricks) to the one specified.
+     * @param cardsThrown   - An array that consists of Cards that the Player played during a trick*/
+    public void SetCardsThrown(Card[] cardsThrown) {
+        this.cardsThrown = cardsThrown; // Updates the cardsThrown
+    }
 
-        // Add all of the elements in the newCards at the end of the updatedArray
-        for (int i = 0; i < newCards.length; i++) {
-            updatedArray[destArray.length + i] = newCards[i];
-        }
 
-        return updatedArray; // Return the array with newly added elements
+    // By Pouria
+    /* Returns an array consisting of all Player objects.
+     * @return  - An array of all Player objects. */
+    public Player[] GetAllPlayers() {
+        return this.allPlayers; // Returns the array of all player objects.
+    }
+
+    
+    // By Pouria 
+    /* Obtains the current hand round number.
+     * @return - Returns the hand round number. */
+    public int GetNumHandRound() {
+        return this.numHandRound; // Return the integer which represents the hand round number.
+    }
+
+
+    // By Haruki
+    /* Updates the hand round number to the specified one (when players play all the cards in their hands).
+     * @param numHandRound  -  The integer that represents the hand round number. */
+    public void SetNumHandRound(int numHandRound) {
+        this.numHandRound = numHandRound; // Updates the numHandRound
+    }
+  
+
+    // By Pouria
+    /* Obtains the current trick round number.
+     * @return - Returns the trick round number. */
+    public int GetNumTrickRound() {
+        return this.numTrickRound; // Return the integer which represents the trick round number.
+    }
+
+
+    // By Haruki
+    /* Updates the trick round number to the specified one (when players play one card to make up a trick).
+     * @param numTrickRound  -  The integer that represents the trick round number. */
+    public void SetNumTrickRound(int numTrickRound) {
+        this.numTrickRound = numTrickRound; // Updates the numTrickRound
+    }
+
+    
+    // By Pouria
+    /* Obtains the number of Cards thrown during a trick so far.
+     * @return - Returns the number of cards thrown by Players so far during a trick */
+    public int GetNumCardsThrown() {
+        return this.numCardsThrown; // Returns the number of Cards thrown by Players during a trick
+    }
+
+
+    // By Haruki
+    /* Updates the number of Cards thrown during a trick to the specified value.
+     * @rapam numCardsThrown    - The number of cards thrown by Players during a trick */
+    public void SetNumCardsThrown(int numCardsThrown) {
+        this.numCardsThrown = numCardsThrown; // Updates the numCardsThrown to the specified one
+    }
+
+    
+    // By Pouria
+    /* Indicates whether the Heart has been broken.
+     * @return  - true when the Heart has been broken, false otherwise. */
+    public boolean GetIsHeartBroken() {
+        return this.isHeartBroken; // Returns the latest boolean status of whether heart is broken or not.
+    }
+
+
+    // By Pouria
+    /* Adjusts the boolean value of the isHeartBroken variable, which represents if the Heart has been broken yet.
+     * @param isHeartBroken - The boolean status of whether the heart has been broken yet in the game */
+    public void SetIsHeartBroken(boolean isHeartBroken) {
+        this.isHeartBroken = isHeartBroken; // Updates the boolean status of whether heart is broken or not.
+    }
+    
+    
+    // By Haruki
+    /* Returns the current player of the current trick.
+     * @return  - A Player object who is currently playing a card to make up a trick */
+    public Player GetCurrPlayer() {
+        return this.currPlayer;
+    }
+
+
+    // By Haruki
+    /* Replaces current player with a new player.
+     * @param newCurrPlayer - A new Player object who will be playing a card to make up a trick */
+    public void SetCurrPlayer(Player newCurrPlayer) {
+        this.currPlayer = newCurrPlayer; // Updates the currPlayer with a new one
+    }
+
+
+    // By Pouria
+    /* Obtains the lead suit for the current trick.
+     * @return  - Returns 0 if it is Club
+     *          - Returns 1 if it is Diamond
+     *          - Returns 2 if it is Heart   
+     *          - Returns 3 if it is Spade */
+    public int GetLeadSuit() {
+        return this.leadSuit; // Returns the integer representation of the lead suit.
+    }
+
+
+    // By Haruki
+    /* Updates the leading suit of the current trick to the specified one.
+     * @param suitId       - The numerical id of a suit, which is declared in Card class. */
+    public void SetLeadSuit(int suitId) {
+        this.leadSuit = suitId; // Updates the lead suit
+    }
+
+
+    // By Pouria
+    /* Obtain the opening card needed for starting a hand round (either 2 or 3 of clubs).
+     * @return - Returns the opening card that must be used for beiginning all the hand rounds*/
+    public Card GetOpeningCard() {
+        return this.openingCard; // Returns the Card object that represents the opening card.
     }
 
 }
