@@ -1,6 +1,16 @@
+// Programmed by: Koh Haruki
+
+/* ===== ICS4U CCT: HEARTS =====
+ *      Leader: Koh Haruki
+ *      Member: Pouria Tolouei
+ *     Teacher: Mr. Kevin Wong
+ *         Due: November 25th, 2021
+ * Description: This is a card game called Hearts played on a console. 
+ *              For the rules of the game, refer to the Displayer class or simply play the game.
+ *              Reference: https://www.youtube.com/watch?v=XPWfL-0FGA8 (Note that rules are slightly adjusted in the game)*/
 import java.util.Scanner;
 public class GameMain {
-    public static void main(String[] args) {
+    public static void main(String[] args) { // By Koh Haruki
         // === VARIABLES ===
         // Instances of Classes that handle input/displaying/backend logic
         Scanner input = new Scanner(System.in); // Used for obtaining user inputs

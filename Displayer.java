@@ -155,10 +155,10 @@ public class Displayer {
                 System.out.println("6. The play CONTINUES UNTILL ALL THE TRICKS HAVE BEEN TAKEN, then points");
                 System.out.println("   are scored for each player based on the cards from each of the tricks they have won.");
                 System.out.println("7. If no player exceeds the maximum amount of points (ending point), then the CARDS ARE SHUFFLED AND DEALT AGAIN.");
-                System.out.println("8. The player with LOWEST SCORE WINS THE GAME once someone exceeds the maximum amount of points.");
+                System.out.println("8. The player with LOWEST SCORE WINS THE GAME once someone exceeds the maximum amount of points (ending point).");
                 break;
 
-            case SECTION_POINT: // This section explains the point system of the game.
+            case SECTION_POINT: // This section explains the point system of the game in a table format.
                 System.out.println("----------------------------------------");
                 System.out.println("|             POINT SYSTEM             |");
                 System.out.println("----------------------------------------");
