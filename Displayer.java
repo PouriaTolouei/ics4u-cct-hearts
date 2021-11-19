@@ -8,7 +8,6 @@ public class Displayer {
     public static final int SECTION_POINT           = 5;
     public static final int SECTION_NOTATION        = 6;
     public static final int NUM_SECTIONS            = 7;
-    public static final int SECTION_INVALID         = -100; // id when user inputs invalid option
 
     // Empty constructor
     public Displayer() {
