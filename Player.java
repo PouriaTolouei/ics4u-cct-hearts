@@ -51,7 +51,7 @@ public class Player {
      * that only contain the suit specified.
      * @param suit  - The suit of interest represented by an integer. (Refer to Card class's global variables)
      * @return      - An array of Card objects that only contain the Cards of specified suit */
-    private Card[] sortBySuit(int suit) {
+    private Card[] findBySuit(int suit) {
         // Instantiate "untrimmed" array of Card object that can store up to 13 Cards
         // which is the maximum number of Cards in each suit.
         Card[] cardsOfSuitUntrimmed = new Card[13];
@@ -151,7 +151,7 @@ public class Player {
         // The variable i works both as an index as well as integer representation of suits
         // e.g. i = 0 (Card.CLUB), i = 1 (Card. Diamond) etc 
         for (int i = 0; i < 4; i++) {
-            card2d[i] = sortBySuit(i);
+            card2d[i] = findBySuit(i);
             sortByRank(card2d[i]);
         }
         
