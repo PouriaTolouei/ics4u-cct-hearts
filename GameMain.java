@@ -97,7 +97,7 @@ public class GameMain {
                         playerNames[i] = individualName.toUpperCase(); 
                     } else { // If the player's name is longer than 8 characters, then 
                         i--; // Decrement the index so the same player can type their name again
-                        System.out.println("WARNING: PLEASE TYPE A NAME SHORTER THAN 8 CHARACTERS."); // A warning message
+                        System.out.println("WARNING: PLEASE TYPE A NAME SHORTER OR EQUAL TO 8 CHARACTERS."); // A warning message
                     }  
                 }
                 break; // Breaks out of the while-loop
