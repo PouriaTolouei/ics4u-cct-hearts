@@ -364,16 +364,16 @@ public class HeartEngine {
 
     // By Pouria
     /* Converts a card expressed in String to a Card object.
-     * @param card  - String representation of a card. 
-     *                The suit is represented by C (clubs), D (diamonds), H (hearts), and S (spades).
-     *                The rank is represented by numbers from 1 to 13 (Ace to King)
-     *                (e.g. C-A => Ace of Club, H-2 => 2 of Heart, S-Q => Queen of Spade)
-     * @return      - A Card object that corresponds to the specified String representation. 
-     *                Returns null if there is no such Card. */
-    public Card ConvertToCard(String card) {
+     * @param cardStr - String representation of a card. 
+     *                  The suit is represented by C (clubs), D (diamonds), H (hearts), and S (spades).
+     *                  The rank is represented by numbers from 1 to 13 (Ace to King)
+     *                  (e.g. C-A => Ace of Club, H-2 => 2 of Heart, S-Q => Queen of Spade)
+     * @return        - A Card object that corresponds to the specified String representation. 
+     *                  Returns null if there is no such Card. */
+    public Card ConvertToCard(String cardStr) {
         int rank; // Stores the rank later on for instantiating 
         
-        String[] cardComponents = card.toUpperCase().split("-"); // Makes the card string all capital to handle lower case and then split it by "-" to get the suit and the rank.
+        String[] cardComponents = cardStr.toUpperCase().split("-"); // Makes the card string all capital to handle lower case and then split it by "-" to get the suit and the rank.
         
         // Incorrect card format checking
         
