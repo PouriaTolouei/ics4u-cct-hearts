@@ -176,7 +176,7 @@ public class Displayer {
                 System.out.println("|                NOTATION              |");
                 System.out.println("----------------------------------------");
                 System.out.println("Suits: C (Club), D (Diamond), H (Heart), and S(Spade)");
-                System.out.println("Ranks: A (Ace), 2, 3, ..., 10, J (Jack), Q (Queen), K (King)");
+                System.out.println("Ranks: 2, 3, 4, ..., 10, J (Jack), Q (Queen), K (King), A (Ace)");
                 System.out.println("   Ex: C-2 (2 of Club), H-A (Ace of Heart), S-Q (Queen of Spade)");
                 break;
 
