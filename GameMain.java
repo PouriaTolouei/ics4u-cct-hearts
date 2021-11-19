@@ -85,12 +85,20 @@ public class GameMain {
             if (3 <= numPlayers && numPlayers <= 5) {
                 // Instantiates the String array consisting of players' names
                 playerNames = new String[numPlayers];
+                // Let the players know the restriction in the player name length, this is to ensure the displaying works as intended later
+                System.out.println("Your name must be shorter or equal to 8 characters");
                 // Asks each Player for their name, store them into playerNames array
                 for (int i = 0; i < numPlayers; i++) {
                     System.out.print("PLAYER " + i + ": What is your name?: ");
                     individualName = input.nextLine();
-                    // Ensures the player names are all in capital. This is for stylistic choice 
-                    playerNames[i] = individualName.toUpperCase(); 
+                    // Ensures that the player name is within 8 characters, otherwise displaying may not work as intended later
+                    if (individualName.length() <= 8) {
+                        // Ensures the player names are all in capital. This is for stylistic choice 
+                        playerNames[i] = individualName.toUpperCase(); 
+                    } else { // If the player's name is longer than 8 characters, then 
+                        i--; // Decrement the index so the same player can type their name again
+                        System.out.println("WARNING: PLEASE TYPE A NAME SHORTER THAN 8 CHARACTERS."); // A warning message
+                    }  
                 }
                 break; // Breaks out of the while-loop
             } else {
