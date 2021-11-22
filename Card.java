@@ -93,7 +93,19 @@ public abstract class Card {
         return this.rank;
     }
 
+    /* Obtains the point associated with the card.
+     * @return  - Returns the point associated with card.
+     *            Returns 0 if the Card is Club or Diamond.
+     *            Returns 1 if the Card is Heart.
+     *            Returns 0 if the Card is Spade that is not Queen.
+     *            Returns 13 if the Card is Queen of Spade. */
     public abstract int GetPoint();
 
+    /* Obtains the integer associated with the suit of the Card.
+     * @return  - Returns the integer associated with the suit of the Card.
+     *            Returns 0 if the Card is Club.
+     *            Returns 1 if the Card is Diamond.
+     *            Returns 2 if the Card is Heart.
+     *            Returns 3 if the Card is Spade. */
     public abstract int GetSuit();
 }
