@@ -50,7 +50,7 @@ public class Player {
     /* It parses through the player's cards, and return an array of Card objects 
      * that only contain the suit specified.
      * @param suit  - The suit of interest represented by an integer. (Refer to Card class's global variables)
-     * @return      - An array of Card objects that only contain the Cards of specified suit */
+     * @return      - An array of Card objects that only contain the Cards of specified suit from the player's cards */
     private Card[] findBySuit(int suit) {
         // Instantiate "untrimmed" array of Card object that can store up to 13 Cards
         // which is the maximum number of Cards in each suit.
