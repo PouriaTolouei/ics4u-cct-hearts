@@ -95,7 +95,7 @@ public class GameMain {
                     if (individualName.length() <= 8) {
                         // Ensures the player names are all in capital. This is for stylistic choice 
                         playerNames[i] = individualName.toUpperCase(); 
-                    } else { // If the player's name is longer than 8 characters, then 
+                    } else { // When the player's name is longer than 8 characters
                         i--; // Decrement the index so the same player can type their name again
                         System.out.println("WARNING: PLEASE TYPE A NAME SHORTER OR EQUAL TO 8 CHARACTERS."); // A warning message
                     }  
@@ -137,7 +137,7 @@ public class GameMain {
                     if (endingPoint > 0) {
                         break; // If the endingPoint is positive, break out of the loop
                     } else {
-                        // When the user inputs negative endingPoint, warning is shown and loop continues
+                        // When the user inputs negative or 0 endingPoint, warning is shown and loop continues
                         System.out.println("\nWARNING: Invalid Ending Point\n");
                     }
                 }
@@ -157,7 +157,7 @@ public class GameMain {
         openingCard = engine.GetOpeningCard(); // openingCard has already been set in the constructor according to numPlayers
 
         // === MAIN GAME LOOP ===
-        // This is the main game loop responsible for running the game until someone wins
+        // This is the main game loop responsible for running the game until someone wins or the game ties
         while(!exitGame) {
             // Shuffles the standard deck of card and deals the Cards to each Player
             engine.Shuffle();
@@ -173,7 +173,6 @@ public class GameMain {
             System.out.println("==========================================");
             System.out.println("Each player has to pick three cards from their hand to be passed to another player.");
             // Prompts each Player for the three cards that they want to pass
-            // input.nextLine(); // Fixes the scanner
 
             // This is for the case when it's the 4-player game, and it's the fourth hand,
             // in which case the Cards will not be passed
@@ -261,6 +260,7 @@ public class GameMain {
                     // Updates and stores the current Player into currPlayer for readability
                     currPlayer = engine.GetCurrPlayer(); 
 
+                    // Displays current rounds
                     disp.DisplayRounds(engine.GetNumHandRound(), engine.GetNumTrickRound());
 
                     // Displays all the Cards the current player holds
@@ -272,7 +272,7 @@ public class GameMain {
                     }
 
                     // Displays current leading suit if it isn't the first throw/play in a trick
-                    // This is because the leading suit is decided by the first throw/play in a trick, thus make no sense to display it.
+                    // This is because the leading suit is decided by the first throw/play in a trick, thus make no sense to display it when numCardsThrown == 0.
                     if (engine.GetNumCardsThrown() != 0) {
                         System.out.println("LEADING SUIT: " + Card.SUITS_NAME[engine.GetLeadSuit()]);
                     }
@@ -320,7 +320,7 @@ public class GameMain {
                             System.out.println("-------------------------------------------");
                             System.out.println("| YOU DON'T HAVE THE CARD or BAD NOTATION |");
                             System.out.println("-------------------------------------------");
-                            System.out.println("ENSURE YOU HAVE THE CARD OR TYPED THE NOTATION CORRECTLY.");
+                            System.out.println("ENSURE YOU HAVE THE CARD or TYPED THE NOTATION CORRECTLY.");
                             break;
 
                         // When the currPlayer attemps to throw a Card of Hearts when heart is not broken
@@ -360,7 +360,7 @@ public class GameMain {
                             System.out.println("YOU CANNOT PLAY HEARTS OR QUEEN OF SPADE IN THE FIRST TRICK.");
                             break;
                         
-                        // When the currPlayer does not play the openingCard in for the first throw of a Card in the first trick
+                        // When the currPlayer does not play the openingCard for the first throw/play of a Card in the first trick
                         case HeartEngine.MUST_PLAY_OPENING_CARD:
                             // Remind the player that the first trick must be led by openingCard
                             System.out.println("----------------------------------------");
@@ -373,7 +373,6 @@ public class GameMain {
                             System.out.println("--------------------------------------------");
                             System.out.printf("| PLAYER %d HAS TO PASS LEAD TO NEXT PLAYER |\n", currPlayer.GetPlayerId());
                             System.out.println("--------------------------------------------");
-                            // engine.SetCardsThrown(null); // Sets the cardsThrown to null to indicate that no Cards are thrown this trick
                             break;
                     }
 
