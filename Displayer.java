@@ -147,6 +147,7 @@ public class Displayer {
                 System.out.println("   the card of any other suit may be played.");
                 System.out.println("   i. However, if a player has no Clubs when the first trick is led,");
                 System.out.println("      a Heart or the Queen of Spade may not be played.");
+                System.out.println("   ii.HEART IS BROKEN when someone plays a Heart.");
                 System.out.println("4. The HIGHEST CARD OF THE SUIT LED WINS THE TRICK, and the winner of");
                 System.out.println("   that trick takes all the cards from that trick.");
                 System.out.println("5. The WINNER OF THE LAST TRICK LEADS THE NEXT TRICK");
@@ -155,7 +156,9 @@ public class Displayer {
                 System.out.println("6. The play CONTINUES UNTILL ALL THE TRICKS HAVE BEEN TAKEN, then points");
                 System.out.println("   are scored for each player based on the cards from each of the tricks they have won.");
                 System.out.println("7. If no player exceeds the maximum amount of points (ending point), then the CARDS ARE SHUFFLED AND DEALT AGAIN.");
-                System.out.println("8. The player with LOWEST SCORE WINS THE GAME once someone exceeds the maximum amount of points (ending point).");
+                System.out.println("   i. Steps 1 to 7 are repeated.");
+                System.out.println("8. The player(s) with LOWEST SCORE WINS THE GAME once someone exceeds the maximum amount of points (ending point).");
+                System.out.println("   i. The GAME TIES when everyone exceeds the maximum amount of points and have the exact same points.");
                 break;
 
             case SECTION_POINT: // This section explains the point system of the game in a table format.
