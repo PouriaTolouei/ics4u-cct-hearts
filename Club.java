@@ -1,7 +1,7 @@
 // Programmed by: Pouria Tolouei
 public class Club extends Card {
     
-    // Private static constant for how many points each card carries.
+    // Private constant for how many points each card carries.
     private final int CLUB_POINT = 0; // Any card from the club suit is worth 0 points.
 
     // Constructor
