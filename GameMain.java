@@ -177,7 +177,7 @@ public class GameMain {
             // This is for the case when it's the 4-player game, and it's the fourth hand,
             // in which case the Cards will not be passed
             if (numPlayers == 4 && engine.GetNumHandRound()%4 == 0) {
-                System.out.println("\nIT'S THE FOURTH HAND, SO THERE IS NO PASSING ROTATION!\n");
+                System.out.println("\nIT'S THE " + engine.GetNumHandRound() + "TH HAND, SO THERE IS NO PASSING ROTATION!\n");
             } else { // When above check passes, proceed to prompt each Player what cards they want to pass
                 for (int playerId = 0; playerId < numPlayers; playerId++) {
                     currPlayer = engine.GetAllPlayers()[playerId]; // Obtains player of current iteration
