@@ -174,7 +174,7 @@ public class GameMain {
             System.out.println("Each player has to pick three cards from their hand to be passed to another player.");
             // Prompts each Player for the three cards that they want to pass
 
-            // This is for the case when it's the 4-player game, and it's the fourth hand,
+            // This is for the case when it's the 4-player game, and it's the fourth, eighth, twelfth, ... hand,
             // in which case the Cards will not be passed
             if (numPlayers == 4 && engine.GetNumHandRound()%4 == 0) {
                 System.out.println("\nIT'S THE " + engine.GetNumHandRound() + "TH HAND, SO THERE IS NO PASSING ROTATION!\n");
