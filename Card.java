@@ -30,7 +30,9 @@ public abstract class Card {
 
     // By Haruki & Pouria
     /* Indicates whether this Card has the same suit and rank as the card that is compared against.
-     * @param card  - The Card to be checked against */
+     * @param card  - The Card to be checked against 
+     * @return      - Returns true if the specified card is the same in terms of its rank and suit
+     *                as the Card object that calls this method, false otherwise. */
     public boolean equals(Card card) {
         // Returns true if their rank and suit are the same, false otherwise. 
         if (this.GetRank() == card.GetRank() && this.GetSuit() == card.GetSuit()) {
@@ -41,7 +43,8 @@ public abstract class Card {
 
 
     // By Pouria
-    /* Converts the Card object into its String version for displaying purposes (eg. 2 of hearts --> "H-2"). */
+    /* Converts the Card object into its String version for displaying purposes (eg. 2 of hearts --> "H-2"). 
+     * @return  - Returns the String representation, according to the game notation, of the Card object that calls this method. */
     public String toString() {
         String stringCard = null; // Stores the string version of the Card object 
 
