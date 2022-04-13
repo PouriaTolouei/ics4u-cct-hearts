@@ -89,5 +89,3 @@ Queen of Spade | 13 points
 Spade | 0
 Club | 0
 Diamond | 0
-
-Just testing 
