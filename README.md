@@ -4,6 +4,11 @@ Developed by: Haruki and Pouria
 Date: 2021 November 25th
 
 ## Git Cheatsheet
+
+__To Start up a repo__
+* If repo exists on githhub: `git clone HTTPS`
+* If repo exists locally: create a repo on github with the folder name and `git remote add origin HTTPS`
+
 __To work on a feature, do:__ 
 * `git pull origin master` or `git pull` to sync your local master with remote master
 * `git branch branch-name` to create a new local branch
@@ -14,9 +19,13 @@ __While working on a feature, do:__
 * `git add .` to stage changes
   * `git reset` to unstage
 * `git commit -m "message"` to commit changes to your local branch
+  * `git reset HEAD~1` to revert the last commit and unstage the related changes
+* `git commit -am "message"` to stage and commit changes to your local branch (doesn't work for new files)
 * `git status` for checking what files has been modified, staged, unstaged etc
 * `git branch` to check which branch you are working on
 * `git log` to check the commit logs
+  * `git reset hash-of-a-commit` to roll back to a previous commit but keeping the changes unstaged
+  * `git reset --hard hash-of-a-commit` to roll back to a previous commit and also removing all the changes
 * `git diff` for checking the difference between previous commit and the current state
 
 __To merge your branch to your local master and push to remote repo, do:__
