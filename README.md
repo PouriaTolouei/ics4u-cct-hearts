@@ -24,8 +24,15 @@ __While working on a feature, do:__
 * `git status` for checking what files has been modified, staged, unstaged etc
 * `git branch` to check which branch you are working on
 * `git log` to check the commit logs
-  * `git reset hash-of-a-commit` to roll back to a previous commit but keeping the changes unstaged
-  * `git reset --hard hash-of-a-commit` to roll back to a previous commit and also removing all the changes
+  * reset: goes back to the specified commit and removes all the commits that come after it from the log
+    (Best to use when the commits are not made public yet because it can cause discrepency in the log)
+    * `git reset commit-hash` to go back to a previous commit in the log but keeping the changes unstaged
+    * `git reset --hard commit-hash` to go back to a previous commit in the log and also removing all the changes
+      * `git push - f origin master` to force a push when it says "remote branch is ahead" 
+  * revert: makes a commit for undoing the changes of the specified commit, but doesn't remove it from the log
+    (Best practice when changes are made public but it doesn't prevent your mistake from showing up in the log)
+    * `git revert --no-edit commit-hash` to make a commit for undoing the changes with a default message
+    * `git revert commit-hash` to make a commit for undoing the changes with a custom message (opens vim editor)
 * `git diff` for checking the difference between previous commit and the current state
 
 __To merge your branch to your local master and push to remote repo, do:__
